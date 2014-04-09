@@ -81,7 +81,7 @@ Stage* StageStack::Previous( Stage* checkStage, bool includeTransitions )
 			} else {
 				for( int j = i - 1; j >= 0; j-- )
 				{
-					if( !Stack[j]->StageIsTransition() )
+					if( !Stack[j]->IsTransition() )
 					{
 						return Stack[j];
 					}

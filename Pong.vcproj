@@ -171,11 +171,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Framework\network.cpp"
+				RelativePath=".\framework\event.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Framework\stagestack.cpp"
+				RelativePath=".\library\memory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\framework\network.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\framework\stagestack.cpp"
 				>
 			</File>
 		</Filter>
@@ -185,19 +193,27 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Framework\includes.h"
+				RelativePath=".\framework\event.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Framework\network.h"
+				RelativePath=".\framework\includes.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Framework\stage.h"
+				RelativePath=".\library\memory.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Framework\stagestack.h"
+				RelativePath=".\framework\network.h"
+				>
+			</File>
+			<File
+				RelativePath=".\framework\stage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\framework\stagestack.h"
 				>
 			</File>
 		</Filter>

@@ -1,9 +1,8 @@
 
 #pragma once
 
-#include "graphicslib.h"
-#include "../Library/memory.h"
-#include <string>
+#include "includes.h"
+#include "../library/memory.h"
 
 enum EventTypes
 {
@@ -29,6 +28,7 @@ enum EventTypes
   EVENT_DOWNLOAD_PROGRESS,
   EVENT_DOWNLOAD_COMPLETE,
   EVENT_AUDIO_FINISHED,
+	EVENT_USER,
   EVENT_UNDEFINED
 };
 
@@ -49,37 +49,55 @@ typedef struct FRAMEWORK_NETWORK_EVENT
 
 typedef struct FRAMEWORK_DISPLAY_EVENT
 {
-	SDL_ActiveEvent Active;
-	SDL_ResizeEvent Resize;
-	SDL_SysWMEvent WindowManager;
+	bool Active;
+	int X;
+	int Y;
+	int Width;
+	int Height;
 } FRAMEWORK_DISPLAY_EVENT;
 
 typedef struct FRAMEWORK_JOYSTICK_EVENT
 {
-	SDL_JoyAxisEvent Axis;
-	SDL_JoyBallEvent Ball;
-	SDL_JoyHatEvent Hat;
-	SDL_JoyButtonEvent Button;
+	int ID;
+	int Stick;
+	int Axis;
+	float Position;
+	int Button;
 } FRAMEWORK_JOYSTICK_EVENT;
 
 typedef struct FRAMEWORK_MOUSE_EVENT
 {
-	SDL_MouseMotionEvent Motion;
-	SDL_MouseButtonEvent Button;
+	int X;
+	int Y;
+	int WheelVertical;
+	int WheelHorizontal;
+	int DeltaX;
+	int DeltaY;
+	int Button;
+} FRAMEWORK_MOUSE_EVENT;
+
+typedef struct FRAMEWORK_KEYBOARD_EVENT
+{
+	int KeyCode;
+	int Modifiers;
 } FRAMEWORK_MOUSE_EVENT;
 
 typedef union EventData
 {
 	FRAMEWORK_DISPLAY_EVENT		Display;
 	FRAMEWORK_JOYSTICK_EVENT	Joystick;
-	SDL_KeyboardEvent					Keyboard;
+	FRAMEWORK_KEYBOARD_EVENT	Keyboard;
 	FRAMEWORK_MOUSE_EVENT			Mouse;
-	SDL_UserEvent							User;
+	Memory*										User;
   FRAMEWORK_NETWORK_EVENT   Network;
   FRAMEWORK_DOWNLOAD_EVENT  Download;
 } EventData;
 
+/*
+   Class: Event
 
+   Provides data regarding events that occur within the system
+*/
 class Event
 {
   public:
@@ -87,6 +105,5 @@ class Event
     EventData Data;
 
     Event();
-		Event( SDL_Event* Source );
 		~Event();
 };

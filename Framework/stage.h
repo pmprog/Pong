@@ -7,7 +7,6 @@
    Class: Stage
 
    You must inherit this in any game "screens", as it provides the framework's functionality
-
 */
 class Stage
 {
