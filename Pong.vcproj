@@ -177,6 +177,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\library\animation.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\boot.cpp"
 				>
 			</File>
@@ -190,6 +194,10 @@
 			</File>
 			<File
 				RelativePath=".\framework\framework.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\library\line.cpp"
 				>
 			</File>
 			<File
@@ -227,6 +235,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\library\animation.h"
+				>
+			</File>
+			<File
 				RelativePath=".\game\boot.h"
 				>
 			</File>
@@ -244,6 +256,10 @@
 			</File>
 			<File
 				RelativePath=".\framework\includes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\library\line.h"
 				>
 			</File>
 			<File

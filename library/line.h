@@ -21,6 +21,7 @@ class Line
 
 		Vector2* GetIntersection( Line* IntersectsWith );
 		Vector2* ToVector();
+		Angle* ToAngle();
 
 		Angle* Reflection( Line* Projection );
 

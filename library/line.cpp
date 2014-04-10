@@ -109,6 +109,11 @@ Vector2* Line::ToVector()
 	return new Vector2( Points[1]->X - Points[0]->X, Points[1]->Y - Points[0]->Y );
 }
 
+Angle* Line::ToAngle()
+{
+	return new Angle( Points[0]->AngleTo( Points[1] ) );
+}
+
 Angle* Line::Reflection( Line* Projection )
 {
 	// Lines don't intersect, no reflection

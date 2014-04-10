@@ -6,52 +6,52 @@
 
 enum EventTypes
 {
-  EVENT_WINDOW_ACTIVATE,
-  EVENT_WINDOW_DEACTIVATE,
+	EVENT_WINDOW_ACTIVATE,
+	EVENT_WINDOW_DEACTIVATE,
 	EVENT_WINDOW_RESIZE,
 	EVENT_WINDOW_MANAGER,
 	EVENT_WINDOW_CLOSED,
-  EVENT_KEY_DOWN,
-  EVENT_KEY_UP,
-  EVENT_MOUSE_DOWN,
-  EVENT_MOUSE_UP,
-  EVENT_MOUSE_MOVE,
-  EVENT_JOYSTICK_AXIS,
+	EVENT_KEY_DOWN,
+	EVENT_KEY_UP,
+	EVENT_MOUSE_DOWN,
+	EVENT_MOUSE_UP,
+	EVENT_MOUSE_MOVE,
+	EVENT_JOYSTICK_AXIS,
 	EVENT_JOYSTICK_HAT,
 	EVENT_JOYSTICK_BALL,
-  EVENT_JOYSTICK_BUTTON_DOWN,
-  EVENT_JOYSTICK_BUTTON_UP,
-  EVENT_TIMER_TICK,
+	EVENT_JOYSTICK_BUTTON_DOWN,
+	EVENT_JOYSTICK_BUTTON_UP,
+	EVENT_TIMER_TICK,
 #ifdef NETWORK_SUPPORT
-  EVENT_NETWORK_CONNECTION_REQUEST,
-  EVENT_NETWORK_PACKET_RECEIVED,
-  EVENT_NETWORK_DISCONNECTED,
+	EVENT_NETWORK_CONNECTION_REQUEST,
+	EVENT_NETWORK_PACKET_RECEIVED,
+	EVENT_NETWORK_DISCONNECTED,
 #endif
 #ifdef DOWNLOAD_SUPPORT
-  EVENT_DOWNLOAD_PROGRESS,
-  EVENT_DOWNLOAD_COMPLETE,
+	EVENT_DOWNLOAD_PROGRESS,
+	EVENT_DOWNLOAD_COMPLETE,
 #endif
-  EVENT_AUDIO_FINISHED,
+	EVENT_AUDIO_FINISHED,
 	EVENT_USER,
-  EVENT_UNDEFINED
+	EVENT_UNDEFINED
 };
 
 #ifdef DOWNLOAD_SUPPORT
 typedef struct FRAMEWORK_DOWNLOAD_EVENT
 {
-  std::string* URL;
-  Memory* Contents;
-  double DownloadedBytes;
-  double TotalBytesToDownload;
-  double UploadedBytes;
-  double TotalBytesToUpload;
+	std::string* URL;
+	Memory* Contents;
+	double DownloadedBytes;
+	double TotalBytesToDownload;
+	double UploadedBytes;
+	double TotalBytesToUpload;
 } FRAMEWORK_DOWNLOAD_EVENT;
 #endif
 
 #ifdef NETWORK_SUPPORT
 typedef struct FRAMEWORK_NETWORK_EVENT
 {
-  ENetEvent Traffic;
+	ENetEvent Traffic;
 } FRAMEWORK_NETWORK_EVENT;
 #endif
 
@@ -100,37 +100,37 @@ typedef union EventData
 	FRAMEWORK_DISPLAY_EVENT		Display;
 	FRAMEWORK_JOYSTICK_EVENT	Joystick;
 	FRAMEWORK_KEYBOARD_EVENT	Keyboard;
-	FRAMEWORK_MOUSE_EVENT			Mouse;
-	Memory*										User;
+	FRAMEWORK_MOUSE_EVENT		Mouse;
+	Memory*						User;
 #ifdef NETWORK_SUPPORT
-  FRAMEWORK_NETWORK_EVENT   Network;
+	FRAMEWORK_NETWORK_EVENT		Network;
 #endif
 #ifdef DOWNLOAD_SUPPORT
-  FRAMEWORK_DOWNLOAD_EVENT  Download;
+	FRAMEWORK_DOWNLOAD_EVENT	Download;
 #endif
-	FRAMEWORK_TIMER_EVENT			Timer;
+	FRAMEWORK_TIMER_EVENT		Timer;
 } EventData;
 
 /*
-   Class: Event
-   Provides data regarding events that occur within the system
+	 Class: Event
+	 Provides data regarding events that occur within the system
 */
 class Event
 {
-  public:
-    EventTypes Type;
-    EventData Data;
+	public:
+		EventTypes Type;
+		EventData Data;
 
 		/*
-			Constructor: Network
+			Constructor: Event
 			Defaults the <Type> to Undefined
-    */
-    Event();
+		*/
+		Event();
 
 		/*
-			Destructor: Network
+			Destructor: ~Event
 			For network packets, it calls enet's packet delete.
 			For download packets, url and the data are deleted (assumption is that the program will have processed the data)
-    */
+		*/
 		~Event();
 };

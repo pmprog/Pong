@@ -10,8 +10,8 @@ Vector2::Vector2()
 
 Vector2::Vector2( float X, float Y )
 {
-  this->X = X;
-  this->Y = Y;
+	this->X = X;
+	this->Y = Y;
 }
 
 Vector2::Vector2( Vector2* Copy )
@@ -34,10 +34,10 @@ Vector2::Vector2( Angle* Direction )
 
 void Vector2::RotateVector( float Degrees )
 {
-  Vector2* tmp = new Vector2( 0, 0 );
+	Vector2* tmp = new Vector2( 0, 0 );
 	Angle* a = new Angle( Degrees );
-  RotateVector( a, tmp );
-  delete tmp;
+	RotateVector( a, tmp );
+	delete tmp;
 	delete a;
 }
 
@@ -64,37 +64,43 @@ void Vector2::RotateVector( Angle* Direction, Vector2* RotationOrigin )
 	X = tmpX;
 }
 
+Vector2 Vector2::operator+=(Vector2 A)
+{
+	X += A.X;
+	Y += A.Y;
+	return *this;
+}
+
 bool Vector2::operator==( Vector2 A )
 {
-  return (this->X == A.X && this->Y == A.Y);
+	return (this->X == A.X && this->Y == A.Y);
 }
 
 bool Vector2::operator!=( Vector2 A )
 {
-  return (this->X != A.X || this->Y != A.Y);
+	return (this->X != A.X || this->Y != A.Y);
 }
 
 void Vector2::Add(Vector2* Point)
 {
-  X += Point->X;
-  Y += Point->Y;
+	X += Point->X;
+	Y += Point->Y;
 }
 
 void Vector2::Subtract(Vector2* Point)
 {
-  X -= Point->X;
-  Y -= Point->Y;
+	X -= Point->X;
+	Y -= Point->Y;
 }
 
 void Vector2::Multiply(float Multiplier)
 {
-  X *= Multiplier;
-  Y *= Multiplier;
+	X *= Multiplier;
+	Y *= Multiplier;
 }
 
 float Vector2::AngleTo( Vector2* CheckPoint )
 {
-  //float r = atan2( CheckPoint->Y - Y, CheckPoint->X - X ) * M_RAD_TO_DEG;
 	float r = atan2( CheckPoint->X - X, Y - CheckPoint->Y ) * M_RAD_TO_DEG;
 	while( r >= 360.0f )
 	{
@@ -104,7 +110,7 @@ float Vector2::AngleTo( Vector2* CheckPoint )
 	{
 		r += 360.0f;
 	}
-  return r;
+	return r;
 }
 
 float Vector2::DistanceTo( Vector2* CheckPoint )
