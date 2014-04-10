@@ -52,12 +52,17 @@ void SpriteSheet::DrawSprite( int FrameNumber, int ScreenX, int ScreenY, float S
 	{
 		al_draw_bitmap_region( sheet, r->X, r->Y, r->Width, r->Height, ScreenX, ScreenY, 0 );
 	} else {
+		int renderX = r->X + ((r->Width * ScaleX) / 2);
 		if( Rotation == 0 )
 		{
-			al_draw_tinted_scaled_rotated_bitmap_region( sheet, r->X, r->Y, r->Width, r->Height, al_map_rgba(255, 255, 255, 255), ScreenX, ScreenY, ScreenX, ScreenY, ScaleX, ScaleY, 0, 0 );
+			al_draw_tinted_scaled_rotated_bitmap_region( sheet, r->X, r->Y, r->Width, r->Height, al_map_rgba(255, 255, 255, 255), 0, 0, ScreenX, ScreenY, ScaleX, ScaleY, 0, 0 );
 		} else {
-			al_draw_tinted_scaled_rotated_bitmap_region( sheet, r->X, r->Y, r->Width, r->Height, al_map_rgba(255, 255, 255, 255), ScreenX, ScreenY, ScreenX, ScreenY, ScaleX, ScaleY, Rotation->ToRadians(), 0 );
+			al_draw_tinted_scaled_rotated_bitmap_region( sheet, r->X, r->Y, r->Width, r->Height, al_map_rgba(255, 255, 255, 255), r->Width / 2, r->Height / 2, ScreenX + ((r->Width * ScaleX) / 2), ScreenY + ((r->Height * ScaleY) / 2), ScaleX, ScaleY, Rotation->ToRadians(), 0 );
 		}
 	}
 }
 
+SpriteSheetRegion* SpriteSheet::GetFrame( int FrameNumber )
+{
+	return frames.at( FrameNumber );
+}

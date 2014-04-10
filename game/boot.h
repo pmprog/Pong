@@ -14,6 +14,8 @@ class BootUp : public Stage
 		SpriteSheet* logoSpriteF;
 		int logoFadeIn;
 
+		Angle* a;
+
 		void StartGame();
 
   public:

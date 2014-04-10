@@ -28,5 +28,6 @@ class SpriteSheet
 
 		int AddSprite( int FrameX, int FrameY, int FrameWidth, int FrameHeight );
 		void DrawSprite( int FrameNumber, int ScreenX, int ScreenY, float ScaleX, float ScaleY, Angle* Rotation );
+		SpriteSheetRegion* GetFrame( int FrameNumber );
 
 };

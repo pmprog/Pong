@@ -5,10 +5,11 @@
 void BootUp::Begin()
 {
 	bootBarSize = 0;
-	bootBarAdjust = (FRAMEWORK->Display_GetWidth() / (FRAMES_PER_SECOND * 1.5));
+	bootBarAdjust = (FRAMEWORK->Display_GetWidth() / (FRAMES_PER_SECOND * 4.0f));
 	logoSpriteP = new SpriteSheet( "resources/pmprog.png", 204, 200 );
 	logoSpriteF = new SpriteSheet( "resources/foxblock.png", 204, 200 );
 	logoFadeIn = 0;
+	a = new Angle( 30.0f );
 }
 
 void BootUp::Pause()
@@ -49,14 +50,21 @@ void BootUp::Update()
 		StartGame();
 		return;
 	}
+	a->Add( 3.0f );
 }
 
 void BootUp::Render()
 {
 	al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
 
-	logoSpriteP->DrawSprite( 0, (FRAMEWORK->Display_GetWidth() / 4), FRAMEWORK->Display_GetHeight() / 2, logoFadeIn / 128.0f, logoFadeIn / 128.0f, 0 );
-	logoSpriteF->DrawSprite( 0, (FRAMEWORK->Display_GetWidth() / 4) * 3, FRAMEWORK->Display_GetHeight() / 2, logoFadeIn / 128.0f, logoFadeIn / 128.0f, 0 );
+	int qrtWidth = (FRAMEWORK->Display_GetWidth() / 4);
+	int hlfHeight = FRAMEWORK->Display_GetHeight() / 2;
+	float scale = logoFadeIn / 128.0f;
+
+	
+
+	logoSpriteP->DrawSprite( 0, qrtWidth - ((logoSpriteP->GetFrame( 0 )->Width * scale) / 2), hlfHeight - ((logoSpriteP->GetFrame( 0 )->Height * scale) / 2), scale, scale, a );
+	logoSpriteF->DrawSprite( 0, (qrtWidth * 3) - ((logoSpriteP->GetFrame( 0 )->Width * scale) / 2), hlfHeight - ((logoSpriteP->GetFrame( 0 )->Height * scale) / 2), scale, scale, 0 );
 
 	int xPos = (FRAMEWORK->Display_GetWidth() / 2) - (bootBarSize / 2);
 	int yPos = FRAMEWORK->Display_GetHeight() - 12;
