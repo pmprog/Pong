@@ -60,6 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="allegro.lib allegro_acodec.lib allegro_audio.lib allegro_color.lib allegro_font.lib allegro_image.lib allegro_primitives.lib allegro_ttf.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -132,6 +133,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="allegro.lib allegro_acodec.lib allegro_audio.lib allegro_color.lib allegro_font.lib allegro_image.lib allegro_primitives.lib allegro_ttf.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"

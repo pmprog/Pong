@@ -1,6 +1,8 @@
 
 #pragma once
 
+#ifdef NETWORK_SUPPORT
+
 #include "includes.h"
 
 /*
@@ -70,3 +72,5 @@ class Network
 		void Update();
 
 };
+
+#endif

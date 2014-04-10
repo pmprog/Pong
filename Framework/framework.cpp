@@ -1,6 +1,6 @@
+
 #include "framework.h"
-#include "../Game/boot.h"
-#include "network.h"
+//#include "../Game/boot.h"
 
 Framework* Framework::System;
 
@@ -18,7 +18,7 @@ Framework::Framework()
 	}
 	
 	al_init_font_addon();
-	if( !al_install_keyboard() || !al_install_mouse() || !al_init_primitives_addon() || !al_init_ttf_addon() || !al_init_image_addon() || !al_init_acodec_addon() || !al_install_audio() )
+	if( !al_install_keyboard() || !al_install_mouse() || !al_init_primitives_addon() || !al_init_ttf_addon() || !al_init_image_addon() )
 	{
 		printf( "Framework: Error: Cannot init Allegro plugin\n" );
 		quitProgram = true;
@@ -45,6 +45,14 @@ Framework::Framework()
 	eventAllegro = al_create_event_queue();
 	eventMutex = al_create_mutex();
 	frameTimer = al_create_timer( 1.0 / FRAMES_PER_SECOND );
+
+	Display_Initialise();
+	Audio_Initialise();
+
+	al_register_event_source( eventAllegro, al_get_display_event_source( screen ) );
+	al_register_event_source( eventAllegro, al_get_keyboard_event_source() );
+	al_register_event_source( eventAllegro, al_get_mouse_event_source() );
+	al_register_event_source( eventAllegro, al_get_timer_event_source( frameTimer ) );
 
 	System = this;
 }
@@ -90,7 +98,10 @@ void Framework::Run()
 #ifdef WRITE_LOG
   printf( "Framework: Run.Program Loop\n" );
 #endif
-  ProgramStages->Push( (Stage*)new BootUp() );
+
+  // ProgramStages->Push( (Stage*)new BootUp() );
+
+	al_start_timer( frameTimer );
 
 	while( !quitProgram )
 	{
@@ -123,6 +134,10 @@ void Framework::ProcessEvents()
     return;
 	}
 
+	// Convert Allegro events before we process
+	// TODO: Consider threading the translation
+	TranslateAllegroEvents();
+
 	al_lock_mutex( eventMutex );
 
 	while( eventQueue.size() > 0 && !ProgramStages->IsEmpty() )
@@ -133,12 +148,10 @@ void Framework::ProcessEvents()
 		switch( e->Type )
 		{
 			case EVENT_WINDOW_CLOSED:
+				delete e;
 				al_unlock_mutex( eventMutex );
 				ShutdownFramework();
 				return;
-				break;
-			case EVENT_WINDOW_RESIZE:
-				resizeWindow( e->Data.Display.Resize.w, e->Data.Display.Resize.h );
 				break;
 			default:
 				ProgramStages->Current()->EventOccurred( e );
@@ -152,9 +165,132 @@ void Framework::ProcessEvents()
 
 void Framework::PushEvent( Event* e )
 {
-	SDL_LockMutex( eventMutex );
+	al_lock_mutex( eventMutex );
 	eventQueue.push_back( e );
-	SDL_UnlockMutex( eventMutex );
+	al_unlock_mutex( eventMutex );
+}
+
+void Framework::TranslateAllegroEvents()
+{
+	ALLEGRO_EVENT e;
+	Event* fwE;
+
+	while( al_get_next_event( eventAllegro, &e ) )
+	{
+		switch( e.type )
+		{
+			case ALLEGRO_EVENT_DISPLAY_CLOSE:
+				fwE = new Event();
+				fwE->Type = EVENT_WINDOW_CLOSED;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_JOYSTICK_CONFIGURATION:
+				al_reconfigure_joysticks();
+				break;
+			case ALLEGRO_EVENT_TIMER:
+				if( e.timer.source == frameTimer )
+				{
+					framesToProcess++;
+				} else {
+					fwE = new Event();
+					fwE->Type = EVENT_TIMER_TICK;
+					fwE->Data.Timer.TimerObject = (void*)e.timer.source;
+					PushEvent( fwE );
+				}
+				break;
+			case ALLEGRO_EVENT_KEY_DOWN:
+				fwE = new Event();
+				fwE->Type = EVENT_KEY_DOWN;
+				fwE->Data.Keyboard.KeyCode = e.keyboard.keycode;
+				fwE->Data.Keyboard.Modifiers = e.keyboard.modifiers;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_KEY_UP:
+				fwE = new Event();
+				fwE->Type = EVENT_KEY_UP;
+				fwE->Data.Keyboard.KeyCode = e.keyboard.keycode;
+				fwE->Data.Keyboard.Modifiers = e.keyboard.modifiers;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_MOUSE_AXES:
+				fwE = new Event();
+				fwE->Type = EVENT_MOUSE_MOVE;
+				fwE->Data.Mouse.X = e.mouse.x;
+				fwE->Data.Mouse.Y = e.mouse.y;
+				fwE->Data.Mouse.DeltaX = e.mouse.dx;
+				fwE->Data.Mouse.DeltaY = e.mouse.dy;
+				fwE->Data.Mouse.WheelVertical = e.mouse.dz;
+				fwE->Data.Mouse.WheelHorizontal = e.mouse.dw;
+				fwE->Data.Mouse.Button = e.mouse.button;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+				fwE = new Event();
+				fwE->Type = EVENT_MOUSE_DOWN;
+				fwE->Data.Mouse.X = e.mouse.x;
+				fwE->Data.Mouse.Y = e.mouse.y;
+				fwE->Data.Mouse.DeltaX = e.mouse.dx;
+				fwE->Data.Mouse.DeltaY = e.mouse.dy;
+				fwE->Data.Mouse.WheelVertical = e.mouse.dz;
+				fwE->Data.Mouse.WheelHorizontal = e.mouse.dw;
+				fwE->Data.Mouse.Button = e.mouse.button;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+				fwE = new Event();
+				fwE->Type = EVENT_MOUSE_UP;
+				fwE->Data.Mouse.X = e.mouse.x;
+				fwE->Data.Mouse.Y = e.mouse.y;
+				fwE->Data.Mouse.DeltaX = e.mouse.dx;
+				fwE->Data.Mouse.DeltaY = e.mouse.dy;
+				fwE->Data.Mouse.WheelVertical = e.mouse.dz;
+				fwE->Data.Mouse.WheelHorizontal = e.mouse.dw;
+				fwE->Data.Mouse.Button = e.mouse.button;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_DISPLAY_RESIZE:
+				fwE = new Event();
+				fwE->Type = EVENT_WINDOW_RESIZE;
+				fwE->Data.Display.X = 0;
+				fwE->Data.Display.Y = 0;
+				fwE->Data.Display.Width = al_get_display_width( screen );
+				fwE->Data.Display.Height = al_get_display_height( screen );
+				fwE->Data.Display.Active = true;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
+				fwE = new Event();
+				fwE->Type = EVENT_WINDOW_ACTIVATE;
+				fwE->Data.Display.X = 0;
+				fwE->Data.Display.Y = 0;
+				fwE->Data.Display.Width = al_get_display_width( screen );
+				fwE->Data.Display.Height = al_get_display_height( screen );
+				fwE->Data.Display.Active = true;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
+				fwE = new Event();
+				fwE->Type = EVENT_WINDOW_DEACTIVATE;
+				fwE->Data.Display.X = 0;
+				fwE->Data.Display.Y = 0;
+				fwE->Data.Display.Width = al_get_display_width( screen );
+				fwE->Data.Display.Height = al_get_display_height( screen );
+				fwE->Data.Display.Active = false;
+				PushEvent( fwE );
+				break;
+			case ALLEGRO_EVENT_AUDIO_STREAM_FINISHED:
+				fwE = new Event();
+				fwE->Type = EVENT_AUDIO_FINISHED;
+				PushEvent( fwE );
+				break;
+
+			default:
+				fwE = new Event();
+				fwE->Type = EVENT_UNDEFINED;
+				PushEvent( fwE );
+				break;
+		}
+	}
 }
 
 void Framework::ShutdownFramework()
@@ -181,16 +317,20 @@ void Framework::Display_Initialise()
   printf( "Framework: Initialise Display\n" );
 #endif
 
-#ifdef X86CPU
-	int scrW = 800;
-	int scrH = 480;
-	bool scrFS = false;
-#else
-	int scrW = 800;
-	int scrH = 480;
+	bool foundMode = false;
+#ifdef PANDORA
+	int fallbackW = 800;
+	int fallbackH = 480;
 	bool scrFS = true;
+#else
+	int fallbackW = 800;
+	int fallbackH = 600;
+	bool scrFS = false;
 #endif
+	int scrW = fallbackW;
+	int scrH = fallbackH;
 
+	// Load configuration
 	if( Settings->KeyExists( "Visual.ScreenWidth" ) )
   {
     Settings->GetIntegerValue( "Visual.ScreenWidth", &scrW );
@@ -210,6 +350,39 @@ void Framework::Display_Initialise()
 		Settings->SetBooleanValue( "Visual.FullScreen", scrFS );
 	}
 
+	if( scrFS )
+	{
+		al_set_new_display_flags( ALLEGRO_FULLSCREEN );
+	}
+
+	// Get Current Resolution
+	for( int modeIdx = 0; modeIdx < al_get_num_display_modes(); modeIdx++ )
+	{
+		if( al_get_display_mode( modeIdx, &screenMode ) != NULL )
+		{
+			if( screenMode.width == scrW && screenMode.height == scrH )
+			{
+				foundMode = true;
+			} else {
+				fallbackW = screenMode.width;
+				fallbackH = screenMode.height;
+			}
+		}
+		if( foundMode )
+		{
+			break;
+		}
+	}
+
+	if( foundMode )
+	{
+		screen = al_create_display( scrW, scrH );
+	} else {
+		screen = al_create_display( fallbackW, fallbackH );
+	}
+
+	al_hide_mouse_cursor( screen );
+
 }
 
 void Framework::Display_Shutdown()
@@ -217,6 +390,8 @@ void Framework::Display_Shutdown()
 #ifdef WRITE_LOG
   printf( "Framework: Shutdown Display\n" );
 #endif
+	al_unregister_event_source( eventAllegro, al_get_display_event_source( screen ) );
+	al_destroy_display( screen );
 }
 
 int Framework::Display_GetWidth()
@@ -231,7 +406,8 @@ int Framework::Display_GetHeight()
 
 void Framework::Display_SetTitle( std::string* NewTitle )
 {
-  SDL_WM_SetCaption( NewTitle->c_str(), 0 );
+  al_set_app_name( NewTitle->c_str() );
+	al_set_window_title( screen, NewTitle->c_str() );
 }
 
 void Framework::Audio_Initialise()
@@ -239,6 +415,41 @@ void Framework::Audio_Initialise()
 #ifdef WRITE_LOG
   printf( "Framework: Initialise Audio\n" );
 #endif
+
+	if( !al_install_audio() )
+	{
+		printf( "Audio_Initialise: Failed to install audio\n" );
+		return;
+	}
+	if( !al_init_acodec_addon() )
+	{
+		printf( "Audio_Initialise: Failed to install codecs\n" );
+		return;
+	}
+
+	audioVoice = al_create_voice(44100, ALLEGRO_AUDIO_DEPTH_INT16, ALLEGRO_CHANNEL_CONF_2);
+	if( audioVoice == 0 )
+	{
+		printf( "Audio_Initialise: Failed to create voice\n" );
+		return;
+	}
+	audioMixer = al_create_mixer(44100, ALLEGRO_AUDIO_DEPTH_FLOAT32, ALLEGRO_CHANNEL_CONF_2);
+	if( audioMixer == 0 )
+	{
+		printf( "Audio_Initialise: Failed to create mixer\n" );
+		al_destroy_voice( audioVoice );
+		audioVoice = 0;
+		return;
+	}
+	if( !al_attach_mixer_to_voice( audioMixer, audioVoice ) )
+	{
+		printf( "Audio_Initialise: Failed to attach mixer to voice\n" );
+		al_destroy_voice( audioVoice );
+		audioVoice = 0;
+		al_destroy_mixer( audioMixer );
+		audioMixer = 0;
+		return;
+	}
 }
 
 void Framework::Audio_Shutdown()
@@ -246,19 +457,44 @@ void Framework::Audio_Shutdown()
 #ifdef WRITE_LOG
   printf( "Framework: Shutdown Audio\n" );
 #endif
+	if( audioVoice != 0 )
+	{
+		al_destroy_voice( audioVoice );
+		audioVoice = 0;
+	}
+	if( audioMixer != 0 )
+	{
+		al_destroy_mixer( audioMixer );
+		audioMixer = 0;
+	}
+	al_uninstall_audio();
 }
 
-void Audio_PlayAudio( std::string Filename, bool Loop )
+void Framework::Audio_PlayAudio( std::string Filename, bool Loop )
 {
+	if( audioVoice == 0 || audioMixer == 0 )
+	{
+		return;
+	}
+
 #ifdef WRITE_LOG
 	printf( "Framework: Start audio file %s\n", Filename.c_str() );
 #endif
+
+
 }
 
-void Audio_StopAudio()
+void Framework::Audio_StopAudio()
 {
+	if( audioVoice == 0 || audioMixer == 0 )
+	{
+		return;
+	}
+
 #ifdef WRITE_LOG
   printf( "Framework: Stop audio\n" );
 #endif
+
+
 }
 

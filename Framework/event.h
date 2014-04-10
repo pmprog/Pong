@@ -87,8 +87,13 @@ typedef struct FRAMEWORK_MOUSE_EVENT
 typedef struct FRAMEWORK_KEYBOARD_EVENT
 {
 	int KeyCode;
-	int Modifiers;
-} FRAMEWORK_MOUSE_EVENT;
+	unsigned int Modifiers;
+} FRAMEWORK_KEYBOARD_EVENT;
+
+typedef struct FRAMEWORK_TIMER_EVENT
+{
+	void* TimerObject;
+} FRAMEWORK_TIMER_EVENT;
 
 typedef union EventData
 {
@@ -103,11 +108,11 @@ typedef union EventData
 #ifdef DOWNLOAD_SUPPORT
   FRAMEWORK_DOWNLOAD_EVENT  Download;
 #endif
+	FRAMEWORK_TIMER_EVENT			Timer;
 } EventData;
 
 /*
    Class: Event
-
    Provides data regarding events that occur within the system
 */
 class Event

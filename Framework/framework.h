@@ -41,6 +41,7 @@ class Framework
     void Run();
 		void ProcessEvents();
     void PushEvent( Event* e );
+		void TranslateAllegroEvents();
 		void ShutdownFramework();
 		bool IsShuttingDown() { return quitProgram; };
 

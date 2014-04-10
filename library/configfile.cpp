@@ -577,7 +577,7 @@ long ConfigFile::GetQuickInteger64Value( std::string Key, int ArrayIndex, long D
   return res;
 }
 
-float ConfigFile::GetQuickFloatValue( std::string Key )
+float ConfigFile::GetQuickFloatValue( std::string Key, float Default )
 {
   float res;
   if( !GetFloatValue( Key, &res ) )
@@ -587,7 +587,7 @@ float ConfigFile::GetQuickFloatValue( std::string Key )
   return res;
 }
 
-float ConfigFile::GetQuickFloatValue( std::string Key, int ArrayIndex )
+float ConfigFile::GetQuickFloatValue( std::string Key, int ArrayIndex, float Default )
 {
   float res;
   if( !GetFloatValue( Key, ArrayIndex, &res ) )
@@ -597,22 +597,24 @@ float ConfigFile::GetQuickFloatValue( std::string Key, int ArrayIndex )
   return res;
 }
 
-std::string* ConfigFile::GetQuickStringValue( std::string Key )
+std::string* ConfigFile::GetQuickStringValue( std::string Key, std::string Default )
 {
   std::string* res = new std::string();
   if( !GetStringValue( Key, res ) )
 	{
-		res = Default;
+		res->clear();
+		res->append( Default );
 	}
   return res;
 }
 
-std::string* ConfigFile::GetQuickStringValue( std::string Key, int ArrayIndex )
+std::string* ConfigFile::GetQuickStringValue( std::string Key, int ArrayIndex, std::string Default )
 {
   std::string* res = new std::string();
   if( !GetStringValue( Key, ArrayIndex, res ) )
 	{
-		res = Default;
+		res->clear();
+		res->append( Default );
 	}
   return res;
 }

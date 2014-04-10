@@ -2,7 +2,7 @@
 #include "network.h"
 #include "framework.h"
 
-Network* Network::ActiveConnection = 0;
+#ifdef NETWORK_SUPPORT
 
 Network::Network( int Port )
 {
@@ -124,3 +124,5 @@ void Network::Update()
 		}
 	}
 }
+
+#endif
