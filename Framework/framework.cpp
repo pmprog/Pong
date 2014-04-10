@@ -71,6 +71,18 @@ Framework::~Framework()
 	al_destroy_event_queue( eventAllegro );
 	al_destroy_mutex( eventMutex );
 	al_destroy_timer( frameTimer );
+	
+#ifdef NETWORK_SUPPORT
+#ifdef WRITE_LOG
+  printf( "Framework: Shutdown enet\n" );
+#endif
+	enet_deinitialize();
+#endif
+
+#ifdef WRITE_LOG
+  printf( "Framework: Shutdown Allegro\n" );
+#endif
+	al_uninstall_system();
 }
 
 void Framework::Run()
