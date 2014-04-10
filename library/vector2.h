@@ -3,17 +3,26 @@
 
 #include "maths.h"
 
+#ifndef Angle
+class Angle;
+#endif
+
 class Vector2
 {
   public:
     float X;
     float Y;
 
+		Vector2();
     Vector2( float X, float Y );
-    Vector2( Vector2* CopyFrom );
-    Vector2( float AngleDegrees );
-    void RotateVector( float AngleDegrees );
-    void RotateVector( float AngleDegrees, Vector2* RotationOrigin );
+		Vector2( Vector2* Copy );
+    Vector2( float Degrees );
+		Vector2( Angle* Direction );
+
+    void RotateVector( float Degrees );
+    void RotateVector( Angle* Direction );
+    void RotateVector( float Degrees, Vector2* RotationOrigin );
+    void RotateVector( Angle* Direction, Vector2* RotationOrigin );
 
     bool operator==(Vector2 A);
     bool operator!=(Vector2 A);

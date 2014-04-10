@@ -1,7 +1,7 @@
 
 #include "angle.h"
 #include "vector2.h"
-#include "../Framework/graphicslib.h"
+#include "../framework/includes.h"
 
 Angle::Angle()
 {
@@ -39,12 +39,7 @@ float Angle::ToDegrees()
 
 float Angle::ToRadians()
 {
-	return curAngle * M_DEGRADCONV; // (180.0f / M_PI);
-}
-
-float Angle::ToRadiansSparrow()
-{
-	return (curAngle / 360.0f) * (2 * SP_PI);
+	return curAngle * M_DEG_TO_RAD;
 }
 
 Vector2* Angle::ToVector()
@@ -98,12 +93,12 @@ float Angle::ShortestAngleTo( float DestinationAngle )
 	return ang;
 }
 
-float Angle::Sin()
+float Angle::Sine()
 {
 	return sin(ToRadians());
 }
 
-float Angle::Cos()
+float Angle::Cosine()
 {
 	return cos(ToRadians());
 }

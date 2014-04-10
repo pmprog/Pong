@@ -7,7 +7,8 @@
 #define M_PI						3.141592654f
 #endif
 
-#define M_DEGRADCONV		57.2957795f
+#define M_DEG_TO_RAD		0.01745329f		// (M_PI / 180.0f)
+#define M_RAD_TO_DEG		57.2957795f		// (180.0f / M_PI )
 
 class Maths
 {

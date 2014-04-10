@@ -1,5 +1,12 @@
 
 #include "vector2.h"
+#include "angle.h"
+
+Vector2::Vector2()
+{
+	X = 0;
+	Y = 0;
+}
 
 Vector2::Vector2( float X, float Y )
 {
@@ -7,43 +14,62 @@ Vector2::Vector2( float X, float Y )
   this->Y = Y;
 }
 
-Vector2::Vector2( Vector2* CopyFrom )
+Vector2::Vector2( Vector2* Copy )
 {
-  X = CopyFrom->X;
-  Y = CopyFrom->Y;
+	X = Copy->X;
+	Y = Copy->Y;
 }
 
-Vector2::Vector2( float AngleDegrees )
+Vector2::Vector2( float Degrees )
 {
-	float rotSin = sin(AngleDegrees * (M_PI / 180.0f));
-	float rotCos = cos(AngleDegrees * (M_PI / 180.0f));
-	X = rotCos;
-	Y = rotSin;
+	X = sin(Degrees * M_DEG_TO_RAD);
+	Y = -cos(Degrees * M_DEG_TO_RAD);
 }
 
-void Vector2::RotateVector( float AngleDegrees )
+Vector2::Vector2( Angle* Direction )
+{
+	X = Direction->Sine();
+	Y = -Direction->Cosine();
+}
+
+void Vector2::RotateVector( float Degrees )
 {
   Vector2* tmp = new Vector2( 0, 0 );
-  RotateVector( AngleDegrees, tmp );
+	Angle* a = new Angle( Degrees );
+  RotateVector( a, tmp );
+  delete tmp;
+	delete a;
+}
+
+void Vector2::RotateVector( Angle* Direction )
+{
+  Vector2* tmp = new Vector2( 0, 0 );
+  RotateVector( Direction, tmp );
   delete tmp;
 }
 
-void Vector2::RotateVector( float AngleDegrees, Vector2* RotationOrigin )
+void Vector2::RotateVector( float Degrees, Vector2* RotationOrigin )
 {
-	float rotSin = sin(AngleDegrees * (M_PI / 180.0f));
-	float rotCos = cos(AngleDegrees * (M_PI / 180.0f));
+	Angle* a = new Angle( Degrees );
+	return RotateVector( a, RotationOrigin );
+	delete a;
+}
+void Vector2::RotateVector( Angle* Direction, Vector2* RotationOrigin )
+{
+	float rotSin = Direction->Sine();
+	float rotCos = Direction->Cosine();
 	float tmpX;
 	tmpX = ((X - RotationOrigin->X) * rotCos) - ((Y - RotationOrigin->Y) * rotSin);
 	Y = ((Y - RotationOrigin->Y) * rotCos) + ((X - RotationOrigin->X) * rotSin);
 	X = tmpX;
 }
 
-bool Vector2::operator==(Vector2 A)
+bool Vector2::operator==( Vector2 A )
 {
   return (this->X == A.X && this->Y == A.Y);
 }
 
-bool Vector2::operator!=(Vector2 A)
+bool Vector2::operator!=( Vector2 A )
 {
   return (this->X != A.X || this->Y != A.Y);
 }
@@ -68,7 +94,7 @@ void Vector2::Multiply(float Multiplier)
 
 float Vector2::AngleTo( Vector2* CheckPoint )
 {
-  float r = atan2( CheckPoint->Y - Y, CheckPoint->X - X ) * 180.0f / M_PI;
+  float r = atan2( CheckPoint->Y - Y, CheckPoint->X - X ) * M_DEG_TO_RAD;	// This right?
 	while( r >= 360.0f )
 	{
 		r -= 360.0f;

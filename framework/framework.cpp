@@ -1,6 +1,6 @@
 
 #include "framework.h"
-//#include "../Game/boot.h"
+#include "../game/boot.h"
 
 Framework* Framework::System;
 
@@ -99,7 +99,7 @@ void Framework::Run()
   printf( "Framework: Run.Program Loop\n" );
 #endif
 
-  // ProgramStages->Push( (Stage*)new BootUp() );
+  ProgramStages->Push( new BootUp() );
 
 	al_start_timer( frameTimer );
 
@@ -118,6 +118,7 @@ void Framework::Run()
 		if( !ProgramStages->IsEmpty() )
 		{
 			ProgramStages->Current()->Render();
+			al_flip_display();
 		}
 	}
 }

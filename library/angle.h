@@ -2,7 +2,10 @@
 #pragma once
 
 #include "maths.h"
-#include "vector2.h"
+
+#ifndef Vector2
+class Vector2;
+#endif
 
 class Angle
 {
@@ -18,7 +21,6 @@ class Angle
 
 		float ToDegrees();
 		float ToRadians();
-		float ToRadiansSparrow();
 		Vector2* ToVector();
 
 		float ShortestAngleTo( Angle* DestinationAngle );
@@ -28,7 +30,7 @@ class Angle
 		void RotateShortestBy( Angle* DestinationAngle, float ByDegrees );
 		void RotateShortestBy( float DestinationAngle, float ByDegrees );
 
-		float Sin();
-		float Cos();
+		float Sine();
+		float Cosine();
 		float Tan();
 };

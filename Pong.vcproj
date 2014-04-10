@@ -173,6 +173,14 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\library\angle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\game\boot.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\library\configfile.cpp"
 				>
 			</File>
@@ -197,7 +205,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\library\spritesheet.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\stagestack.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\library\vector2.cpp"
 				>
 			</File>
 		</Filter>
@@ -206,6 +222,14 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\library\angle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\boot.h"
+				>
+			</File>
 			<File
 				RelativePath=".\library\configfile.h"
 				>
@@ -235,11 +259,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\library\spritesheet.h"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\stage.h"
 				>
 			</File>
 			<File
 				RelativePath=".\framework\stagestack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\library\vector2.h"
 				>
 			</File>
 		</Filter>

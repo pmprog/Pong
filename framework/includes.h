@@ -19,4 +19,5 @@
 #include <allegro5/allegro_primitives.h>
 
 #include <string>
+#include <vector>
 #include "../library/maths.h"

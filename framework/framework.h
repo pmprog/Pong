@@ -9,7 +9,7 @@
 
 #define FRAMES_PER_SECOND 100
 
-#define FWRK	Framework::System
+#define FRAMEWORK	Framework::System
 
 class Framework
 {
