@@ -193,6 +193,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\transitions\fadein.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\framework.cpp"
 				>
 			</File>
@@ -263,6 +267,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\transitions\fadein.h"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\framework.h"
 				>
 			</File>
@@ -303,6 +311,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\shaders\shaders.h"
+				>
+			</File>
+			<File
 				RelativePath=".\library\spritesheet.h"
 				>
 			</File>
@@ -312,6 +324,10 @@
 			</File>
 			<File
 				RelativePath=".\framework\stagestack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\transitions\transitions.h"
 				>
 			</File>
 			<File

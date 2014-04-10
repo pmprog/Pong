@@ -21,6 +21,7 @@ class Framework
 
     ALLEGRO_DISPLAY_MODE screenMode;
 		ALLEGRO_DISPLAY* screen;
+		ALLEGRO_BITMAP* screenRetarget;
 
 		ALLEGRO_EVENT_QUEUE* eventAllegro;
 		std::list<Event*> eventQueue;
@@ -52,6 +53,9 @@ class Framework
     int Display_GetWidth();
     int Display_GetHeight();
 		void Display_SetTitle( std::string* NewTitle );
+		ALLEGRO_BITMAP* Display_GetBackBuffer();
+		void Display_SetTarget();
+		void Display_SetTarget( ALLEGRO_BITMAP* Target );
 
     void Audio_Initialise();
     void Audio_Shutdown();

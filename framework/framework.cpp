@@ -381,6 +381,9 @@ void Framework::Display_Initialise()
 	} else {
 		screen = al_create_display( fallbackW, fallbackH );
 	}
+	screenRetarget = 0;
+
+	al_set_blender( ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA );
 
 	al_hide_mouse_cursor( screen );
 
@@ -409,6 +412,27 @@ void Framework::Display_SetTitle( std::string* NewTitle )
 {
   al_set_app_name( NewTitle->c_str() );
 	al_set_window_title( screen, NewTitle->c_str() );
+}
+
+ALLEGRO_BITMAP* Framework::Display_GetBackBuffer()
+{
+	if( screenRetarget != 0 )
+	{
+		return screenRetarget;
+	}
+	return al_get_backbuffer( screen );
+}
+
+void Framework::Display_SetTarget()
+{
+	screenRetarget = 0;
+	al_set_target_backbuffer( screen );
+}
+
+void Framework::Display_SetTarget( ALLEGRO_BITMAP* Target )
+{
+	al_set_target_bitmap( Target );
+	screenRetarget = Target;
 }
 
 void Framework::Audio_Initialise()

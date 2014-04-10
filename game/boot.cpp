@@ -2,15 +2,15 @@
 #include "boot.h"
 #include "../framework/framework.h"
 #include "menu.h"
+#include "../transitions/transitions.h"
 
 void BootUp::Begin()
 {
 	bootBarSize = 0;
-	bootBarAdjust = (FRAMEWORK->Display_GetWidth() / (FRAMES_PER_SECOND * 4.0f));
+	bootBarAdjust = (FRAMEWORK->Display_GetWidth() / (FRAMES_PER_SECOND * 1.5f));
 	logoSpriteP = new SpriteSheet( "resources/pmprog.png", 204, 200 );
 	logoSpriteF = new SpriteSheet( "resources/foxblock.png", 204, 200 );
 	logoFadeIn = 0;
-	a = new Angle( 30.0f );
 }
 
 void BootUp::Pause()
@@ -51,7 +51,6 @@ void BootUp::Update()
 		StartGame();
 		return;
 	}
-	a->Add( 3.0f );
 }
 
 void BootUp::Render()
@@ -62,9 +61,7 @@ void BootUp::Render()
 	int hlfHeight = FRAMEWORK->Display_GetHeight() / 2;
 	float scale = logoFadeIn / 128.0f;
 
-	
-
-	logoSpriteP->DrawSprite( 0, qrtWidth - ((logoSpriteP->GetFrame( 0 )->Width * scale) / 2), hlfHeight - ((logoSpriteP->GetFrame( 0 )->Height * scale) / 2), scale, scale, a );
+	logoSpriteP->DrawSprite( 0, qrtWidth - ((logoSpriteP->GetFrame( 0 )->Width * scale) / 2), hlfHeight - ((logoSpriteP->GetFrame( 0 )->Height * scale) / 2), scale, scale, 0 );
 	logoSpriteF->DrawSprite( 0, (qrtWidth * 3) - ((logoSpriteP->GetFrame( 0 )->Width * scale) / 2), hlfHeight - ((logoSpriteP->GetFrame( 0 )->Height * scale) / 2), scale, scale, 0 );
 
 	int xPos = (FRAMEWORK->Display_GetWidth() / 2) - (bootBarSize / 2);
@@ -75,8 +72,8 @@ void BootUp::Render()
 void BootUp::StartGame()
 {
 	delete Framework::System->ProgramStages->Pop();
-	// Framework::System->ProgramStages->Push( new TransitionFadeIn( spGetFastRGB(0, 0, 0), new Menu(), 50 ) );
-	Framework::System->ProgramStages->Push( new Menu() );
+	Framework::System->ProgramStages->Push( new TransitionFadeIn( new Menu(), al_map_rgb( 0, 0, 0 ), 50 ) );
+	
 }
 
 bool BootUp::IsTransition()
