@@ -59,8 +59,8 @@ void Vector2::RotateVector( Angle* Direction, Vector2* RotationOrigin )
 	float rotSin = Direction->Sine();
 	float rotCos = Direction->Cosine();
 	float tmpX;
-	tmpX = ((X - RotationOrigin->X) * rotCos) - ((Y - RotationOrigin->Y) * rotSin);
-	Y = ((Y - RotationOrigin->Y) * rotCos) + ((X - RotationOrigin->X) * rotSin);
+	tmpX = ((X - RotationOrigin->X) * rotCos) - ((Y - RotationOrigin->Y) * rotSin) + RotationOrigin->X;
+	Y = ((Y - RotationOrigin->Y) * rotCos) + ((X - RotationOrigin->X) * rotSin) + RotationOrigin->Y;
 	X = tmpX;
 }
 
@@ -94,7 +94,8 @@ void Vector2::Multiply(float Multiplier)
 
 float Vector2::AngleTo( Vector2* CheckPoint )
 {
-  float r = atan2( CheckPoint->Y - Y, CheckPoint->X - X ) * M_DEG_TO_RAD;	// This right?
+  //float r = atan2( CheckPoint->Y - Y, CheckPoint->X - X ) * M_RAD_TO_DEG;
+	float r = atan2( CheckPoint->X - X, Y - CheckPoint->Y ) * M_RAD_TO_DEG;
 	while( r >= 360.0f )
 	{
 		r -= 360.0f;

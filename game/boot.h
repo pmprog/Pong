@@ -3,15 +3,15 @@
 
 #include "../framework/stage.h"
 #include "../framework/includes.h"
-//#include "../library/spritesheet.h"
+#include "../library/spritesheet.h"
 
 class BootUp : public Stage
 {
 	private:
 		int bootBarAdjust;
 		int bootBarSize;
-		//SpriteSheet* logoSpriteP;
-		//SpriteSheet* logoSpriteF;
+		SpriteSheet* logoSpriteP;
+		SpriteSheet* logoSpriteF;
 		int logoFadeIn;
 
 		void StartGame();
