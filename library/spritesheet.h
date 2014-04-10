@@ -17,7 +17,7 @@ class SpriteSheet
 {
 	private:
 		ALLEGRO_BITMAP* sheet;
-		std::list<int> frames;	// Fix list class
+		std::vector<SpriteSheetRegion*> frames;
 
 	public:
 		SpriteSheet( std::string Filename );

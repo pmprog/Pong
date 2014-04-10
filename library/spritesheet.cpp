@@ -31,14 +31,12 @@ ALLEGRO_BITMAP* SpriteSheet::GetSheet()
 
 int SpriteSheet::AddSprite( int FrameX, int FrameY, int FrameWidth, int FrameHeight )
 {
-	/*
-	SDL_Rect* r = (SDL_Rect*)malloc( sizeof(SDL_Rect) );
-	r->x = FrameX;
-	r->y = FrameY;
-	r->w = FrameWidth;
-	r->h = FrameHeight;
+	SpriteSheetRegion* r = (SpriteSheetRegion*)malloc( sizeof(SpriteSheetRegion) );
+	r->X = FrameX;
+	r->Y = FrameY;
+	r->Width = FrameWidth;
+	r->Height = FrameHeight;
 	frames.push_back( r );
-	*/
 	return frames.size() - 1;
 }
 
@@ -49,14 +47,17 @@ void SpriteSheet::DrawSprite( int FrameNumber, int ScreenX, int ScreenY, float S
 		return;
 	}
 
-	/*
-	SDL_Rect* r = frames.at( FrameNumber );
-	if( Rotation == 0 )
+	SpriteSheetRegion* r = frames.at( FrameNumber );
+	if( (Rotation == 0 || Rotation->ToDegrees() == 0) && ScaleX == 1.0f && ScaleY == 1.0f )
 	{
-		spRotozoomSurfacePart( ScreenX, ScreenY, -1, sheet, r->x, r->y, r->w,	r->h, ScaleX * SP_ONE, ScaleY * SP_ONE, 0 );
+		al_draw_bitmap_region( sheet, r->X, r->Y, r->Width, r->Height, ScreenX, ScreenY, 0 );
 	} else {
-		spRotozoomSurfacePart( ScreenX, ScreenY, -1, sheet, r->x, r->y, r->w,	r->h, ScaleX * SP_ONE, ScaleY * SP_ONE, Rotation->ToRadiansSparrow() );
+		if( Rotation == 0 )
+		{
+			al_draw_tinted_scaled_rotated_bitmap_region( sheet, r->X, r->Y, r->Width, r->Height, al_map_rgba(255, 255, 255, 255), ScreenX, ScreenY, ScreenX, ScreenY, ScaleX, ScaleY, 0, 0 );
+		} else {
+			al_draw_tinted_scaled_rotated_bitmap_region( sheet, r->X, r->Y, r->Width, r->Height, al_map_rgba(255, 255, 255, 255), ScreenX, ScreenY, ScreenX, ScreenY, ScaleX, ScaleY, Rotation->ToRadians(), 0 );
+		}
 	}
-	*/
 }
 

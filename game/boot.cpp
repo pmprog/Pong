@@ -6,8 +6,8 @@ void BootUp::Begin()
 {
 	bootBarSize = 0;
 	bootBarAdjust = (FRAMEWORK->Display_GetWidth() / (FRAMES_PER_SECOND * 1.5));
-	logoSpriteP = new SpriteSheet( "Resource/pmprog.png", 204, 200 );
-	logoSpriteF = new SpriteSheet( "Resource/foxblock.png", 204, 200 );
+	logoSpriteP = new SpriteSheet( "resources/pmprog.png", 204, 200 );
+	logoSpriteF = new SpriteSheet( "resources/foxblock.png", 204, 200 );
 	logoFadeIn = 0;
 }
 
