@@ -1,62 +1,60 @@
 
 #pragma once
 
-#include "graphicslib.h"
+#include "includes.h"
 #include "event.h"
 
-#include "../Library/configfile.h"
+#include "../library/configfile.h"
 #include "stagestack.h"
 
 #define FRAMES_PER_SECOND 100
-#define FRAME_TIME_IN_MS  1000 / FRAMES_PER_SECOND
+
+#define FWRK	Framework::System
 
 class Framework
 {
   private:
     bool quitProgram;
-    int deltaTime;
+
+		ALLEGRO_TIMER* frameTimer;
     int framesToProcess;
 
-    SDL_Surface* displaySurface;
+    ALLEGRO_DISPLAY_MODE screenMode;
+		ALLEGRO_DISPLAY* screen;
+
+		ALLEGRO_EVENT_QUEUE* eventAllegro;
 		std::list<Event*> eventQueue;
-		SDL_mutex* eventMutex;
+		ALLEGRO_MUTEX* eventMutex;
+
+		ALLEGRO_MIXER* audioMixer;
+		ALLEGRO_VOICE* audioVoice;
 
   public:
     static Framework* System;
+
+    ConfigFile* Settings;
+    StageStack* ProgramStages;
 
     Framework();
     ~Framework();
 
     void Run();
+		void ProcessEvents();
+    void PushEvent( Event* e );
 		void ShutdownFramework();
 		bool IsShuttingDown() { return quitProgram; };
 
-		void ProcessEvents();
-    void PushEvent( Event* e );
-		void PushSDLEvent( SDL_Event* e );
-
-		void ProcessUpdates( int Delta );
-
-    ConfigFile* Settings;
-    StageStack* ProgramStages;
-
-    void InitialiseDisplay();
-    void ShutdownDisplay();
-    int GetDisplayWidth();
-    int GetDisplayHeight();
-		void SetWindowTitle( std::string* NewTitle );
-
-    void InitialiseAudioSystem();
-    void ShutdownAudioSystem();
-    void PlayMusic( std::string Filename, bool Loop );
-    void StopMusic();
-
     void SaveSettings();
 
-};
+    void Display_Initialise();
+    void Display_Shutdown();
+    int Display_GetWidth();
+    int Display_GetHeight();
+		void Display_SetTitle( std::string* NewTitle );
 
-// Unfortunately Sparrow doesn't really support C++
-void resizeWindow( Uint16 w, Uint16 h );
-int engineUpdate(Uint32 steps);
-void engineDraw();
-void pushSDLEvent( SDL_Event* e );
+    void Audio_Initialise();
+    void Audio_Shutdown();
+    void Audio_PlayAudio( std::string Filename, bool Loop );
+    void Audio_StopAudio();
+
+};

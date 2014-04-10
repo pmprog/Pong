@@ -171,7 +171,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\library\configfile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\event.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\framework.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Framework\main.cpp"
 				>
 			</File>
 			<File
@@ -193,11 +205,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\library\configfile.h"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\event.h"
 				>
 			</File>
 			<File
+				RelativePath=".\Framework\framework.h"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\includes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\library\maths.h"
 				>
 			</File>
 			<File

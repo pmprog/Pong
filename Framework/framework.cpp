@@ -7,24 +7,46 @@ Framework* Framework::System;
 Framework::Framework()
 {
 #ifdef WRITE_LOG
-  printf( "Framework: Startup\n" );
+	printf( "Framework: Startup: Allegro\n" );
 #endif
-	spInitCore();
-	spInitPrimitives();
-	SDL_EnableUNICODE( 1 );
 
+	if( !al_init() )
+	{
+		printf( "Framework: Error: Cannot init Allegro\n" );
+		quitProgram = true;
+		return;
+	}
+	
+	al_init_font_addon();
+	if( !al_install_keyboard() || !al_install_mouse() || !al_init_primitives_addon() || !al_init_ttf_addon() || !al_init_image_addon() || !al_init_acodec_addon() || !al_install_audio() )
+	{
+		printf( "Framework: Error: Cannot init Allegro plugin\n" );
+		quitProgram = true;
+		return;
+	}
+
+#ifdef NETWORK_SUPPORT
+	if( enet_initialize() != 0 )
+	{
+		printf( "Framework: Error: Cannot init enet\n" );
+		quitProgram = true;
+		return;
+	}
+#endif
+
+#ifdef WRITE_LOG
+	printf( "Framework: Startup: Variables and Config\n" );
+#endif
 	quitProgram = false;
   ProgramStages = new StageStack();
-	deltaTime = 0;
   framesToProcess = 0;
   Settings = new ConfigFile( "settings.cfg" );
 
-  InitialiseDisplay();
-	InitialiseAudioSystem();
+	eventAllegro = al_create_event_queue();
+	eventMutex = al_create_mutex();
+	frameTimer = al_create_timer( 1.0 / FRAMES_PER_SECOND );
 
-	eventMutex = SDL_CreateMutex();
-
-  System = this;
+	System = this;
 }
 
 Framework::~Framework()
@@ -35,14 +57,20 @@ Framework::~Framework()
   SaveSettings();
 
 #ifdef WRITE_LOG
+  printf( "Framework: Clear stages\n" );
+#endif
+	if( ProgramStages != 0 )
+	{
+		// Just make sure all stages are popped and deleted
+		ShutdownFramework();
+	}
+
+#ifdef WRITE_LOG
   printf( "Framework: Shutdown\n" );
 #endif
-	SDL_DestroyMutex( eventMutex );
-	ShutdownDisplay();
-	ShutdownAudioSystem();
-
-	//spQuitPrimitives();
-	spQuitCore();
+	al_destroy_event_queue( eventAllegro );
+	al_destroy_mutex( eventMutex );
+	al_destroy_timer( frameTimer );
 }
 
 void Framework::Run()
@@ -50,11 +78,25 @@ void Framework::Run()
 #ifdef WRITE_LOG
   printf( "Framework: Run.Program Loop\n" );
 #endif
-
-  // Set BootUp Stage active
   ProgramStages->Push( (Stage*)new BootUp() );
 
-	spLoop( engineDraw, engineUpdate, FRAME_TIME_IN_MS, resizeWindow, pushSDLEvent);
+	while( !quitProgram )
+	{
+		ProcessEvents();
+		while( framesToProcess > 0 )
+		{
+			if( ProgramStages->IsEmpty() )
+			{
+				break;
+			}
+			ProgramStages->Current()->Update();
+			framesToProcess--;
+		}
+		if( !ProgramStages->IsEmpty() )
+		{
+			ProgramStages->Current()->Render();
+		}
+	}
 }
 
 void Framework::ProcessEvents()
@@ -69,7 +111,7 @@ void Framework::ProcessEvents()
     return;
 	}
 
-	SDL_LockMutex( eventMutex );
+	al_lock_mutex( eventMutex );
 
 	while( eventQueue.size() > 0 && !ProgramStages->IsEmpty() )
 	{
@@ -79,7 +121,7 @@ void Framework::ProcessEvents()
 		switch( e->Type )
 		{
 			case EVENT_WINDOW_CLOSED:
-				SDL_UnlockMutex( eventMutex );
+				al_unlock_mutex( eventMutex );
 				ShutdownFramework();
 				return;
 				break;
@@ -93,23 +135,7 @@ void Framework::ProcessEvents()
 		delete e;
 	}
 
-	SDL_UnlockMutex( eventMutex );
-}
-
-void Framework::ProcessUpdates( int Delta )
-{
-	deltaTime += Delta;
-
-	while( deltaTime >= FRAME_TIME_IN_MS && !ProgramStages->IsEmpty() )
-	{
-		ProgramStages->Current()->Update();
-		deltaTime -= FRAME_TIME_IN_MS;
-	}
-
-	if( Network::ActiveConnection != 0 && Network::ActiveConnection->IsActive() )
-	{
-		Network::ActiveConnection->Update();
-	}
+	al_unlock_mutex( eventMutex );
 }
 
 void Framework::PushEvent( Event* e )
@@ -119,45 +145,16 @@ void Framework::PushEvent( Event* e )
 	SDL_UnlockMutex( eventMutex );
 }
 
-void Framework::PushSDLEvent( SDL_Event* e )
-{
-	SDL_LockMutex( eventMutex );
-	eventQueue.push_back( new Event( e ) );
-	SDL_UnlockMutex( eventMutex );
-}
-
 void Framework::ShutdownFramework()
 {
+#ifdef WRITE_LOG
+  printf( "Framework: Shutdown Framework\n" );
+#endif
   while( !ProgramStages->IsEmpty() )
   {
     delete ProgramStages->Pop();
   }
   quitProgram = true;
-}
-
-int Framework::GetDisplayWidth()
-{
-  return displaySurface->w;
-}
-
-int Framework::GetDisplayHeight()
-{
-	return displaySurface->h;
-}
-
-void Framework::PlayMusic( std::string Filename, bool Loop )
-{
-#ifdef WRITE_LOG
-  printf( "Framework: Play Music '%s'\n", Filename.c_str() );
-#endif
-
-}
-
-void Framework::StopMusic()
-{
-#ifdef WRITE_LOG
-  printf( "Framework: Stop Music\n" );
-#endif
 }
 
 void Framework::SaveSettings()
@@ -166,28 +163,7 @@ void Framework::SaveSettings()
   Settings->Save( "settings.cfg" );
 }
 
-void Framework::SetWindowTitle( std::string* NewTitle )
-{
-  SDL_WM_SetCaption( NewTitle->c_str(), 0 );
-}
-
-void Framework::InitialiseAudioSystem()
-{
-#ifdef WRITE_LOG
-  printf( "Framework: Initialise Audio\n" );
-#endif
-	spSoundInit();
-}
-
-void Framework::ShutdownAudioSystem()
-{
-#ifdef WRITE_LOG
-  printf( "Framework: Shutdown Audio\n" );
-#endif
-	spSoundQuit();
-}
-
-void Framework::InitialiseDisplay()
+void Framework::Display_Initialise()
 {
 #ifdef WRITE_LOG
   printf( "Framework: Initialise Display\n" );
@@ -222,70 +198,55 @@ void Framework::InitialiseDisplay()
 		Settings->SetBooleanValue( "Visual.FullScreen", scrFS );
 	}
 
-	displaySurface = spCreateWindow( scrW, scrH, scrFS, 0 );
-
-	// Hack for Sparrow3D. If a device goes fullscreen, doesn't always use requested dimensions
-	if( displaySurface->w != scrW )
-	{
-		Settings->SetIntegerValue( "Visual.ScreenWidth", displaySurface->w );
-	}
-	if( displaySurface->h != scrH )
-	{
-		Settings->SetIntegerValue( "Visual.ScreenHeight", displaySurface->h );
-	}
-
-	spSelectRenderTarget( spGetWindowSurface() );
-	spSetPerspective( 50.0f, (float)spGetWindowSurface()->w / (float)spGetWindowSurface()->h, 0.1f, 100.0f);
-
-	spSetZTest( 0 );
-	spSetZSet( 0 );
-	spSetAlphaTest( 1 );
 }
 
-void Framework::ShutdownDisplay()
+void Framework::Display_Shutdown()
 {
 #ifdef WRITE_LOG
   printf( "Framework: Shutdown Display\n" );
 #endif
-	spDeleteSurface(displaySurface);
 }
 
-
-int engineUpdate(Uint32 steps)
+int Framework::Display_GetWidth()
 {
-	if( Framework::System->IsShuttingDown() || Framework::System->ProgramStages->IsEmpty() )
-	{
-		return 1;
-	}
-	Framework::System->ProcessEvents();
-	Framework::System->ProcessUpdates( steps );
-	return 0;
+	return al_get_display_width( screen );
 }
 
-void engineDraw()
+int Framework::Display_GetHeight()
+{
+	return al_get_display_height( screen );
+}
+
+void Framework::Display_SetTitle( std::string* NewTitle )
+{
+  SDL_WM_SetCaption( NewTitle->c_str(), 0 );
+}
+
+void Framework::Audio_Initialise()
 {
 #ifdef WRITE_LOG
-  printf( "Framework: engineDraw\n" );
+  printf( "Framework: Initialise Audio\n" );
 #endif
-  if( !Framework::System->ProgramStages->IsEmpty() )
-  {
-		spResetZBuffer();
-    Framework::System->ProgramStages->Current()->Render();
-		spFlip();
-  }
 }
 
-void resizeWindow( Uint16 w, Uint16 h )
+void Framework::Audio_Shutdown()
 {
-	Framework::System->ShutdownDisplay();
-
-  Framework::System->Settings->SetIntegerValue( "Visual.ScreenWidth", w );
-  Framework::System->Settings->SetIntegerValue( "Visual.ScreenHeight", h );
-
-	Framework::System->InitialiseDisplay();
+#ifdef WRITE_LOG
+  printf( "Framework: Shutdown Audio\n" );
+#endif
 }
 
-void pushSDLEvent( SDL_Event* e )
+void Audio_PlayAudio( std::string Filename, bool Loop )
 {
-	Framework::System->PushSDLEvent( e );
+#ifdef WRITE_LOG
+	printf( "Framework: Start audio file %s\n", Filename.c_str() );
+#endif
 }
+
+void Audio_StopAudio()
+{
+#ifdef WRITE_LOG
+  printf( "Framework: Stop audio\n" );
+#endif
+}
+

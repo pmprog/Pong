@@ -52,30 +52,37 @@ int StageStack::GetStackIndex()
   return StackIndex;
 }
 
-Stage* StageStack::Item(int index)
+Stage* StageStack::Item(int Index)
 {
-  return Stack[index];
+  return Stack[Index];
 }
 
-Stage* StageStack::Previous( Stage* checkStage )
+Stage* StageStack::Previous()
 {
-	return Previous( checkStage, false );
+  if( StackIndex <= 0 )
+    return 0;
+	return Previous( Current(), false );
 }
 
-Stage* StageStack::Previous( Stage* checkStage, bool includeTransitions )
+Stage* StageStack::Previous( Stage* CheckStage )
+{
+	return Previous( CheckStage, false );
+}
+
+Stage* StageStack::Previous( Stage* CheckStage, bool IncludeTransitions )
 {
   if( StackIndex < 0 )
     return 0;
 
 	for( int i = StackIndex; i >= 0; i-- )
 	{
-		if( Stack[i] == checkStage )
+		if( Stack[i] == CheckStage )
 		{
 			if( i == 0 )
 			{
 				return 0;
 			}
-			if( includeTransitions )
+			if( IncludeTransitions )
 			{
 				return Stack[i-1];
 			} else {

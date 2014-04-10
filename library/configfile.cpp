@@ -517,72 +517,102 @@ bool ConfigFile::SetStringValue( std::string Key, int ArrayIndex, std::string* V
 	return true;
 }
 
-bool ConfigFile::GetQuickBooleanValue( std::string Key )
+bool ConfigFile::GetQuickBooleanValue( std::string Key, bool Default )
 {
   bool res;
-  GetBooleanValue( Key, &res );
+  if( !GetBooleanValue( Key, &res ) )
+	{
+		res = Default;
+	}
   return res;
 }
 
-bool ConfigFile::GetQuickBooleanValue( std::string Key, int ArrayIndex )
+bool ConfigFile::GetQuickBooleanValue( std::string Key, int ArrayIndex, bool Default )
 {
   bool res;
-  GetBooleanValue( Key, ArrayIndex, &res );
+  if( !GetBooleanValue( Key, ArrayIndex, &res ) )
+	{
+		res = Default;
+	}
   return res;
 }
 
-int ConfigFile::GetQuickIntegerValue( std::string Key )
+int ConfigFile::GetQuickIntegerValue( std::string Key, int Default )
 {
   int res;
-  GetIntegerValue( Key, &res );
+  if( !GetIntegerValue( Key, &res ) )
+	{
+		res = Default;
+	}
   return res;
 }
 
-int ConfigFile::GetQuickIntegerValue( std::string Key, int ArrayIndex )
+int ConfigFile::GetQuickIntegerValue( std::string Key, int ArrayIndex, int Default )
 {
   int res;
-  GetIntegerValue( Key, ArrayIndex, &res );
+  if( !GetIntegerValue( Key, ArrayIndex, &res ) )
+	{
+		res = Default;
+	}
   return res;
 }
 
-long ConfigFile::GetQuickInteger64Value( std::string Key )
+long ConfigFile::GetQuickInteger64Value( std::string Key, long Default )
 {
   long res;
-  GetInteger64Value( Key, &res );
-  return res;
+  if( !GetInteger64Value( Key, &res ) )
+	{
+		res = Default;
+	}
+	return res;
 }
 
-long ConfigFile::GetQuickInteger64Value( std::string Key, int ArrayIndex )
+long ConfigFile::GetQuickInteger64Value( std::string Key, int ArrayIndex, long Default )
 {
   long res;
-  GetInteger64Value( Key, ArrayIndex, &res );
+  if( !GetInteger64Value( Key, ArrayIndex, &res ) )
+	{
+		res = Default;
+	}
   return res;
 }
 
 float ConfigFile::GetQuickFloatValue( std::string Key )
 {
   float res;
-  GetFloatValue( Key, &res );
+  if( !GetFloatValue( Key, &res ) )
+	{
+		res = Default;
+	}
   return res;
 }
 
 float ConfigFile::GetQuickFloatValue( std::string Key, int ArrayIndex )
 {
   float res;
-  GetFloatValue( Key, ArrayIndex, &res );
+  if( !GetFloatValue( Key, ArrayIndex, &res ) )
+	{
+		res = Default;
+	}
   return res;
 }
 
 std::string* ConfigFile::GetQuickStringValue( std::string Key )
 {
   std::string* res = new std::string();
-  GetStringValue( Key, res );
+  if( !GetStringValue( Key, res ) )
+	{
+		res = Default;
+	}
   return res;
 }
 
 std::string* ConfigFile::GetQuickStringValue( std::string Key, int ArrayIndex )
 {
   std::string* res = new std::string();
-  GetStringValue( Key, ArrayIndex, res );
+  if( !GetStringValue( Key, ArrayIndex, res ) )
+	{
+		res = Default;
+	}
   return res;
 }

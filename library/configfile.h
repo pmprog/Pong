@@ -53,16 +53,16 @@ class ConfigFile
 		bool GetStringValue( std::string Key, std::string* Value );
 		bool GetStringValue( std::string Key, int ArrayIndex, std::string* Value );
 
-		bool GetQuickBooleanValue( std::string Key );
-		bool GetQuickBooleanValue( std::string Key, int ArrayIndex );
-		int GetQuickIntegerValue( std::string Key );
-		int GetQuickIntegerValue( std::string Key, int ArrayIndex );
-		long GetQuickInteger64Value( std::string Key );
-		long GetQuickInteger64Value( std::string Key, int ArrayIndex );
-		float GetQuickFloatValue( std::string Key );
-		float GetQuickFloatValue( std::string Key, int ArrayIndex );
-		std::string* GetQuickStringValue( std::string Key );
-		std::string* GetQuickStringValue( std::string Key, int ArrayIndex );
+		bool GetQuickBooleanValue( std::string Key, bool Default );
+		bool GetQuickBooleanValue( std::string Key, int ArrayIndex, bool Default );
+		int GetQuickIntegerValue( std::string Key, int Default );
+		int GetQuickIntegerValue( std::string Key, int ArrayIndex, int Default );
+		long GetQuickInteger64Value( std::string Key, long Default );
+		long GetQuickInteger64Value( std::string Key, int ArrayIndex, long Default );
+		float GetQuickFloatValue( std::string Key, float Default );
+		float GetQuickFloatValue( std::string Key, int ArrayIndex, float Default );
+		std::string* GetQuickStringValue( std::string Key, std::string Default );
+		std::string* GetQuickStringValue( std::string Key, int ArrayIndex, std::string Default );
 
 		bool SetBooleanValue( std::string Key, bool Value );
 		bool SetBooleanValue( std::string Key, int ArrayIndex, bool Value );
