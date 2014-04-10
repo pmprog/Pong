@@ -121,6 +121,16 @@ class Event
     EventTypes Type;
     EventData Data;
 
+		/*
+			Constructor: Network
+			Defaults the <Type> to Undefined
+    */
     Event();
+
+		/*
+			Destructor: Network
+			For network packets, it calls enet's packet delete.
+			For download packets, url and the data are deleted (assumption is that the program will have processed the data)
+    */
 		~Event();
 };

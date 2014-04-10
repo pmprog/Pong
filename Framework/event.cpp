@@ -16,4 +16,18 @@ Event::~Event()
 	}
 #endif
 
+#ifdef DOWNLOAD_SUPPORT
+	if( Type == EVENT_DOWNLOAD_COMPLETE || Type == EVENT_DOWNLOAD_PROGRESS )
+	{
+		if( URL != 0 )
+		{
+			delete URL;
+		}
+		if( Contents != 0 )
+		{
+			delete Contents;
+		}
+	}
+#endif
+
 }
