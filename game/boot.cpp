@@ -1,6 +1,7 @@
 
 #include "boot.h"
 #include "../framework/framework.h"
+#include "menu.h"
 
 void BootUp::Begin()
 {
@@ -74,8 +75,8 @@ void BootUp::Render()
 void BootUp::StartGame()
 {
 	delete Framework::System->ProgramStages->Pop();
-	// TODO: Boot stage
 	// Framework::System->ProgramStages->Push( new TransitionFadeIn( spGetFastRGB(0, 0, 0), new Menu(), 50 ) );
+	Framework::System->ProgramStages->Push( new Menu() );
 }
 
 bool BootUp::IsTransition()
