@@ -8,6 +8,7 @@
 
 ConfigFile::ConfigFile()
 {
+	Dirty = false;
 }
 
 ConfigFile::ConfigFile( std::string Filename )
@@ -29,6 +30,7 @@ ConfigFile::ConfigFile( std::string Filename )
 		ParseFile( document );
 		fclose( fileHnd );
 	}
+	Dirty = false;
 }
 
 ConfigFile::~ConfigFile()
@@ -50,10 +52,20 @@ ConfigFile::~ConfigFile()
 
 bool ConfigFile::Save( std::string Filename )
 {
+	return Save( Filename, true );
+}
+
+bool ConfigFile::Save( std::string Filename, bool OnlyIfChanged )
+{
 	FILE* fileHnd;
 	std::string document;
 	bool dataNum;
 	std::string* escstr;
+
+	if( OnlyIfChanged && !Dirty )
+	{
+		return true;	// Nothing to save
+	}
 
 	fileHnd = fopen( Filename.c_str(), "w" );
 	if( fileHnd == 0 )
@@ -112,6 +124,7 @@ bool ConfigFile::Save( std::string Filename )
 	fputs( document.c_str(), fileHnd );
 	fclose( fileHnd );
 
+	Dirty = false;
 	return true;
 }
 
@@ -488,6 +501,7 @@ bool ConfigFile::SetStringValue( std::string Key, std::string* Value )
 		s->clear();
 		s->append( *Value );
 	}
+	Dirty = true;
 	return true;
 }
 
@@ -514,6 +528,7 @@ bool ConfigFile::SetStringValue( std::string Key, int ArrayIndex, std::string* V
 		s->clear();
 		s->append( *Value );
 	}
+	Dirty = true;
 	return true;
 }
 

@@ -8,6 +8,15 @@
 class Menu : public Stage
 {
 	private:
+		ALLEGRO_FONT* titleFont;
+		ALLEGRO_FONT* itemFont;
+		int itemFontHeight;
+
+		static int itemSwayOffsets[16];
+		int itemSwayIndex;
+		int itemSwayDelay;
+
+		int selectedItem;
 
   public:
     // Stage control

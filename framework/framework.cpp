@@ -365,8 +365,13 @@ void Framework::Display_Initialise()
 			{
 				foundMode = true;
 			} else {
-				fallbackW = screenMode.width;
-				fallbackH = screenMode.height;
+				if( !scrFS && screenMode.width > scrW && screenMode.height > scrH )
+				{
+					foundMode = true;	// We're windowed, and there's a resolution greater, so should be okay
+				} else {
+					fallbackW = screenMode.width;
+					fallbackH = screenMode.height;
+				}
 			}
 		}
 		if( foundMode )

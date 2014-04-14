@@ -29,11 +29,14 @@ class ConfigFile
 
 		ConfigData* GetData( std::string Key );
 
+		bool Dirty;
+
 	public:
 		ConfigFile();
 		ConfigFile( std::string Filename );
 		~ConfigFile();
 		bool Save( std::string Filename );
+		bool Save( std::string Filename, bool OnlyIfChanged );
 
 		bool KeyExists( std::string Key );
 		bool KeyIsArray( std::string Key );

@@ -23,7 +23,7 @@ void ShaderScanlines::Apply( ALLEGRO_BITMAP* Target )
 	int imgW = al_get_bitmap_width( Target );
 	int imgH = al_get_bitmap_height( Target );
 	int linesForScan = nonScanLineWidth + scanLineWidth;
-	float decCol = scanDecrease / 256.0f;
+	float decCol = scanDecrease / 255.0f;
 
 	ALLEGRO_LOCKED_REGION* rgn = al_lock_bitmap( Target, ALLEGRO_PIXEL_FORMAT_ABGR_8888_LE, ALLEGRO_LOCK_READWRITE );
 
