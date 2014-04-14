@@ -1,4 +1,6 @@
+
 #include "scanlines.h"
+#include "../framework/framework.h"
 
 ShaderScanlines::ShaderScanlines()
 {
@@ -16,12 +18,16 @@ ShaderScanlines::ShaderScanlines(int NonScanWidth, int ScanWidth, int ScanDecrea
 
 void ShaderScanlines::Apply( ALLEGRO_BITMAP* Target )
 {
-	PackedARGB8888* gsCol;
+	ALLEGRO_BITMAP* o = FRAMEWORK->Display_GetCurrentTarget();
+
 	int imgW = al_get_bitmap_width( Target );
 	int imgH = al_get_bitmap_height( Target );
 	int linesForScan = nonScanLineWidth + scanLineWidth;
+	float decCol = scanDecrease / 256.0f;
 
 	ALLEGRO_LOCKED_REGION* rgn = al_lock_bitmap( Target, ALLEGRO_PIXEL_FORMAT_ABGR_8888_LE, ALLEGRO_LOCK_READWRITE );
+
+	FRAMEWORK->Display_SetTarget( Target );
 
 	for( int y = 0; y < imgH; y++ )
 	{
@@ -29,13 +35,15 @@ void ShaderScanlines::Apply( ALLEGRO_BITMAP* Target )
 		{
 			for( int x = 0; x < imgW; x++ )
 			{
-				gsCol = &((PackedARGB8888*)rgn->data)[(y * imgW) + x];
-				gsCol->r = (gsCol->r > scanDecrease ? gsCol->r - scanDecrease : 0);
-				gsCol->g = (gsCol->g > scanDecrease ? gsCol->g - scanDecrease : 0);
-				gsCol->b = (gsCol->b > scanDecrease ? gsCol->b - scanDecrease : 0);
+				ALLEGRO_COLOR c = al_get_pixel( Target, x, y );
+				c.r = (c.r > decCol ? c.r - decCol : 0.0f);
+				c.g = (c.g > decCol ? c.g - decCol : 0.0f);
+				c.b = (c.b > decCol ? c.b - decCol : 0.0f);
+				al_put_pixel( x, y, c );
 			}
 		}
 	}
 
 	al_unlock_bitmap( Target );
+	FRAMEWORK->Display_SetTarget( o );
 }

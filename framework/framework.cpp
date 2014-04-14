@@ -414,7 +414,7 @@ void Framework::Display_SetTitle( std::string* NewTitle )
 	al_set_window_title( screen, NewTitle->c_str() );
 }
 
-ALLEGRO_BITMAP* Framework::Display_GetBackBuffer()
+ALLEGRO_BITMAP* Framework::Display_GetCurrentTarget()
 {
 	if( screenRetarget != 0 )
 	{
@@ -431,8 +431,14 @@ void Framework::Display_SetTarget()
 
 void Framework::Display_SetTarget( ALLEGRO_BITMAP* Target )
 {
-	al_set_target_bitmap( Target );
-	screenRetarget = Target;
+	// If target is blank or back buffer, set properly
+	if( Target == 0 || al_get_backbuffer( screen ) == Target )
+	{
+		Display_SetTarget();
+	} else {
+		al_set_target_bitmap( Target );
+		screenRetarget = Target;
+	}
 }
 
 void Framework::Audio_Initialise()

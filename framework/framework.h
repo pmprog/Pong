@@ -53,7 +53,7 @@ class Framework
     int Display_GetWidth();
     int Display_GetHeight();
 		void Display_SetTitle( std::string* NewTitle );
-		ALLEGRO_BITMAP* Display_GetBackBuffer();
+		ALLEGRO_BITMAP* Display_GetCurrentTarget();
 		void Display_SetTarget();
 		void Display_SetTarget( ALLEGRO_BITMAP* Target );
 
