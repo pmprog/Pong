@@ -1,18 +1,20 @@
 
 #pragma once
 
-#include "../framework/stage.h"
-#include "../framework/includes.h"
-#include "../library/vector2.h"
+#include "../../framework/stage.h"
+#include "../../framework/includes.h"
+#include "../../library/vector2.h"
 
 class ClassicStage : public Stage
 {
 	private:
+		ALLEGRO_BITMAP* backgroundImage;
 		Vector2* ballPos;
 		Vector2* ballVel;
 
   public:
 		ClassicStage();
+		~ClassicStage();
 
     // Stage control
     virtual void Begin();

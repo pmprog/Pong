@@ -185,7 +185,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\game\classic.cpp"
+				RelativePath=".\game\classic\classic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\game\classic\classicball.cpp"
 				>
 			</File>
 			<File
@@ -229,6 +233,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\core\projectile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\shaders\scanlines.cpp"
 				>
 			</File>
@@ -267,11 +275,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\core\arena.h"
+				>
+			</File>
+			<File
 				RelativePath=".\game\boot.h"
 				>
 			</File>
 			<File
-				RelativePath=".\game\classic.h"
+				RelativePath=".\game\classic\classic.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\classic\classicball.h"
 				>
 			</File>
 			<File
@@ -316,6 +332,10 @@
 			</File>
 			<File
 				RelativePath=".\framework\network.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\core\projectile.h"
 				>
 			</File>
 			<File

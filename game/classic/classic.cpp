@@ -1,15 +1,21 @@
 
 #include "classic.h"
-#include "../framework/framework.h"
-#include "../shaders/shaders.h"
-#include "../transitions/transitions.h"
+#include "../../framework/framework.h"
+#include "../../shaders/shaders.h"
+#include "../../transitions/transitions.h"
 
 #define BALL_RADIUS 6
 
 ClassicStage::ClassicStage()
 {
+	backgroundImage = al_load_bitmap( "resources/background.png" );
 	ballPos = new Vector2( (rand() % (FRAMEWORK->Display_GetWidth() - 24)) + (BALL_RADIUS * 2),	(rand() % (FRAMEWORK->Display_GetHeight() - 24)) + (BALL_RADIUS * 2) );
 	ballVel = new Vector2( ((rand() % 2) + 1) * (rand() % 2 == 0 ? 1 : -1) , ((rand() % 2) + 1) * (rand() % 2 == 0 ? 1 : -1) );
+}
+
+ClassicStage::~ClassicStage()
+{
+	al_destroy_bitmap( backgroundImage );
 }
 
 void ClassicStage::Begin()
@@ -71,7 +77,8 @@ void ClassicStage::Update()
 
 void ClassicStage::Render()
 {
-	al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
+	//al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
+	al_draw_bitmap( backgroundImage, 0, 0, 0 );
 
 	al_draw_filled_rectangle( ballPos->X - BALL_RADIUS, ballPos->Y - BALL_RADIUS, ballPos->X + BALL_RADIUS, ballPos->Y + BALL_RADIUS, al_map_rgb( 255, 255, 255 ) );
 

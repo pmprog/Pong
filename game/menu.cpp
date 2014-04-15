@@ -3,7 +3,7 @@
 #include "../framework/framework.h"
 #include "../shaders/shaders.h"
 #include "../transitions/transitions.h"
-#include "classic.h"
+#include "classic/classic.h"
 
 #define BALL_RADIUS				10
 int Menu::itemSwayOffsets[16] = { 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, -1, -1, -2, -1, -1 };

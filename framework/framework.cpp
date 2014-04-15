@@ -46,6 +46,8 @@ Framework::Framework()
 	eventMutex = al_create_mutex();
 	frameTimer = al_create_timer( 1.0 / FRAMES_PER_SECOND );
 
+	srand( (unsigned int)al_get_time() );
+
 	Display_Initialise();
 	Audio_Initialise();
 
