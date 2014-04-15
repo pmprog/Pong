@@ -4,6 +4,7 @@
 #include "../framework/stage.h"
 #include "../framework/includes.h"
 #include "../library/spritesheet.h"
+#include "../library/vector2.h"
 
 class Menu : public Stage
 {
@@ -18,7 +19,13 @@ class Menu : public Stage
 
 		int selectedItem;
 
+		Vector2* ballPos;
+		Vector2* ballVel;
+		Vector2* ballHistory[10];
+
   public:
+		Menu();
+
     // Stage control
     virtual void Begin();
     virtual void Pause();

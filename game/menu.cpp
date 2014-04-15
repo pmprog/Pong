@@ -3,7 +3,20 @@
 #include "../framework/framework.h"
 #include "../shaders/shaders.h"
 
+#define BALL_RADIUS				10
 int Menu::itemSwayOffsets[16] = { 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, -1, -1, -2, -1, -1 };
+
+Menu::Menu()
+{
+	selectedItem = 0;
+	ballPos = new Vector2( (rand() % (FRAMEWORK->Display_GetWidth() - 24)) + (BALL_RADIUS * 2),	(rand() % (FRAMEWORK->Display_GetHeight() - 24)) + (BALL_RADIUS * 2) );
+	ballVel = new Vector2( ((rand() % 2) + 1) * (rand() % 2 == 0 ? 1 : -1) , ((rand() % 2) + 1) * (rand() % 2 == 0 ? 1 : -1) );
+
+	for( int i = 0; i < 10; i++ )
+	{
+		ballHistory[i] = new Vector2( ballPos );
+	}
+}
 
 void Menu::Begin()
 {
@@ -11,11 +24,8 @@ void Menu::Begin()
 	itemFont = al_load_font( "resources/title.ttf", 24, 0 );
 	itemFontHeight = al_get_font_line_height( itemFont );
 
-	selectedItem = 0;
-
 	itemSwayIndex = 0;
 	itemSwayDelay = 0;
-
 }
 
 void Menu::Pause()
@@ -80,6 +90,38 @@ void Menu::Update()
 	{
 		itemSwayIndex = (itemSwayIndex + 1) % 16;
 	}
+
+	ballPos->X += ballVel->X;
+	if( ballPos->X < BALL_RADIUS )
+	{
+		ballPos->X = Maths::Abs( ballPos->X );
+		ballVel->X *= -1;
+	}
+	if( ballPos->X > FRAMEWORK->Display_GetWidth() - BALL_RADIUS )
+	{
+		ballPos->X = (FRAMEWORK->Display_GetWidth() - BALL_RADIUS) - (ballPos->X - (FRAMEWORK->Display_GetWidth() - BALL_RADIUS));
+		ballVel->X *= -1;
+	}
+
+	ballPos->Y += ballVel->Y;
+	if( ballPos->Y < BALL_RADIUS )
+	{
+		ballPos->Y = Maths::Abs( ballPos->Y );
+		ballVel->Y *= -1;
+	}
+	if( ballPos->Y > FRAMEWORK->Display_GetHeight() - BALL_RADIUS )
+	{
+		ballPos->Y = (FRAMEWORK->Display_GetHeight() - BALL_RADIUS) - (ballPos->Y - (FRAMEWORK->Display_GetHeight() - BALL_RADIUS));
+		ballVel->Y *= -1;
+	}
+
+	for( int i = 0; i < 9; i++ )
+	{
+		ballHistory[i]->X = ballHistory[i + 1]->X;
+		ballHistory[i]->Y = ballHistory[i + 1]->Y;
+	}
+	ballHistory[9]->X = ballPos->X;
+	ballHistory[9]->Y = ballPos->Y;
 }
 
 void Menu::Render()
@@ -88,6 +130,13 @@ void Menu::Render()
 	ALLEGRO_COLOR selCol = al_map_rgb(255, 255, 0);
 
 	al_clear_to_color( al_map_rgb( 64, 80, 128 ) );
+
+	for( int i = 0; i < 10; i++ )
+	{
+		int a = (i / 10.0f) * 255;
+		al_draw_filled_rectangle( ballHistory[i]->X - BALL_RADIUS, ballHistory[i]->Y - BALL_RADIUS, ballHistory[i]->X + BALL_RADIUS, ballHistory[i]->Y + BALL_RADIUS, al_map_rgba( 255, 255, 255, a ) );
+	}
+	al_draw_filled_rectangle( ballPos->X - BALL_RADIUS, ballPos->Y - BALL_RADIUS, ballPos->X + BALL_RADIUS, ballPos->Y + BALL_RADIUS, al_map_rgb( 255, 255, 255 ) );
 
 	al_draw_text( titleFont, al_map_rgb( 255, 255, 255 ), FRAMEWORK->Display_GetWidth() / 2, 40, ALLEGRO_ALIGN_CENTRE, "Battle Pong" );
 
@@ -104,7 +153,7 @@ void Menu::Render()
 	al_draw_text( itemFont, (selectedItem == 4 ? selCol : itemCol), 40 + (selectedItem == 4 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Quit" );
 	yPos += itemFontHeight;
 
-	Shader* s = new ShaderScanlines( 5, 2, 24 );
+	Shader* s = new ShaderScanlines();
 	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
 	delete s;
 }

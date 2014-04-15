@@ -4,7 +4,7 @@
 
 ShaderScanlines::ShaderScanlines()
 {
-	nonScanLineWidth = 4;
+	nonScanLineWidth = 5;
 	scanLineWidth = 2;
 	scanDecrease = 32;
 }
@@ -18,28 +18,21 @@ ShaderScanlines::ShaderScanlines(int NonScanWidth, int ScanWidth, int ScanDecrea
 
 void ShaderScanlines::Apply( ALLEGRO_BITMAP* Target )
 {
-	PackedARGB8888* gsCol;
+	ALLEGRO_BITMAP* orig = FRAMEWORK->Display_GetCurrentTarget();
+
 	int imgW = al_get_bitmap_width( Target );
 	int imgH = al_get_bitmap_height( Target );
 	int linesForScan = nonScanLineWidth + scanLineWidth;
 
-	ALLEGRO_LOCKED_REGION* rgn = al_lock_bitmap( Target, ALLEGRO_PIXEL_FORMAT_ABGR_8888_LE, ALLEGRO_LOCK_READWRITE );
+	FRAMEWORK->Display_SetTarget( Target );
 
-	for( int y = 0; y < imgH; y++ )
+	int y = nonScanLineWidth;
+	while( y < imgH )
 	{
-		if( (y % linesForScan) >= nonScanLineWidth )
-		{
-			for( int x = 0; x < imgW; x++ )
-			{
-				PackedARGB8888* pxRow = (PackedARGB8888*)((char*)rgn->data + (y * rgn->pitch));
-				gsCol = &pxRow[x];
-				gsCol->r = (gsCol->r > scanDecrease ? gsCol->r - scanDecrease : 0);
-				gsCol->g = (gsCol->g > scanDecrease ? gsCol->g - scanDecrease : 0);
-				gsCol->b = (gsCol->b > scanDecrease ? gsCol->b - scanDecrease : 0);
-			}
-		}
+		al_draw_line( 0, y, imgW, y, al_map_rgba( 0, 0, 0, scanDecrease ), scanLineWidth );
+		y += linesForScan;
 	}
 
-	al_unlock_bitmap( Target );
+	FRAMEWORK->Display_SetTarget( orig );
 
 }
