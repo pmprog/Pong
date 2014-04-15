@@ -2,12 +2,20 @@
 #include "menu.h"
 #include "../framework/framework.h"
 #include "../shaders/shaders.h"
+#include "../transitions/transitions.h"
+#include "classic.h"
 
 #define BALL_RADIUS				10
 int Menu::itemSwayOffsets[16] = { 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, -1, -1, -2, -1, -1 };
 
 Menu::Menu()
 {
+	titleFont = al_load_font( "resources/title.ttf", 64, 0 );
+	itemFont = al_load_font( "resources/title.ttf", 24, 0 );
+	itemFontHeight = al_get_font_line_height( itemFont );
+
+	itemSwayIndex = 0;
+	itemSwayDelay = 0;
 	selectedItem = 0;
 	ballPos = new Vector2( (rand() % (FRAMEWORK->Display_GetWidth() - 24)) + (BALL_RADIUS * 2),	(rand() % (FRAMEWORK->Display_GetHeight() - 24)) + (BALL_RADIUS * 2) );
 	ballVel = new Vector2( ((rand() % 2) + 1) * (rand() % 2 == 0 ? 1 : -1) , ((rand() % 2) + 1) * (rand() % 2 == 0 ? 1 : -1) );
@@ -18,12 +26,14 @@ Menu::Menu()
 	}
 }
 
+Menu::~Menu()
+{
+	al_destroy_font( titleFont );
+	al_destroy_font( itemFont );
+}
+
 void Menu::Begin()
 {
-	titleFont = al_load_font( "resources/title.ttf", 64, 0 );
-	itemFont = al_load_font( "resources/title.ttf", 24, 0 );
-	itemFontHeight = al_get_font_line_height( itemFont );
-
 	itemSwayIndex = 0;
 	itemSwayDelay = 0;
 }
@@ -38,8 +48,6 @@ void Menu::Resume()
 
 void Menu::Finish()
 {
-	al_destroy_font( titleFont );
-	al_destroy_font( itemFont );
 }
 
 void Menu::EventOccurred(Event *e)
@@ -69,6 +77,7 @@ void Menu::EventOccurred(Event *e)
 					case 0:
 						break;
 					case 1:
+						FRAMEWORK->ProgramStages->Push( new TransitionStrips( new ClassicStage(), 30, 30 ) );
 						break;
 					case 2:
 						break;

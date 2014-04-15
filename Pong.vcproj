@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\classic.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\library\configfile.cpp"
 				>
 			</File>
@@ -237,6 +241,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\transitions\strips.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\transitions\tiled.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\library\vector2.cpp"
 				>
 			</File>
@@ -256,6 +268,10 @@
 			</File>
 			<File
 				RelativePath=".\game\boot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\classic.h"
 				>
 			</File>
 			<File
@@ -324,6 +340,14 @@
 			</File>
 			<File
 				RelativePath=".\framework\stagestack.h"
+				>
+			</File>
+			<File
+				RelativePath=".\transitions\strips.h"
+				>
+			</File>
+			<File
+				RelativePath=".\transitions\tiled.h"
 				>
 			</File>
 			<File

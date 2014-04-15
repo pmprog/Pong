@@ -21,11 +21,9 @@ TransitionFadeIn::~TransitionFadeIn()
 
 void TransitionFadeIn::Begin()
 {
-	targetStage->Begin();
 	targetRender = al_create_bitmap( FRAMEWORK->Display_GetWidth(), FRAMEWORK->Display_GetHeight() );
 	FRAMEWORK->Display_SetTarget( targetRender );
 	targetStage->Render();
-	targetStage->Finish();
 	FRAMEWORK->Display_SetTarget();
 }
 
