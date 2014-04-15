@@ -9,8 +9,7 @@
 ClassicStage::ClassicStage()
 {
 	backgroundImage = al_load_bitmap( "resources/background.png" );
-	ballPos = new Vector2( (rand() % (FRAMEWORK->Display_GetWidth() - 24)) + (BALL_RADIUS * 2),	(rand() % (FRAMEWORK->Display_GetHeight() - 24)) + (BALL_RADIUS * 2) );
-	ballVel = new Vector2( ((rand() % 2) + 1) * (rand() % 2 == 0 ? 1 : -1) , ((rand() % 2) + 1) * (rand() % 2 == 0 ? 1 : -1) );
+	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 6.0f );
 }
 
 ClassicStage::~ClassicStage()
@@ -50,29 +49,7 @@ void ClassicStage::EventOccurred(Event *e)
 
 void ClassicStage::Update()
 {
-	ballPos->X += ballVel->X;
-	if( ballPos->X < BALL_RADIUS )
-	{
-		ballPos->X = Maths::Abs( ballPos->X );
-		ballVel->X *= -1;
-	}
-	if( ballPos->X > FRAMEWORK->Display_GetWidth() - BALL_RADIUS )
-	{
-		ballPos->X = (FRAMEWORK->Display_GetWidth() - BALL_RADIUS) - (ballPos->X - (FRAMEWORK->Display_GetWidth() - BALL_RADIUS));
-		ballVel->X *= -1;
-	}
-
-	ballPos->Y += ballVel->Y;
-	if( ballPos->Y < BALL_RADIUS )
-	{
-		ballPos->Y = Maths::Abs( ballPos->Y );
-		ballVel->Y *= -1;
-	}
-	if( ballPos->Y > FRAMEWORK->Display_GetHeight() - BALL_RADIUS )
-	{
-		ballPos->Y = (FRAMEWORK->Display_GetHeight() - BALL_RADIUS) - (ballPos->Y - (FRAMEWORK->Display_GetHeight() - BALL_RADIUS));
-		ballVel->Y *= -1;
-	}
+	Ball->Update();
 }
 
 void ClassicStage::Render()
@@ -80,7 +57,8 @@ void ClassicStage::Render()
 	//al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
 	al_draw_bitmap( backgroundImage, 0, 0, 0 );
 
-	al_draw_filled_rectangle( ballPos->X - BALL_RADIUS, ballPos->Y - BALL_RADIUS, ballPos->X + BALL_RADIUS, ballPos->Y + BALL_RADIUS, al_map_rgb( 255, 255, 255 ) );
+	// al_draw_filled_rectangle( ballPos->X - BALL_RADIUS, ballPos->Y - BALL_RADIUS, ballPos->X + BALL_RADIUS, ballPos->Y + BALL_RADIUS, al_map_rgb( 255, 255, 255 ) );
+	Ball->Render();
 
 	Shader* s = new ShaderScanlines();
 	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
@@ -90,4 +68,43 @@ void ClassicStage::Render()
 bool ClassicStage::IsTransition()
 {
 	return false;
+}
+
+void ClassicStage::ProcessProjectileCollisions( Projectile* Source, Vector2* TargetPosition, bool* Continue )
+{
+	Vector2* angV = Source->Direction->ToVector();
+	bool collisionFound = false;
+
+	if( TargetPosition->X < Source->Radius )
+	{
+		TargetPosition->X = Maths::Abs(TargetPosition->X - Source->Radius) + Source->Radius;
+		angV->X *= -1;
+		collisionFound = true;
+	}
+	if( TargetPosition->X > FRAMEWORK->Display_GetWidth() - Source->Radius )
+	{
+		TargetPosition->X = (FRAMEWORK->Display_GetWidth() - Source->Radius) - (TargetPosition->X - (FRAMEWORK->Display_GetWidth() - Source->Radius));
+		angV->X *= -1;
+		collisionFound = true;
+	}
+
+	if( TargetPosition->Y < Source->Radius )
+	{
+		TargetPosition->Y = Maths::Abs(TargetPosition->Y - Source->Radius) + Source->Radius;
+		angV->Y *= -1;
+		collisionFound = true;
+	}
+	if( TargetPosition->Y > FRAMEWORK->Display_GetHeight() - Source->Radius )
+	{
+		TargetPosition->Y = (FRAMEWORK->Display_GetHeight() - Source->Radius) - (TargetPosition->Y - (FRAMEWORK->Display_GetHeight() - Source->Radius));
+		angV->Y *= -1;
+		collisionFound = true;
+	}
+
+	if( collisionFound )
+	{
+		delete Source->Direction;
+		Source->Direction = angV->ToAngle();
+	}
+	delete angV;
 }

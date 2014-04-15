@@ -36,5 +36,7 @@ class Vector2
 		float DistanceTo( Vector2* CheckPoint );
 		float DotProduct( Vector2* a );
 		void Normalise();
+
+		Angle* ToAngle();
 };
 

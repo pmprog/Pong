@@ -1,6 +1,6 @@
 
 #include "tiled.h"
-#include "../Framework/framework.h"
+#include "../framework/framework.h"
 
 TransitionTiled::TransitionTiled( TiledTransitions::Transition Style, int TilesWide, int TilesHigh )
 {

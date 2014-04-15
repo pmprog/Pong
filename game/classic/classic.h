@@ -4,13 +4,13 @@
 #include "../../framework/stage.h"
 #include "../../framework/includes.h"
 #include "../../library/vector2.h"
+#include "classicball.h"
 
-class ClassicStage : public Stage
+class ClassicStage : public Stage, Arena
 {
 	private:
 		ALLEGRO_BITMAP* backgroundImage;
-		Vector2* ballPos;
-		Vector2* ballVel;
+		ClassicBall* Ball;
 
   public:
 		ClassicStage();
@@ -25,4 +25,7 @@ class ClassicStage : public Stage
     virtual void Update();
     virtual void Render();
 		virtual bool IsTransition();
+
+		// Arena
+		virtual void ProcessProjectileCollisions( Projectile* Source, Vector2* TargetPosition, bool* Continue );
 };

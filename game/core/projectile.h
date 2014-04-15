@@ -4,10 +4,7 @@
 #include "../../framework/includes.h"
 #include "../../library/vector2.h"
 #include "../../library/angle.h"
-
-#ifndef Arena
-class Arena;
-#endif
+#include "arena.h"
 
 class Projectile
 {

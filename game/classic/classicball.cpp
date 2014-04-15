@@ -3,6 +3,7 @@
 
 ClassicBall::ClassicBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : Projectile( PlayArena, StartPosition, StartDirection, StartSpeed )
 {
+	Radius = 8;
 }
 
 ClassicBall::~ClassicBall()

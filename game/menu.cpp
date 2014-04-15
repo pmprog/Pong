@@ -142,7 +142,7 @@ void Menu::Render()
 
 	for( int i = 0; i < 10; i++ )
 	{
-		int a = (i / 10.0f) * 255;
+		int a = ((i+1) / 14.0f) * 255;
 		al_draw_filled_rectangle( ballHistory[i]->X - BALL_RADIUS, ballHistory[i]->Y - BALL_RADIUS, ballHistory[i]->X + BALL_RADIUS, ballHistory[i]->Y + BALL_RADIUS, al_map_rgba( 255, 255, 255, a ) );
 	}
 	al_draw_filled_rectangle( ballPos->X - BALL_RADIUS, ballPos->Y - BALL_RADIUS, ballPos->X + BALL_RADIUS, ballPos->Y + BALL_RADIUS, al_map_rgb( 255, 255, 255 ) );

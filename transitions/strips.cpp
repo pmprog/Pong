@@ -1,6 +1,6 @@
 
 #include "strips.h"
-#include "../Framework/framework.h"
+#include "../framework/framework.h"
 
 TransitionStrips::TransitionStrips( int FadeFrames, int NumberOfStrips )
 {
@@ -84,7 +84,7 @@ void TransitionStrips::EventOccurred(Event *e)
 void TransitionStrips::Update()
 {
 	frameIndex++;
-	if( frameIndex >= frameMax )
+	if( frameIndex > frameMax )
 	{
 		Stage* t = Target;
 		if( FadeToNewStage )

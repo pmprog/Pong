@@ -129,3 +129,9 @@ void Vector2::Normalise()
 	X /= mag;
 	Y /= mag;
 }
+
+Angle* Vector2::ToAngle()
+{
+	float r = atan2( X, -Y ) * M_RAD_TO_DEG;
+	return new Angle( r );
+}

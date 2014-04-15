@@ -1,14 +1,15 @@
 
 #pragma once
 
-#include "projectile.h"
+#include "../../library/vector2.h"
+
+#ifndef Projectile
+class Projectile;
+#endif
 
 class Arena
 {
 
 	public:
-		virtual int Collisions_ProjectileToPlayer( Projectile* Source, Vector2* TargetPosition ) = 0;
-		virtual bool Collisions_ProjectileToBounds( Projectile* Source, Vector2* TargetPosition ) = 0;
-		virtual int Collisions_ProjectileToPickups( Projectile* Source, Vector2* TargetPosition ) = 0;
-
+		virtual void ProcessProjectileCollisions( Projectile* Source, Vector2* TargetPosition, bool* Continue ) = 0;
 };
