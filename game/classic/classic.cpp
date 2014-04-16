@@ -6,10 +6,9 @@
 
 ClassicStage::ClassicStage()
 {
-	backgroundImage = al_load_bitmap( "resources/background.png" );
 	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 5.0f );
-	LeftPlayer = new Player( this, new Vector2( 40, FRAMEWORK->Display_GetHeight() / 2 ), 0, FRAMEWORK->Display_GetHeight() );
-	RightPlayer = new Player( this, new Vector2( FRAMEWORK->Display_GetWidth() - 40, FRAMEWORK->Display_GetHeight() / 2 ), 0, FRAMEWORK->Display_GetHeight() );
+	LeftPlayer = new Player( this, new Vector2( 40, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 );
+	RightPlayer = new Player( this, new Vector2( FRAMEWORK->Display_GetWidth() - 40, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 );
 	LeftScore = 0;
 	RightScore = 0;
 	scoreFont = al_load_font( "resources/title.ttf", 64, 0 );
@@ -17,8 +16,10 @@ ClassicStage::ClassicStage()
 
 ClassicStage::~ClassicStage()
 {
-	al_destroy_bitmap( backgroundImage );
 	al_destroy_font( scoreFont );
+	delete Ball;
+	delete LeftPlayer;
+	delete RightPlayer;
 }
 
 void ClassicStage::Begin()
@@ -49,38 +50,38 @@ void ClassicStage::EventOccurred(Event *e)
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
 		{
-			LeftPlayer->UpPushed();
+			LeftPlayer->UpPressed = true;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Down", ALLEGRO_KEY_DOWN ) )
 		{
-			LeftPlayer->DownPushed();
+			LeftPlayer->DownPressed = true;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Up", ALLEGRO_KEY_PGUP ) )
 		{
-			RightPlayer->UpPushed();
+			RightPlayer->UpPressed = true;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Down", ALLEGRO_KEY_PGDN ) )
 		{
-			RightPlayer->DownPushed();
+			RightPlayer->DownPressed = true;
 		}
 	}
 	if( e->Type == EVENT_KEY_UP )
 	{
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
 		{
-			LeftPlayer->UpReleased();
+			LeftPlayer->UpPressed = false;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Down", ALLEGRO_KEY_DOWN ) )
 		{
-			LeftPlayer->DownReleased();
+			LeftPlayer->DownPressed = false;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Up", ALLEGRO_KEY_PGUP ) )
 		{
-			RightPlayer->UpReleased();
+			RightPlayer->UpPressed = false;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Down", ALLEGRO_KEY_PGDN ) )
 		{
-			RightPlayer->DownReleased();
+			RightPlayer->DownPressed = false;
 		}
 	}
 }
@@ -94,7 +95,7 @@ void ClassicStage::Update()
 
 void ClassicStage::Render()
 {
-	al_draw_bitmap( backgroundImage, 0, 0, 0 );
+	al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
 
 	Ball->Render();
 	LeftPlayer->Render();
@@ -102,10 +103,10 @@ void ClassicStage::Render()
 
 	al_draw_line(   0,  10, 800,  10, al_map_rgb( 255, 255, 255 ), 3 );
 	al_draw_line(   0, 470, 800, 470, al_map_rgb( 255, 255, 255 ), 3 );
-	al_draw_line( 400,  10, 400, 470, al_map_rgba( 255, 255, 255, 128 ), 3 );
+	al_draw_line( 400,  10, 400, 470, al_map_rgb( 255, 255, 255 ), 3 );
 
-	al_draw_textf( scoreFont, al_map_rgba( 255, 255, 255, 192 ), (FRAMEWORK->Display_GetWidth() / 2) - 20, 40, ALLEGRO_ALIGN_RIGHT, "%d", LeftScore );
-	al_draw_textf( scoreFont, al_map_rgba( 255, 255, 255, 192 ), (FRAMEWORK->Display_GetWidth() / 2) + 20, 40, ALLEGRO_ALIGN_LEFT, "%d", RightScore );
+	al_draw_textf( scoreFont, al_map_rgb( 255, 255, 255 ), (FRAMEWORK->Display_GetWidth() / 2) - 20, 40, ALLEGRO_ALIGN_RIGHT, "%d", LeftScore );
+	al_draw_textf( scoreFont, al_map_rgb( 255, 255, 255 ), (FRAMEWORK->Display_GetWidth() / 2) + 20, 40, ALLEGRO_ALIGN_LEFT, "%d", RightScore );
 
 	Shader* s = new ShaderScanlines();
 	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );

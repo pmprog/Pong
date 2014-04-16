@@ -4,6 +4,7 @@
 #include "../shaders/shaders.h"
 #include "../transitions/transitions.h"
 #include "classic/classic.h"
+#include "battle/battle.h"
 
 #define BALL_RADIUS				10
 int Menu::itemSwayOffsets[16] = { 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, -1, -1, -2, -1, -1 };
@@ -75,6 +76,7 @@ void Menu::EventOccurred(Event *e)
 				switch( selectedItem )
 				{
 					case 0:
+						FRAMEWORK->ProgramStages->Push( new TransitionStrips( new BattleStage(), 30, 30 ) );
 						break;
 					case 1:
 						break;

@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\battleplayer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\boot.cpp"
 				>
 			</File>

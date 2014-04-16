@@ -12,8 +12,8 @@ Player::Player( Arena* PlayArena, Vector2* StartPosition, int MinimumY, int Maxi
 	UpVelocity = 0.0f;
 	Size = 128;
 
-	up = false;
-	down = false;
+	UpPressed = false;
+	DownPressed = false;
 
 	Width = 12;
 	Speed = 920.0f / (float)FRAMES_PER_SECOND;
@@ -24,34 +24,14 @@ Player::~Player()
 	delete Position;
 }
 
-void Player::UpPushed()
-{
-	up = true;
-}
-
-void Player::UpReleased()
-{
-	up = false;
-}
-
-void Player::DownPushed()
-{
-	down = true;
-}
-
-void Player::DownReleased()
-{
-	down = false;
-}
-
 void Player::Update()
 {
 	UpVelocity = 0.0f;
-	if( up && !down )
+	if( UpPressed && !DownPressed )
 	{
 		UpVelocity = -Speed;
 	}
-	if( !up && down )
+	if( !UpPressed && DownPressed )
 	{
 		UpVelocity = Speed;
 	}
@@ -69,4 +49,5 @@ void Player::Update()
 void Player::Render()
 {
 	al_draw_filled_rectangle( Position->X - (Width / 2), Position->Y - (Size / 2), Position->X + (Width / 2), Position->Y + (Size / 2), al_map_rgb( 255, 255, 255 ) );
+	// al_draw_line( Position->X - (Width / 2), Position->Y - (Size / 2), Position->X + (Width / 2), Position->Y + (Size / 2), al_map_rgb( 255, 255, 255 ), 1 );
 }

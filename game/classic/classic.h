@@ -11,7 +11,6 @@
 class ClassicStage : public Stage, Arena
 {
 	private:
-		ALLEGRO_BITMAP* backgroundImage;
 		ClassicBall* Ball;
 		ALLEGRO_FONT* scoreFont;
 
