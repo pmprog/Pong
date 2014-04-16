@@ -4,6 +4,7 @@
 #include "../../framework/stage.h"
 #include "../../framework/includes.h"
 #include "../../library/box.h"
+#include "../../library/spritesheet.h"
 #include "../classic/classicball.h"
 #include "battleplayer.h"
 
@@ -11,6 +12,7 @@ class BattleStage : public Stage, Arena
 {
 	private:
 		ALLEGRO_BITMAP* backgroundImage;
+		SpriteSheet* inventoryIcons;
 		ClassicBall* Ball;
 
   public:

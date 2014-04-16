@@ -7,7 +7,8 @@
 BattleStage::BattleStage()
 {
 	backgroundImage = al_load_bitmap( "resources/background.png" );
-	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 6.0f );
+	inventoryIcons = new SpriteSheet( "resources/inventory.png", 48, 48 );
+	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f );
 	LeftPlayer = (Player*)(new BattlePlayer( this, new Vector2( 130, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
 	RightPlayer = (Player*)(new BattlePlayer( this, new Vector2( 670, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
 }
@@ -15,6 +16,7 @@ BattleStage::BattleStage()
 BattleStage::~BattleStage()
 {
 	al_destroy_bitmap( backgroundImage );
+	delete inventoryIcons;
 	delete Ball;
 	delete LeftPlayer;
 	delete RightPlayer;
@@ -38,8 +40,10 @@ void BattleStage::Finish()
 
 void BattleStage::EventOccurred(Event *e)
 {
-	if( e->Type == EVENT_KEY_DOWN )
+	bool pressDown;
+	if( e->Type == EVENT_KEY_DOWN || e->Type == EVENT_KEY_UP )
 	{
+		pressDown = (e->Type == EVENT_KEY_DOWN);
 		switch( e->Data.Keyboard.KeyCode )
 		{
 			case ALLEGRO_KEY_ESCAPE:
@@ -48,38 +52,52 @@ void BattleStage::EventOccurred(Event *e)
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
 		{
-			LeftPlayer->UpPressed = true;
+			LeftPlayer->UpPressed = pressDown;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Down", ALLEGRO_KEY_DOWN ) )
 		{
-			LeftPlayer->DownPressed = true;
+			LeftPlayer->DownPressed = pressDown;
 		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Send", ALLEGRO_KEY_RIGHT ) )
+		{
+			((BattlePlayer*)LeftPlayer)->SendPressed = pressDown;
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Inv1", ALLEGRO_KEY_Q ) )
+		{
+			((BattlePlayer*)LeftPlayer)->Inv1Pressed = pressDown;
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Inv2", ALLEGRO_KEY_A ) )
+		{
+			((BattlePlayer*)LeftPlayer)->Inv2Pressed = pressDown;
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Inv3", ALLEGRO_KEY_Z ) )
+		{
+			((BattlePlayer*)LeftPlayer)->Inv3Pressed = pressDown;
+		}
+
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Up", ALLEGRO_KEY_PGUP ) )
 		{
-			RightPlayer->UpPressed = true;
+			RightPlayer->UpPressed = pressDown;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Down", ALLEGRO_KEY_PGDN ) )
 		{
-			RightPlayer->DownPressed = true;
+			RightPlayer->DownPressed = pressDown;
 		}
-	}
-	if( e->Type == EVENT_KEY_UP )
-	{
-		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Send", ALLEGRO_KEY_HOME ) )
 		{
-			LeftPlayer->UpPressed = false;
+			((BattlePlayer*)RightPlayer)->SendPressed = pressDown;
 		}
-		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Down", ALLEGRO_KEY_DOWN ) )
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Inv1", ALLEGRO_KEY_O ) )
 		{
-			LeftPlayer->DownPressed = false;
+			((BattlePlayer*)RightPlayer)->Inv1Pressed = pressDown;
 		}
-		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Up", ALLEGRO_KEY_PGUP ) )
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Inv2", ALLEGRO_KEY_K ) )
 		{
-			RightPlayer->UpPressed = false;
+			((BattlePlayer*)RightPlayer)->Inv2Pressed = pressDown;
 		}
-		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Down", ALLEGRO_KEY_PGDN ) )
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Inv3", ALLEGRO_KEY_M ) )
 		{
-			RightPlayer->DownPressed = false;
+			((BattlePlayer*)RightPlayer)->Inv3Pressed = pressDown;
 		}
 	}
 }
@@ -107,23 +125,50 @@ void BattleStage::Render()
 	al_draw_line(  90,  10,  90, 470, al_map_rgb( 255, 255, 255 ), 3 );
 	al_draw_line( 710,  10, 710, 470, al_map_rgb( 255, 255, 255 ), 3 );
 
+	ply = (BattlePlayer*)LeftPlayer;
+
 	// Left player inventory
+	if( ply->Inventory[0] != 0 )
+	{
+		inventoryIcons->DrawSprite( ply->Inventory[0] - 1, 21, 10, 1.0f, 1.0f, 0 );
+	}
 	al_draw_rectangle( 21,  10, 69,  58, al_map_rgb( 255, 255, 255 ), 3 );
+	if( ply->Inventory[1] != 0 )
+	{
+		inventoryIcons->DrawSprite( ply->Inventory[1] - 1, 21, 69, 1.0f, 1.0f, 0 );
+	}
 	al_draw_rectangle( 21,  64, 69, 112, al_map_rgb( 255, 255, 255 ), 3 );
+	if( ply->Inventory[2] != 0 )
+	{
+		inventoryIcons->DrawSprite( ply->Inventory[2] - 1, 21, 118, 1.0f, 1.0f, 0 );
+	}
 	al_draw_rectangle( 21, 118, 69, 166, al_map_rgb( 255, 255, 255 ), 3 );
 
 	// Left player health
-	ply = (BattlePlayer*)LeftPlayer;
 	al_draw_filled_rectangle( 21, 198, 69, 462, al_map_rgb( 255, 255, 255 ) );
 	al_draw_filled_rectangle( 23, 460 - ((ply->Health / (float)ply->MaxHealth) * 260.0f), 67, 460, al_map_rgb( 0, 255, 0 ) );
 
+
+	ply = (BattlePlayer*)RightPlayer;
+
 	// Right player inventory
+	if( ply->Inventory[0] != 0 )
+	{
+		inventoryIcons->DrawSprite( ply->Inventory[0] - 1, 731, 10, 1.0f, 1.0f, 0 );
+	}
 	al_draw_rectangle( 731,  10, 779,  58, al_map_rgb( 255, 255, 255 ), 3 );
+	if( ply->Inventory[1] != 0 )
+	{
+		inventoryIcons->DrawSprite( ply->Inventory[1] - 1, 731, 64, 1.0f, 1.0f, 0 );
+	}
 	al_draw_rectangle( 731,  64, 779, 112, al_map_rgb( 255, 255, 255 ), 3 );
+	if( ply->Inventory[2] != 0 )
+	{
+		inventoryIcons->DrawSprite( ply->Inventory[2] - 1, 731, 118, 1.0f, 1.0f, 0 );
+	}
 	al_draw_rectangle( 731, 118, 779, 166, al_map_rgb( 255, 255, 255 ), 3 );
 
 	// Right player health
-	ply = (BattlePlayer*)RightPlayer;
 	al_draw_filled_rectangle( 731, 198, 779, 462, al_map_rgb( 255, 255, 255 ) );
 	al_draw_filled_rectangle( 733, 460 - ((ply->Health / (float)ply->MaxHealth) * 260.0f), 777, 460, al_map_rgb( 0, 255, 0 ) );
 
