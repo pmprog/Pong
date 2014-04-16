@@ -3,9 +3,10 @@
 
 #include "../../framework/stage.h"
 #include "../../framework/includes.h"
-#include "../../library/vector2.h"
+#include "../../library/box.h"
 #include "classicball.h"
 #include "../core/player.h"
+
 
 class ClassicStage : public Stage, Arena
 {

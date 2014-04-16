@@ -12,7 +12,10 @@ Player::Player( Arena* PlayArena, Vector2* StartPosition, int MinimumY, int Maxi
 	UpVelocity = 0.0f;
 	Size = 128;
 
-	Width = 6;
+	up = false;
+	down = false;
+
+	Width = 12;
 	Speed = 920.0f / (float)FRAMES_PER_SECOND;
 }
 

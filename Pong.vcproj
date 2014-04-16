@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\library\box.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\classic\classic.cpp"
 				>
 			</File>
@@ -296,6 +300,10 @@
 			</File>
 			<File
 				RelativePath=".\game\boot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\library\box.h"
 				>
 			</File>
 			<File

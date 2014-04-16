@@ -7,7 +7,7 @@
 ClassicStage::ClassicStage()
 {
 	backgroundImage = al_load_bitmap( "resources/background.png" );
-	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 4.0f );
+	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 5.0f );
 	LeftPlayer = new Player( this, new Vector2( 40, FRAMEWORK->Display_GetHeight() / 2 ), 0, FRAMEWORK->Display_GetHeight() );
 	RightPlayer = new Player( this, new Vector2( FRAMEWORK->Display_GetWidth() - 40, FRAMEWORK->Display_GetHeight() / 2 ), 0, FRAMEWORK->Display_GetHeight() );
 	LeftScore = 0;
@@ -104,8 +104,8 @@ void ClassicStage::Render()
 	al_draw_line(   0, 470, 800, 470, al_map_rgb( 255, 255, 255 ), 3 );
 	al_draw_line( 400,  10, 400, 470, al_map_rgba( 255, 255, 255, 128 ), 3 );
 
-	al_draw_textf( scoreFont, al_map_rgba( 255, 255, 255, 128 ), (FRAMEWORK->Display_GetWidth() / 2) - 20, 40, ALLEGRO_ALIGN_RIGHT, "%d", LeftScore );
-	al_draw_textf( scoreFont, al_map_rgba( 255, 255, 255, 128 ), (FRAMEWORK->Display_GetWidth() / 2) + 20, 40, ALLEGRO_ALIGN_LEFT, "%d", RightScore );
+	al_draw_textf( scoreFont, al_map_rgba( 255, 255, 255, 192 ), (FRAMEWORK->Display_GetWidth() / 2) - 20, 40, ALLEGRO_ALIGN_RIGHT, "%d", LeftScore );
+	al_draw_textf( scoreFont, al_map_rgba( 255, 255, 255, 192 ), (FRAMEWORK->Display_GetWidth() / 2) + 20, 40, ALLEGRO_ALIGN_LEFT, "%d", RightScore );
 
 	Shader* s = new ShaderScanlines();
 	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
@@ -122,14 +122,14 @@ void ClassicStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Tar
 	Vector2* angV = Source->Direction->ToVector();
 	bool collisionFound = false;
 
-	if( TargetPosition->X < Source->Radius )
+	if( TargetPosition->X < 0 )
 	{
 		TargetPosition->X = FRAMEWORK->Display_GetWidth() / 6;
 		TargetPosition->Y = FRAMEWORK->Display_GetHeight() / 2;
 		Source->Direction->Set( (rand() % 160) + 10 );
 		RightScore++;
 	}
-	if( TargetPosition->X > FRAMEWORK->Display_GetWidth() - Source->Radius )
+	if( TargetPosition->X > FRAMEWORK->Display_GetWidth() )
 	{
 		TargetPosition->X = FRAMEWORK->Display_GetWidth() / 6.0f * 5.0f;
 		TargetPosition->Y = FRAMEWORK->Display_GetHeight() / 2;
@@ -149,6 +149,29 @@ void ClassicStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Tar
 		angV->Y *= -1;
 		collisionFound = true;
 	}
+
+	Box* ballBounds = new Box( TargetPosition->X - Source->Radius, TargetPosition->Y - Source->Radius, Source->Radius * 2, Source->Radius * 2 );
+	if( angV->X < 0 )
+	{
+		Box* leftPlyBounds = new Box( LeftPlayer->Position->X - (LeftPlayer->Width / 2), LeftPlayer->Position->Y - (LeftPlayer->Size / 2), LeftPlayer->Width, LeftPlayer->Size );
+		if( leftPlyBounds->Collides( ballBounds ) )
+		{
+			angV->X *= -1;
+			collisionFound = true;
+		}
+		delete leftPlyBounds;
+	}
+	if( angV->X > 0 )
+	{
+		Box* rightPlyBounds = new Box( RightPlayer->Position->X - (RightPlayer->Width / 2), RightPlayer->Position->Y - (RightPlayer->Size / 2), RightPlayer->Width, RightPlayer->Size );
+		if( rightPlyBounds->Collides( ballBounds ) )
+		{
+			angV->X *= -1;
+			collisionFound = true;
+		}
+		delete rightPlyBounds;
+	}
+	delete ballBounds;
 
 	if( collisionFound )
 	{
