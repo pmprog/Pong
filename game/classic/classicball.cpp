@@ -1,5 +1,6 @@
 
 #include "classicball.h"
+#include "../core/player.h"
 
 ClassicBall::ClassicBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : Projectile( PlayArena, StartPosition, StartDirection, StartSpeed )
 {
@@ -8,11 +9,6 @@ ClassicBall::ClassicBall( Arena* PlayArena, Vector2* StartPosition, Angle* Start
 
 ClassicBall::~ClassicBall()
 {
-}
-
-void ClassicBall::Update()
-{
-	Projectile::Update();
 }
 
 void ClassicBall::Render()

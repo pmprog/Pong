@@ -37,3 +37,7 @@ void Projectile::Render()
 {
 	al_draw_filled_ellipse( Position->X, Position->Y, Radius, Radius, al_map_rgb( 128, 128, 128 ) );
 }
+
+void Projectile::OnCollision( Player* WithPlayer )
+{
+}

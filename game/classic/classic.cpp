@@ -4,17 +4,21 @@
 #include "../../shaders/shaders.h"
 #include "../../transitions/transitions.h"
 
-#define BALL_RADIUS 6
-
 ClassicStage::ClassicStage()
 {
 	backgroundImage = al_load_bitmap( "resources/background.png" );
-	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 6.0f );
+	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 4.0f );
+	LeftPlayer = new Player( this, new Vector2( 40, FRAMEWORK->Display_GetHeight() / 2 ), 0, FRAMEWORK->Display_GetHeight() );
+	RightPlayer = new Player( this, new Vector2( FRAMEWORK->Display_GetWidth() - 40, FRAMEWORK->Display_GetHeight() / 2 ), 0, FRAMEWORK->Display_GetHeight() );
+	LeftScore = 0;
+	RightScore = 0;
+	scoreFont = al_load_font( "resources/title.ttf", 64, 0 );
 }
 
 ClassicStage::~ClassicStage()
 {
 	al_destroy_bitmap( backgroundImage );
+	al_destroy_font( scoreFont );
 }
 
 void ClassicStage::Begin()
@@ -37,12 +41,46 @@ void ClassicStage::EventOccurred(Event *e)
 {
 	if( e->Type == EVENT_KEY_DOWN )
 	{
-
 		switch( e->Data.Keyboard.KeyCode )
 		{
 			case ALLEGRO_KEY_ESCAPE:
 				FRAMEWORK->ProgramStages->Push( new TransitionTiled( TiledTransitions::NORTHWEST_TO_SOUTHEAST, 20, 20 ) );
 				break;
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
+		{
+			LeftPlayer->UpPushed();
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Down", ALLEGRO_KEY_DOWN ) )
+		{
+			LeftPlayer->DownPushed();
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Up", ALLEGRO_KEY_PGUP ) )
+		{
+			RightPlayer->UpPushed();
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Down", ALLEGRO_KEY_PGDN ) )
+		{
+			RightPlayer->DownPushed();
+		}
+	}
+	if( e->Type == EVENT_KEY_UP )
+	{
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
+		{
+			LeftPlayer->UpReleased();
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Down", ALLEGRO_KEY_DOWN ) )
+		{
+			LeftPlayer->DownReleased();
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Up", ALLEGRO_KEY_PGUP ) )
+		{
+			RightPlayer->UpReleased();
+		}
+		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Down", ALLEGRO_KEY_PGDN ) )
+		{
+			RightPlayer->DownReleased();
 		}
 	}
 }
@@ -50,15 +88,24 @@ void ClassicStage::EventOccurred(Event *e)
 void ClassicStage::Update()
 {
 	Ball->Update();
+	LeftPlayer->Update();
+	RightPlayer->Update();
 }
 
 void ClassicStage::Render()
 {
-	//al_clear_to_color( al_map_rgb( 0, 0, 0 ) );
 	al_draw_bitmap( backgroundImage, 0, 0, 0 );
 
-	// al_draw_filled_rectangle( ballPos->X - BALL_RADIUS, ballPos->Y - BALL_RADIUS, ballPos->X + BALL_RADIUS, ballPos->Y + BALL_RADIUS, al_map_rgb( 255, 255, 255 ) );
 	Ball->Render();
+	LeftPlayer->Render();
+	RightPlayer->Render();
+
+	al_draw_line(   0,  10, 800,  10, al_map_rgb( 255, 255, 255 ), 3 );
+	al_draw_line(   0, 470, 800, 470, al_map_rgb( 255, 255, 255 ), 3 );
+	al_draw_line( 400,  10, 400, 470, al_map_rgba( 255, 255, 255, 128 ), 3 );
+
+	al_draw_textf( scoreFont, al_map_rgba( 255, 255, 255, 128 ), (FRAMEWORK->Display_GetWidth() / 2) - 20, 40, ALLEGRO_ALIGN_RIGHT, "%d", LeftScore );
+	al_draw_textf( scoreFont, al_map_rgba( 255, 255, 255, 128 ), (FRAMEWORK->Display_GetWidth() / 2) + 20, 40, ALLEGRO_ALIGN_LEFT, "%d", RightScore );
 
 	Shader* s = new ShaderScanlines();
 	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
@@ -77,26 +124,28 @@ void ClassicStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Tar
 
 	if( TargetPosition->X < Source->Radius )
 	{
-		TargetPosition->X = Maths::Abs(TargetPosition->X - Source->Radius) + Source->Radius;
-		angV->X *= -1;
-		collisionFound = true;
+		TargetPosition->X = FRAMEWORK->Display_GetWidth() / 6;
+		TargetPosition->Y = FRAMEWORK->Display_GetHeight() / 2;
+		Source->Direction->Set( (rand() % 160) + 10 );
+		RightScore++;
 	}
 	if( TargetPosition->X > FRAMEWORK->Display_GetWidth() - Source->Radius )
 	{
-		TargetPosition->X = (FRAMEWORK->Display_GetWidth() - Source->Radius) - (TargetPosition->X - (FRAMEWORK->Display_GetWidth() - Source->Radius));
-		angV->X *= -1;
-		collisionFound = true;
+		TargetPosition->X = FRAMEWORK->Display_GetWidth() / 6.0f * 5.0f;
+		TargetPosition->Y = FRAMEWORK->Display_GetHeight() / 2;
+		Source->Direction->Set( (rand() % 160) + 190 );
+		LeftScore++;
 	}
 
-	if( TargetPosition->Y < Source->Radius )
+	if( TargetPosition->Y - 10 < Source->Radius )
 	{
-		TargetPosition->Y = Maths::Abs(TargetPosition->Y - Source->Radius) + Source->Radius;
+		TargetPosition->Y = Maths::Abs(TargetPosition->Y - 10 - Source->Radius) + Source->Radius + 10;
 		angV->Y *= -1;
 		collisionFound = true;
 	}
-	if( TargetPosition->Y > FRAMEWORK->Display_GetHeight() - Source->Radius )
+	if( TargetPosition->Y > 470 - Source->Radius )
 	{
-		TargetPosition->Y = (FRAMEWORK->Display_GetHeight() - Source->Radius) - (TargetPosition->Y - (FRAMEWORK->Display_GetHeight() - Source->Radius));
+		TargetPosition->Y = (470 - Source->Radius) - (TargetPosition->Y - (470 - Source->Radius));
 		angV->Y *= -1;
 		collisionFound = true;
 	}

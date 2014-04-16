@@ -6,6 +6,10 @@
 #include "../../library/angle.h"
 #include "arena.h"
 
+#ifndef Player
+class Player;
+#endif
+
 class Projectile
 {
 
@@ -23,5 +27,6 @@ class Projectile
 
 		virtual void Update();
 		virtual void Render();
+		virtual void OnCollision( Player* WithPlayer );
 
 };

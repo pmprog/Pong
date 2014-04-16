@@ -77,9 +77,9 @@ void Menu::EventOccurred(Event *e)
 					case 0:
 						break;
 					case 1:
-						FRAMEWORK->ProgramStages->Push( new TransitionStrips( new ClassicStage(), 30, 30 ) );
 						break;
 					case 2:
+						FRAMEWORK->ProgramStages->Push( new TransitionStrips( new ClassicStage(), 30, 30 ) );
 						break;
 					case 3:
 						break;
@@ -151,11 +151,11 @@ void Menu::Render()
 
 	int yPos = FRAMEWORK->Display_GetHeight() - (itemFontHeight * 6);
 
-	al_draw_text( itemFont, (selectedItem == 0 ? selCol : itemCol), 40 + (selectedItem == 0 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Single Player" );
+	al_draw_text( itemFont, (selectedItem == 0 ? selCol : itemCol), 40 + (selectedItem == 0 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Battle (Local PvP)" );
 	yPos += itemFontHeight;
-	al_draw_text( itemFont, (selectedItem == 1 ? selCol : itemCol), 40 + (selectedItem == 1 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Multiplayer (Local)" );
+	al_draw_text( itemFont, (selectedItem == 1 ? selCol : itemCol), 40 + (selectedItem == 1 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Battle (Network)" );
 	yPos += itemFontHeight;
-	al_draw_text( itemFont, (selectedItem == 2 ? selCol : itemCol), 40 + (selectedItem == 2 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Multiplayer (Network)" );
+	al_draw_text( itemFont, (selectedItem == 2 ? selCol : itemCol), 40 + (selectedItem == 2 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Classic (Local PvP)" );
 	yPos += itemFontHeight;
 	al_draw_text( itemFont, (selectedItem == 3 ? selCol : itemCol), 40 + (selectedItem == 3 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Settings" );
 	yPos += itemFontHeight;

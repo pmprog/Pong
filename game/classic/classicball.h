@@ -11,7 +11,9 @@ class ClassicBall : public Projectile
 	public:
 		ClassicBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed );
 		~ClassicBall();
-		virtual void Update();
+
+		//virtual void Update();	// Not needed
 		virtual void Render();
+		//virtual void OnCollision( Player* WithPlayer );	// Not needed
 
 };

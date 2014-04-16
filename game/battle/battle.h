@@ -4,22 +4,18 @@
 #include "../../framework/stage.h"
 #include "../../framework/includes.h"
 #include "../../library/vector2.h"
-#include "classicball.h"
+#include "../classic/classicball.h"
 #include "../core/player.h"
 
-class ClassicStage : public Stage, Arena
+class BattleStage : public Stage, Arena
 {
 	private:
 		ALLEGRO_BITMAP* backgroundImage;
 		ClassicBall* Ball;
-		ALLEGRO_FONT* scoreFont;
 
   public:
-		int LeftScore;
-		int RightScore;
-
-		ClassicStage();
-		~ClassicStage();
+		BattleStage();
+		~BattleStage();
 
     // Stage control
     virtual void Begin();

@@ -181,6 +181,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\battle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\boot.cpp"
 				>
 			</File>
@@ -233,6 +237,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\core\player.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\core\projectile.cpp"
 				>
 			</File>
@@ -276,6 +284,14 @@
 			</File>
 			<File
 				RelativePath=".\game\core\arena.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\battle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\battleplayer.h"
 				>
 			</File>
 			<File
@@ -332,6 +348,10 @@
 			</File>
 			<File
 				RelativePath=".\framework\network.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\core\player.h"
 				>
 			</File>
 			<File
