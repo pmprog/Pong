@@ -3,12 +3,13 @@
 #include "../../framework/framework.h"
 #include "../../shaders/shaders.h"
 #include "../../transitions/transitions.h"
+#include "cloneball.h"
 
 BattleStage::BattleStage()
 {
 	backgroundImage = al_load_bitmap( "resources/background.png" );
 	inventoryIcons = new SpriteSheet( "resources/inventory.png", 48, 48 );
-	Ball = new ClassicBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f );
+	GameObjects.push_back( new BattleBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f ) );
 	LeftPlayer = (Player*)(new BattlePlayer( this, new Vector2( 130, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
 	RightPlayer = (Player*)(new BattlePlayer( this, new Vector2( 670, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
 }
@@ -17,9 +18,14 @@ BattleStage::~BattleStage()
 {
 	al_destroy_bitmap( backgroundImage );
 	delete inventoryIcons;
-	delete Ball;
 	delete LeftPlayer;
 	delete RightPlayer;
+
+	while( GameObjects.size() > 0 )
+	{
+		delete GameObjects.front();
+		GameObjects.pop_front();
+	}
 }
 
 void BattleStage::Begin()
@@ -48,6 +54,10 @@ void BattleStage::EventOccurred(Event *e)
 		{
 			case ALLEGRO_KEY_ESCAPE:
 				FRAMEWORK->ProgramStages->Push( new TransitionTiled( TiledTransitions::NORTHWEST_TO_SOUTHEAST, 20, 20 ) );
+				break;
+
+			case ALLEGRO_KEY_F2:
+				GameObjectsToAdd.push_back( new CloneBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f ) );
 				break;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
@@ -104,7 +114,27 @@ void BattleStage::EventOccurred(Event *e)
 
 void BattleStage::Update()
 {
-	Ball->Update();
+
+	while( GameObjectsToRemove.size() > 0 )
+	{
+		Projectile* p = GameObjectsToRemove.front();
+		GameObjectsToRemove.pop_front();
+		GameObjects.remove( p );
+		delete p;
+	}
+
+	while( GameObjectsToAdd.size() > 0 )
+	{
+		Projectile* p = GameObjectsToAdd.front();
+		GameObjectsToAdd.pop_front();
+		GameObjects.push_back( p );
+	}
+
+	for( std::list<Projectile*>::const_iterator i = GameObjects.begin(); i != GameObjects.end(); i++ )
+	{
+		Projectile* p = (*i);
+		p->Update();
+	}
 
 	LeftPlayer->Update();
 	RightPlayer->Update();
@@ -116,7 +146,11 @@ void BattleStage::Render()
 
 	al_draw_bitmap( backgroundImage, 0, 0, 0 );
 
-	Ball->Render();
+	for( std::list<Projectile*>::const_iterator i = GameObjects.begin(); i != GameObjects.end(); i++ )
+	{
+		Projectile* p = (*i);
+		p->Render();
+	}
 	LeftPlayer->Render();
 	RightPlayer->Render();
 
@@ -193,14 +227,14 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 		TargetPosition->X = Maths::Abs(TargetPosition->X - 90 - Source->Radius) + Source->Radius + 90;
 		angV->X *= -1;
 		collisionFound = true;
-		((BattlePlayer*)LeftPlayer)->TakeDamage( 2 );
+		Source->OnCollisionPlayersWall( LeftPlayer );
 	}
 	if( TargetPosition->X > 710 - Source->Radius )
 	{
 		TargetPosition->X = (710 - Source->Radius) - (TargetPosition->X - (710 - Source->Radius));
 		angV->X *= -1;
 		collisionFound = true;
-		((BattlePlayer*)RightPlayer)->TakeDamage( 2 );
+		Source->OnCollisionPlayersWall( RightPlayer );
 	}
 
 	if( TargetPosition->Y - 10 < Source->Radius )
@@ -216,7 +250,6 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 		collisionFound = true;
 	}
 
-	// TODO: Fix to check when projectiles aren't balls!
 	Box* ballBounds = new Box( TargetPosition->X - Source->Radius, TargetPosition->Y - Source->Radius, Source->Radius * 2, Source->Radius * 2 );
 	if( angV->X < 0 )
 	{
@@ -225,6 +258,7 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 		{
 			angV->X *= -1;
 			collisionFound = true;
+			Source->OnCollision( LeftPlayer );
 		}
 		delete leftPlyBounds;
 	}
@@ -235,6 +269,7 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 		{
 			angV->X *= -1;
 			collisionFound = true;
+			Source->OnCollision( RightPlayer );
 		}
 		delete rightPlyBounds;
 	}
@@ -248,3 +283,12 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 	}
 	delete angV;
 }
+
+void BattleStage::AddObject( Projectile* Object )
+{
+}
+
+void BattleStage::RemoveObject( Projectile* Object )
+{
+}
+

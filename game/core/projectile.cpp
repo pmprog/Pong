@@ -41,3 +41,7 @@ void Projectile::Render()
 void Projectile::OnCollision( Player* WithPlayer )
 {
 }
+
+void Projectile::OnCollisionPlayersWall( Player* WithPlayer )
+{
+}

@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\battleball.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\battle\battleplayer.cpp"
 				>
 			</File>
@@ -202,6 +206,10 @@
 			</File>
 			<File
 				RelativePath=".\game\classic\classicball.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\cloneball.cpp"
 				>
 			</File>
 			<File
@@ -307,6 +315,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\battleball.h"
+				>
+			</File>
+			<File
 				RelativePath=".\game\battle\battleplayer.h"
 				>
 			</File>
@@ -324,6 +336,10 @@
 			</File>
 			<File
 				RelativePath=".\game\classic\classicball.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\cloneball.h"
 				>
 			</File>
 			<File

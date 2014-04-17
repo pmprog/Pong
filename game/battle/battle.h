@@ -5,7 +5,7 @@
 #include "../../framework/includes.h"
 #include "../../library/box.h"
 #include "../../library/spritesheet.h"
-#include "../classic/classicball.h"
+#include "battleball.h"
 #include "battleplayer.h"
 
 class BattleStage : public Stage, Arena
@@ -13,7 +13,9 @@ class BattleStage : public Stage, Arena
 	private:
 		ALLEGRO_BITMAP* backgroundImage;
 		SpriteSheet* inventoryIcons;
-		ClassicBall* Ball;
+		std::list<Projectile*> GameObjects;
+		std::list<Projectile*> GameObjectsToAdd;
+		std::list<Projectile*> GameObjectsToRemove;
 
   public:
 		BattleStage();
@@ -31,4 +33,7 @@ class BattleStage : public Stage, Arena
 
 		// Arena
 		virtual void ProcessProjectileCollisions( Projectile* Source, Vector2* TargetPosition, bool* Continue );
+
+		void AddObject( Projectile* Object );
+		void RemoveObject( Projectile* Object );
 };
