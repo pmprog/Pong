@@ -107,11 +107,15 @@ void TransitionStrips::Render()
 	// Draw original source
 	al_draw_bitmap( SourceScreen, 0, 0, 0 );
 
+	al_hold_bitmap_drawing( true );
+
 	// Draw strips
 	for( int i = 0; i < numStrips; i++ )
 	{
 		al_draw_bitmap_region( TargetScreen, i * stripWidth, 0, stripWidth, speedList[i] * frameIndex, i * stripWidth, 0, 0 );
 	}
+	
+	al_hold_bitmap_drawing( false );
 }
 
 bool TransitionStrips::IsTransition()

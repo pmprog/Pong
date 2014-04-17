@@ -210,6 +210,8 @@ void TransitionTiled::Render()
 	// Draw original source
 	al_draw_bitmap( SourceScreen, 0, 0, 0 );
 
+	al_hold_bitmap_drawing( true );
+
 	// Draw tilemap
 	for( int y = 0; y < tileHigh; y++ )
 	{
@@ -221,6 +223,8 @@ void TransitionTiled::Render()
 			}
 		}
 	}
+	
+	al_hold_bitmap_drawing( false );
 }
 
 bool TransitionTiled::IsTransition()
