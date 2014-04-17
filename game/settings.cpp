@@ -60,7 +60,36 @@ void SettingsStage::EventOccurred(Event *e)
 			case ALLEGRO_KEY_SPACE:
 			case ALLEGRO_KEY_PGDN:
 			case ALLEGRO_KEY_END:
-				FRAMEWORK->ProgramStages->Push( new GetKeyPress() );
+				switch( selectedItem ) // >= 4 && selectedItem <= 15 )
+				{
+					case 0:
+						break;
+					case 1:
+						break;
+					case 2:
+						FRAMEWORK->Settings->SetBooleanValue( "Audio.Music", !FRAMEWORK->Settings->GetQuickBooleanValue( "Audio.Music", true ) );
+						break;
+					case 3:
+						FRAMEWORK->Settings->SetBooleanValue( "Audio.SFX", !FRAMEWORK->Settings->GetQuickBooleanValue( "Audio.SFX", true ) );
+						break;
+					case 4:
+					case 5:
+					case 6:
+					case 7:
+					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+					case 13:
+					case 14:
+					case 15:
+						FRAMEWORK->ProgramStages->Push( new GetKeyPress() );
+						break;
+					case 16:
+						FRAMEWORK->ProgramStages->Push( new TransitionTiled( TiledTransitions::SPIRAL_INWARDS, 9, 9 ) );
+						break;
+				}
 				break;
 		}
 	}
@@ -135,9 +164,9 @@ void SettingsStage::Render()
 	yPos += 20;
 	al_draw_text( titleFont, al_map_rgb( 255, 192, 96 ), FRAMEWORK->Display_GetWidth() / 2, yPos, ALLEGRO_ALIGN_CENTRE, "Audio" );
 	yPos += titleFontHeight;
-	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Music: On" );
+	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Music: %s", (FRAMEWORK->Settings->GetQuickBooleanValue( "Audio.Music", true ) ? "Yes" : "No") );
 	yPos += itemFontHeight; curItem++;
-	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "SoundFX : On" );
+	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "SoundFX : %s", (FRAMEWORK->Settings->GetQuickBooleanValue( "Audio.SFX", true ) ? "Yes" : "No") );
 	yPos += itemFontHeight; curItem++;
 
 	yPos += 20;
@@ -173,7 +202,7 @@ void SettingsStage::Render()
 	yPos += itemFontHeight; curItem++;
 
 	yPos += 20;
-	al_draw_text( titleFont, al_map_rgb( 255, 255, 255 ), FRAMEWORK->Display_GetWidth() / 2, yPos, ALLEGRO_ALIGN_CENTRE, "Other" );
+	al_draw_text( titleFont, al_map_rgb( 255, 192, 96 ), FRAMEWORK->Display_GetWidth() / 2, yPos, ALLEGRO_ALIGN_CENTRE, "Other" );
 	yPos += titleFontHeight;
 	al_draw_text( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Return" );
 	yPos += itemFontHeight; curItem++;

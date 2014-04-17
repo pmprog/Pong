@@ -7,9 +7,14 @@
 class GetKeyPress : public Stage
 {
 	private:
+		ALLEGRO_FONT* itemFont;
+		int itemFontHeight;
 		int FadeIn;
 
   public:
+		GetKeyPress();
+		~GetKeyPress();
+
     // Stage control
     virtual void Begin();
     virtual void Pause();
