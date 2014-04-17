@@ -221,6 +221,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\getkeypress.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\shaders\greyscale.cpp"
 				>
 			</File>
@@ -336,6 +340,10 @@
 			</File>
 			<File
 				RelativePath=".\framework\framework.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\getkeypress.h"
 				>
 			</File>
 			<File
