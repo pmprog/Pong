@@ -257,6 +257,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\settings.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\library\spritesheet.cpp"
 				>
 			</File>
@@ -372,6 +376,10 @@
 			</File>
 			<File
 				RelativePath=".\shaders\scanlines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\settings.h"
 				>
 			</File>
 			<File

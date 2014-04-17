@@ -5,6 +5,7 @@
 #include "../transitions/transitions.h"
 #include "classic/classic.h"
 #include "battle/battle.h"
+#include "settings.h"
 
 #define BALL_RADIUS				10
 int Menu::itemSwayOffsets[16] = { 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, -1, -1, -2, -1, -1 };
@@ -84,6 +85,7 @@ void Menu::EventOccurred(Event *e)
 						FRAMEWORK->ProgramStages->Push( new TransitionStrips( new ClassicStage(), 30, 30 ) );
 						break;
 					case 3:
+						FRAMEWORK->ProgramStages->Push( new TransitionTiled( new SettingsStage(), TiledTransitions::SPIRAL_INWARDS, 9, 9 ) );
 						break;
 					case 4:
 						delete FRAMEWORK->ProgramStages->Pop();
