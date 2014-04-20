@@ -1,0 +1,27 @@
+
+Battle Pong
+-----------
+
+Battle Pong is a game of Pong where you can attack each other with power ups
+
+
+
+Compiling
+---------
+
+You need the following libraries to compile. I use Visual Studio 2008 on Windows, and CodeBlocks on the Pandora
+
+- enet
+	https://github.com/lsalzman/enet
+	Networking Library
+	
+- Allegro 5.1
+	http://alleg.sourceforge.net/
+	Game/Multimedia Library
+	Additional Dependancies
+		- FreeType
+		- Ogg Vorbis
+		- PNG
+		- JPEG
+
+
