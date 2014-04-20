@@ -286,9 +286,11 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 
 void BattleStage::AddObject( Projectile* Object )
 {
+	GameObjectsToAdd.push_back( Object );
 }
 
 void BattleStage::RemoveObject( Projectile* Object )
 {
+	GameObjectsToRemove.push_back( Object );
 }
 
