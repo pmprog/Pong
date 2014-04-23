@@ -29,6 +29,10 @@ void TransitionStrips::PrepareStrips( int FadeFrames, int NumberOfStrips )
 	}
 	frameIndex = 0;
 	slowestSpeed = FRAMEWORK->Display_GetHeight() / FadeFrames;
+	while( (float)slowestSpeed < FRAMEWORK->Display_GetHeight() / (float)FadeFrames )
+	{
+		slowestSpeed++;
+	}
 	SourceScreen = al_create_bitmap( FRAMEWORK->Display_GetWidth(), FRAMEWORK->Display_GetHeight() );
 	FRAMEWORK->Display_SetTarget( SourceScreen );
 	Source->Render();

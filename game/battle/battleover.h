@@ -4,12 +4,17 @@
 #include "../../framework/stage.h"
 #include "../../framework/includes.h"
 
+#ifndef BattleStage
+class BattleStage;
+#endif
+
 class BattleOver : public Stage
 {
 	private:
 		ALLEGRO_FONT* itemFont;
 		int itemFontHeight;
 		int FadeIn;
+		BattleStage* battleStage;
 
   public:
 		BattleOver();
