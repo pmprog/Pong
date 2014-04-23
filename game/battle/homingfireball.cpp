@@ -3,7 +3,7 @@
 #include "../../framework/framework.h"
 #include "battle.h"
 
-HomingFireBall::HomingFireBall( Player* TargetPlayer, Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : BattleBall(PlayArena, StartPosition, StartDirection, StartSpeed)
+HomingFireBall::HomingFireBall( Player* TargetPlayer, Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : ClassicBall(PlayArena, StartPosition, StartDirection, StartSpeed)
 {
 	target = TargetPlayer;
 	targetUpdateDelay = 0;

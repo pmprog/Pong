@@ -6,7 +6,7 @@
 #define HOMING_RETARGET_DELAY		FRAMES_PER_SECOND / 8
 #define HOMING_RETARGET_TURN		10.0f
 
-class HomingFireBall : public BattleBall
+class HomingFireBall : public ClassicBall
 {
 	private:
 		Player* target;

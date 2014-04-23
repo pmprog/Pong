@@ -1,32 +1,30 @@
 
 #include "battleover.h"
 #include "../../framework/framework.h"
+#include "../../shaders/shaders.h"
 #include "../../transitions/transitions.h"
 #include "battle.h"
 
-BattleOver::BattleOver()
+BattleOver::BattleOver(BattleStage* Battle)
 {
-	battleStage = 0;
-	itemFont = al_load_font( "resources/title.ttf", 24, 0 );
+	battleStage = Battle;
+	itemFont = al_load_font( "resources/title.ttf", 64, 0 );
 	itemFontHeight = al_get_font_line_height( itemFont );
+	slideAngleX = new Angle( 0 );
+	slideAngleY = new Angle( 0 );
 }
 
 BattleOver::~BattleOver()
 {
 	al_destroy_font( itemFont );
+	delete slideAngleX;
+	delete slideAngleY;
+	delete battleStage;
 }
 
 void BattleOver::Begin()
 {
-	if( battleStage == 0 )
-	{
-		battleStage = (BattleStage*)FRAMEWORK->ProgramStages->Previous();
-		while ( FRAMEWORK->ProgramStages->Pop() != battleStage )
-		{
-		}
-		FRAMEWORK->ProgramStages->Push( this );
-		FadeIn = 255;
-	}
+	FRAMEWORK->ProgramStages->Remove( battleStage );
 }
 
 void BattleOver::Pause()
@@ -45,34 +43,27 @@ void BattleOver::EventOccurred(Event *e)
 {
 	if( e->Type == EVENT_KEY_DOWN )
 	{
-		if( e->Data.Keyboard.KeyCode == ALLEGRO_KEY_ESCAPE )
-		{
-			delete FRAMEWORK->ProgramStages->Pop();
-		} else {
-			Event* ev = new Event();
-			ev->Type = EVENT_USER;
-			ev->Data.Keyboard.KeyCode = e->Data.Keyboard.KeyCode;
-			ev->Data.Keyboard.Modifiers = e->Data.Keyboard.Modifiers;
-			FRAMEWORK->PushEvent(ev);
-			delete FRAMEWORK->ProgramStages->Pop();
-		}
+		FRAMEWORK->ProgramStages->Push( new TransitionTiled( TiledTransitions::NORTHWEST_TO_SOUTHEAST, 7, 7 ) );
 	}
 }
 
 void BattleOver::Update()
 {
-	if( FadeIn < 255 )
-	{
-		FadeIn += 17;
-	}
+	slideAngleX->Add( 4.0f );
+	slideAngleY->Add( 8.0f );
 }
 
 void BattleOver::Render()
 {
 	al_clear_to_color( al_map_rgb( 128, 128, 192 ) );
 
-	al_draw_filled_rectangle( 0, (FRAMEWORK->Display_GetHeight() / 2) - 30, FRAMEWORK->Display_GetWidth(), (FRAMEWORK->Display_GetHeight() / 2) + 30, al_map_rgb( 64, 96, 128 ) );
-	al_draw_text( itemFont, al_map_rgb( 255, 255, 255 ), FRAMEWORK->Display_GetWidth() / 2, (FRAMEWORK->Display_GetHeight() / 2) - (itemFontHeight / 2), ALLEGRO_ALIGN_CENTER, "Press desired key" );
+	al_draw_filled_rectangle( 0, (FRAMEWORK->Display_GetHeight() / 2) - (itemFontHeight / 1.5f), FRAMEWORK->Display_GetWidth(), (FRAMEWORK->Display_GetHeight() / 2) + (itemFontHeight / 1.5f), al_map_rgb( 64, 96, 128 ) );
+	//al_draw_text( itemFont, al_map_rgb( 255, 255, 255 ), FRAMEWORK->Display_GetWidth() / 2, (FRAMEWORK->Display_GetHeight() / 2) - (itemFontHeight / 2), ALLEGRO_ALIGN_CENTER, "Winner" );
+	al_draw_text( itemFont, al_map_rgb( 255, 255, 255 ), (FRAMEWORK->Display_GetWidth() / 2) + (slideAngleX->Sine() * 4.5f), (FRAMEWORK->Display_GetHeight() / 2) - (itemFontHeight / 2)  + (slideAngleY->Sine() * 7.0f), ALLEGRO_ALIGN_CENTER, "Player 1 (Left)" );
+
+	Shader* s = new ShaderScanlines();
+	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
+	delete s;
 }
 
 bool BattleOver::IsTransition()

@@ -273,6 +273,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\particle.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\core\player.cpp"
 				>
 			</File>
@@ -420,6 +424,10 @@
 			</File>
 			<File
 				RelativePath=".\framework\network.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\particle.h"
 				>
 			</File>
 			<File

@@ -2,8 +2,9 @@
 #include "fireball.h"
 #include "../../framework/framework.h"
 #include "battle.h"
+#include "particle.h"
 
-FireBall::FireBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : BattleBall(PlayArena, StartPosition, StartDirection, StartSpeed)
+FireBall::FireBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : ClassicBall(PlayArena, StartPosition, StartDirection, StartSpeed)
 {
 }
 
@@ -11,6 +12,9 @@ FireBall::FireBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirect
 void FireBall::Update()
 {
 	BattleBall::Update();
+
+	Particle* p = new Particle( al_map_rgb( 255, 220, 128 ), currentArena, new Vector2(Position), new Angle( Direction->ToDegrees() + 180.0f + (rand() % 41) - 21 ), Speed * 2.0f );
+	((BattleStage*)currentArena)->AddObject( p );
 }
 
 void FireBall::Render()

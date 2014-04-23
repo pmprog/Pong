@@ -15,7 +15,7 @@ class StageStack
 {
   private:
     int StackIndex;
-    Stage* Stack[MAX_STACK_SIZE];
+    Stage* Stack[MAX_STACK_SIZE + 1]; 
 
   public:
 
@@ -46,6 +46,26 @@ class StageStack
     Stage* Pop();
 
 		/*
+			Function: Remove
+			Removes a <Stage> from anywhere in the stack
+			Parameters:
+				Index - Index of the stage you want to retrieve
+			Returns:
+				*Stage Pointer* Stage object that was removed. Useful for preventing memory leaks
+		*/
+    Stage* Remove( int Index );
+
+		/*
+			Function: Remove
+			Removes a <Stage> from anywhere in the stack
+			Parameters:
+				RemoveStage - Pointer to a <Stage> class to remove
+			Returns:
+				*Stage Pointer* Stage object that was removed. Useful for preventing memory leaks
+		*/
+    Stage* Remove( Stage* RemoveStage );
+
+		/*
 			Function: Current
 			Returns a pointer to the current active stage
 			Returns:
@@ -69,7 +89,7 @@ class StageStack
 			Returns:
 				*Stage Pointer* Current <Stage>
 		*/
-    Stage* Item(int Index);
+    Stage* Item( int Index );
 
 		/*
 			Function: Previous

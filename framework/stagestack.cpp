@@ -19,7 +19,7 @@ int StageStack::Push(Stage* newStage)
   Stack[StackIndex] = newStage;
   Stack[StackIndex]->Begin();
 
-  return 0;
+  return StackIndex;
 }
 
 Stage* StageStack::Pop()
@@ -39,6 +39,41 @@ Stage* StageStack::Pop()
   return result;
 }
 
+Stage* StageStack::Remove( int Index )
+{
+  Stage* result;
+
+  if( StackIndex < Index )
+	{
+		return 0;	// No stage at this location
+	}
+	result = Stack[Index];
+	for( int i = Index; i < StackIndex; i++ )
+	{
+		Stack[i] = Stack[i + 1];
+	}
+	StackIndex--;
+
+  return result;
+}
+
+Stage* StageStack::Remove( Stage* RemoveStage )
+{
+  for( int i = StackIndex; i >= 0; i-- )
+	{
+		if( Stack[i] == RemoveStage )
+		{
+			for( int j = i; j < StackIndex; j++ )
+			{
+				Stack[j] = Stack[j + 1];
+			}
+			StackIndex--;
+			return RemoveStage;
+		}
+	}
+	return 0;
+}
+
 Stage* StageStack::Current()
 {
   if( StackIndex == -1 )
@@ -52,7 +87,7 @@ int StageStack::GetStackIndex()
   return StackIndex;
 }
 
-Stage* StageStack::Item(int Index)
+Stage* StageStack::Item( int Index )
 {
   return Stack[Index];
 }

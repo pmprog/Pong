@@ -137,7 +137,7 @@ void BattleStage::Update()
 
 	if( ((BattlePlayer*)LeftPlayer)->TargetHealth == 0 || ((BattlePlayer*)RightPlayer)->TargetHealth == 0 )
 	{
-		FRAMEWORK->ProgramStages->Push( new TransitionStrips( new BattleOver(), FRAMES_PER_SECOND, 80 ) );
+		FRAMEWORK->ProgramStages->Push( new TransitionStrips( new BattleOver( this ), FRAMES_PER_SECOND, 80 ) );
 	}
 }
 

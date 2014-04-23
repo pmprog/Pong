@@ -3,6 +3,7 @@
 
 #include "../../framework/stage.h"
 #include "../../framework/includes.h"
+#include "../../library/angle.h"
 
 #ifndef BattleStage
 class BattleStage;
@@ -13,11 +14,12 @@ class BattleOver : public Stage
 	private:
 		ALLEGRO_FONT* itemFont;
 		int itemFontHeight;
-		int FadeIn;
 		BattleStage* battleStage;
+		Angle* slideAngleX;
+		Angle* slideAngleY;
 
   public:
-		BattleOver();
+		BattleOver(BattleStage* Battle);
 		~BattleOver();
 
     // Stage control

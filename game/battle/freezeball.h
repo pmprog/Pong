@@ -3,7 +3,7 @@
 
 #include "battleball.h"
 
-class FreezeBall : public BattleBall
+class FreezeBall : public ClassicBall
 {
 	private:
 		// Vector2* positionHistory[10];

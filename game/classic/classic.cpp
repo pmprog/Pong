@@ -159,6 +159,7 @@ void ClassicStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Tar
 		{
 			angV->X *= -1;
 			collisionFound = true;
+			Source->OnCollision( LeftPlayer );
 		}
 		delete leftPlyBounds;
 	}
@@ -169,6 +170,7 @@ void ClassicStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Tar
 		{
 			angV->X *= -1;
 			collisionFound = true;
+			Source->OnCollision( RightPlayer );
 		}
 		delete rightPlyBounds;
 	}

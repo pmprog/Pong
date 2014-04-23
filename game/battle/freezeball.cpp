@@ -3,7 +3,7 @@
 #include "../../framework/framework.h"
 #include "battle.h"
 
-FreezeBall::FreezeBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : BattleBall(PlayArena, StartPosition, StartDirection, StartSpeed)
+FreezeBall::FreezeBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : ClassicBall(PlayArena, StartPosition, StartDirection, StartSpeed)
 {
 }
 
