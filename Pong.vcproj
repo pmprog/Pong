@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\fireball.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\framework.cpp"
 				>
 			</File>
@@ -352,6 +356,10 @@
 			</File>
 			<File
 				RelativePath=".\transitions\fadein.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\fireball.h"
 				>
 			</File>
 			<File

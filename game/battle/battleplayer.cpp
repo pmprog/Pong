@@ -1,8 +1,12 @@
 
 #include "battleplayer.h"
+#include "battle.h"
+#include "fireball.h"
+#include "cloneball.h"
 
 BattlePlayer::BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int MinimumY, int MaximumY ) : Player( PlayArena, StartPosition, MinimumY, MaximumY )
 {
+	currentArena = (BattleStage*)PlayArena;
 	MaxHealth = 10;
 	TargetHealth = 10;
 	Health = 0.1f;
@@ -32,6 +36,13 @@ void BattlePlayer::Update()
 	if( TargetHealth > Health )
 	{
 		Health += 0.1f;
+	}
+
+	// TODO: Fix to use actual inventory
+	if( Inv1Pressed )
+	{
+		currentArena->AddObject( new FireBall( (Arena*)currentArena, this->Position, new Angle( 90 ), 4.0f ) );
+		Inv1Pressed = false;
 	}
 }
 

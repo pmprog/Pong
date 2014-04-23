@@ -3,8 +3,15 @@
 
 #include "../core/player.h"
 
+#ifndef BattleStage
+class BattleStage;
+#endif
+
 class BattlePlayer : private Player
 {
+	private:
+		BattleStage* currentArena;
+
 	public:
 		int MaxHealth;
 
