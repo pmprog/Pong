@@ -20,7 +20,14 @@ void FireBall::Render()
 
 void FireBall::OnCollision( Player* WithPlayer )
 {
-	((BattlePlayer*)WithPlayer)->TakeDamage( 1 );
+	BattlePlayer* ply = (BattlePlayer*)WithPlayer;
+	if( ply->FreezeLevel > 0 )
+	{
+		ply->FreezeLevel--;
+		ply->FreezeTime = 0;
+	} else {
+		ply->TakeDamage( 2 );
+	}
 	((BattleStage*)currentArena)->RemoveObject( this );
 }
 

@@ -36,4 +36,7 @@ class BattleStage : public Stage, Arena
 
 		void AddObject( Projectile* Object );
 		void RemoveObject( Projectile* Object );
+
+		Angle* GetAttackAngle( Player* Controller );
+		Player* GetOpponent( Player* Controller );
 };

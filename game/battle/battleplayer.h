@@ -7,6 +7,8 @@
 class BattleStage;
 #endif
 
+#define FREEZE_TIME		4 * FRAMES_PER_SECOND
+
 class BattlePlayer : private Player
 {
 	private:
@@ -25,6 +27,9 @@ class BattlePlayer : private Player
 		bool Inv1Pressed;
 		bool Inv2Pressed;
 		bool Inv3Pressed;
+
+		int FreezeLevel;
+		int FreezeTime;
 
 		BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int MinimumY, int MaximumY );
 		~BattlePlayer();

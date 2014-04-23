@@ -2,7 +2,10 @@
 #include "battleplayer.h"
 #include "battle.h"
 #include "fireball.h"
+#include "freezeball.h"
 #include "cloneball.h"
+#include "homingfireball.h"
+#include "../../framework/framework.h"
 
 BattlePlayer::BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int MinimumY, int MaximumY ) : Player( PlayArena, StartPosition, MinimumY, MaximumY )
 {
@@ -20,6 +23,9 @@ BattlePlayer::BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int Minimu
 	Inventory[0] = 0;
 	Inventory[1] = 0;
 	Inventory[2] = 0;
+
+	FreezeLevel = 0;
+	FreezeTime = 0;
 }
 
 BattlePlayer::~BattlePlayer()
@@ -28,6 +34,19 @@ BattlePlayer::~BattlePlayer()
 
 void BattlePlayer::Update()
 {
+
+	switch( FreezeLevel )
+	{
+		case 0:
+			Speed = 920.0f / FRAMES_PER_SECOND;
+			break;
+		case 1:
+			Speed = 230.0f / FRAMES_PER_SECOND;
+			break;
+		case 2:
+			Speed = 0.0f;
+			break;
+	}
 	Player::Update();
 	if( TargetHealth < Health )
 	{
@@ -38,11 +57,35 @@ void BattlePlayer::Update()
 		Health += 0.1f;
 	}
 
+	// Unfreeze player
+	if( FreezeLevel > 0 )
+	{
+		FreezeTime++;
+		if( FreezeTime >= FREEZE_TIME )
+		{
+			FreezeLevel--;
+			FreezeTime = 0;
+		}
+	}
+
 	// TODO: Fix to use actual inventory
+	Angle* attackAngle = currentArena->GetAttackAngle( this );
 	if( Inv1Pressed )
 	{
-		currentArena->AddObject( new FireBall( (Arena*)currentArena, this->Position, new Angle( 90 ), 4.0f ) );
+		currentArena->AddObject( new FireBall( (Arena*)currentArena, this->Position, attackAngle, 4.0f ) );
 		Inv1Pressed = false;
+	}
+	if( Inv2Pressed )
+	{
+		currentArena->AddObject( new HomingFireBall( currentArena->GetOpponent( this ), (Arena*)currentArena, this->Position, attackAngle, 3.0f ) );
+		//currentArena->AddObject( new FireBall( (Arena*)currentArena, this->Position, new Angle( attackAngle->ToDegrees() - 25.0f ), 4.0f ) );
+		//currentArena->AddObject( new FireBall( (Arena*)currentArena, this->Position, new Angle( attackAngle->ToDegrees() + 25.0f ), 4.0f ) );
+		Inv2Pressed = false;
+	}
+	if( Inv3Pressed )
+	{
+		currentArena->AddObject( new FreezeBall( (Arena*)currentArena, this->Position, attackAngle, 2.0f ) );
+		Inv3Pressed = false;
 	}
 }
 

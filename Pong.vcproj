@@ -233,11 +233,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\freezeball.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\getkeypress.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\shaders\greyscale.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\homingfireball.cpp"
 				>
 			</File>
 			<File
@@ -367,11 +375,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\freezeball.h"
+				>
+			</File>
+			<File
 				RelativePath=".\game\getkeypress.h"
 				>
 			</File>
 			<File
 				RelativePath=".\shaders\greyscale.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\homingfireball.h"
 				>
 			</File>
 			<File

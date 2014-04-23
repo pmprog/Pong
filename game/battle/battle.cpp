@@ -55,10 +55,6 @@ void BattleStage::EventOccurred(Event *e)
 			case ALLEGRO_KEY_ESCAPE:
 				FRAMEWORK->ProgramStages->Push( new TransitionTiled( TiledTransitions::NORTHWEST_TO_SOUTHEAST, 20, 20 ) );
 				break;
-
-			case ALLEGRO_KEY_F2:
-				GameObjectsToAdd.push_back( new CloneBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f ) );
-				break;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
 		{
@@ -115,19 +111,19 @@ void BattleStage::EventOccurred(Event *e)
 void BattleStage::Update()
 {
 
+	while( GameObjectsToAdd.size() > 0 )
+	{
+		Projectile* p = GameObjectsToAdd.front();
+		GameObjectsToAdd.pop_front();
+		GameObjects.push_back( p );
+	}
+
 	while( GameObjectsToRemove.size() > 0 )
 	{
 		Projectile* p = GameObjectsToRemove.front();
 		GameObjectsToRemove.pop_front();
 		GameObjects.remove( p );
 		delete p;
-	}
-
-	while( GameObjectsToAdd.size() > 0 )
-	{
-		Projectile* p = GameObjectsToAdd.front();
-		GameObjectsToAdd.pop_front();
-		GameObjects.push_back( p );
 	}
 
 	for( std::list<Projectile*>::const_iterator i = GameObjects.begin(); i != GameObjects.end(); i++ )
@@ -294,3 +290,12 @@ void BattleStage::RemoveObject( Projectile* Object )
 	GameObjectsToRemove.push_back( Object );
 }
 
+Angle* BattleStage::GetAttackAngle( Player* Controller )
+{
+	return new Angle( (Controller == LeftPlayer ? 90.0f : 270.0f) );
+}
+
+Player* BattleStage::GetOpponent( Player* Controller )
+{
+	return (Controller == LeftPlayer ? RightPlayer : LeftPlayer);
+}
