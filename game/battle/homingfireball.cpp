@@ -13,7 +13,7 @@ void HomingFireBall::Update()
 {
 	Angle* targetDirection;
 
-	BattleBall::Update();
+	ClassicBall::Update();
 
 	targetUpdateDelay++;
 	if( targetUpdateDelay >= HOMING_RETARGET_DELAY )

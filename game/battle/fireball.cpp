@@ -6,15 +6,20 @@
 
 FireBall::FireBall( Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed ) : ClassicBall(PlayArena, StartPosition, StartDirection, StartSpeed)
 {
+	//ParticleDelay = 0;
 }
 
 
 void FireBall::Update()
 {
-	BattleBall::Update();
+	ClassicBall::Update();
 
-	Particle* p = new Particle( al_map_rgb( 255, 220, 128 ), currentArena, new Vector2(Position), new Angle( Direction->ToDegrees() + 180.0f + (rand() % 41) - 21 ), Speed * 2.0f );
-	((BattleStage*)currentArena)->AddObject( p );
+	//ParticleDelay = (ParticleDelay + 1) % FIREBALL_PARTICLE_DELAY;
+	//if( ParticleDelay == 0 )
+	//{
+		Particle* p = new Particle( al_map_rgb( 192, 160, 64 ), 20, currentArena, new Vector2(Position), new Angle( Direction->ToDegrees() + 180.0f + (rand() % 61) - 31 ), Speed / 2.5f );
+		((BattleStage*)currentArena)->AddObject( p );
+	//}
 }
 
 void FireBall::Render()

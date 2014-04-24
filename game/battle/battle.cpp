@@ -5,6 +5,8 @@
 #include "../../transitions/transitions.h"
 #include "battleover.h"
 
+#include "particle.h"
+
 BattleStage::BattleStage()
 {
 	backgroundImage = al_load_bitmap( "resources/background.png" );
@@ -54,6 +56,10 @@ void BattleStage::EventOccurred(Event *e)
 		{
 			case ALLEGRO_KEY_ESCAPE:
 				FRAMEWORK->ProgramStages->Push( new TransitionTiled( TiledTransitions::NORTHWEST_TO_SOUTHEAST, 20, 20 ) );
+				break;
+			case ALLEGRO_KEY_F2:
+				Particle* p = new Particle( al_map_rgb( 255, 220, 128 ), FRAMES_PER_SECOND, this, new Vector2(400, 240), new Angle( rand() % 360 ), 0.4f );
+				AddObject( p );
 				break;
 		}
 		if( e->Data.Keyboard.KeyCode == FRAMEWORK->Settings->GetQuickIntegerValue( "Left.Up", ALLEGRO_KEY_UP ) )
@@ -147,7 +153,7 @@ void BattleStage::Render()
 
 	al_draw_bitmap( backgroundImage, 0, 0, 0 );
 
-	for( std::list<Projectile*>::const_iterator i = GameObjects.begin(); i != GameObjects.end(); i++ )
+	for( std::list<Projectile*>::const_reverse_iterator i = GameObjects.rbegin(); i != GameObjects.rend(); i++ )
 	{
 		Projectile* p = (*i);
 		p->Render();

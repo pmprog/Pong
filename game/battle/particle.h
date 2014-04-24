@@ -6,12 +6,13 @@
 class Particle : public ClassicBall
 {
 	private:
+		int MaxLife;
 		int LifeSpan;
 		ALLEGRO_COLOR particleColour;
 		// Vector2* positionHistory[10];
 
 	public:
-		Particle( ALLEGRO_COLOR Colour, Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed );
+		Particle( ALLEGRO_COLOR Colour, int LifeTime, Arena* PlayArena, Vector2* StartPosition, Angle* StartDirection, float StartSpeed );
 
 		virtual void Update();
 		virtual void Render();

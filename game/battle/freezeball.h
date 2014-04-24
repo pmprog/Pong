@@ -3,9 +3,12 @@
 
 #include "battleball.h"
 
+#define FREEZEBALL_PARTICLE_DELAY		8
+
 class FreezeBall : public ClassicBall
 {
 	private:
+		int ParticleDelay;
 		// Vector2* positionHistory[10];
 
 	public:

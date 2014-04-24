@@ -3,9 +3,12 @@
 
 #include "battleball.h"
 
+#define FIREBALL_PARTICLE_DELAY		3
+
 class FireBall : public ClassicBall
 {
 	private:
+		//int ParticleDelay;
 		// Vector2* positionHistory[10];
 
 	public:
