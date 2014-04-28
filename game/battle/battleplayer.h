@@ -8,6 +8,27 @@ class BattleStage;
 #endif
 
 #define FREEZE_TIME		4 * FRAMES_PER_SECOND
+#define SIZING_DELAY	10
+#define SIZING_MAX		192	
+#define SIZING_MIN		64
+#define SIZING_STEP		32
+
+namespace BattleInventory
+{
+	enum Inventory
+	{
+		INVENTORY_NONE = 0,
+		INVENTORY_FIREBALL,
+		INVENTORY_TRIFIRE,
+		INVENTORY_HOMING,
+		INVENTORY_FREEZE,
+		INVENTORY_REVERSE_BALL_VERT,
+		INVENTORY_REVERSE_BALL_HORZ,
+		INVENTORY_PADDLE_INCREASE,
+		INVENTORY_PADDLE_DECREASE,
+		INVENTORY_PADDLE_REVERSE_CONTROLS
+	};
+}
 
 class BattlePlayer : private Player
 {
@@ -18,10 +39,12 @@ class BattlePlayer : private Player
 		int MaxHealth;
 
 		int TargetSize;
+		int SizeDelay;
+
 		float Health;
 		int TargetHealth;
 
-		int Inventory[3];
+		BattleInventory::Inventory Inventory[3];
 
 		bool SendPressed;
 		bool Inv1Pressed;
@@ -38,4 +61,6 @@ class BattlePlayer : private Player
 		// virtual void Render(); // Not needed
 
 		void TakeDamage( int Amount );
+		void UseInventory( int Slot );
+		void SendInventory( int Slot );
 };
