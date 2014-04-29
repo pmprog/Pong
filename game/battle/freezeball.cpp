@@ -33,12 +33,7 @@ void FreezeBall::Render()
 
 void FreezeBall::OnCollision( Player* WithPlayer )
 {
-	BattlePlayer* ply = (BattlePlayer*)WithPlayer;
-	if( ply->FreezeLevel < 2 )
-	{
-		ply->FreezeLevel++;
-		ply->FreezeTime = 0;
-	}
+	((BattlePlayer*)WithPlayer)->Freeze();
 	((BattleStage*)currentArena)->RemoveObject( this );
 }
 

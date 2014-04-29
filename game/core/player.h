@@ -13,6 +13,8 @@ class Player
 		Arena* currentArena;
 		int roofY;
 		int floorY;
+		ALLEGRO_COLOR drawColour;
+		ALLEGRO_COLOR targetColour;
 
 	public:
 		Vector2* Position;

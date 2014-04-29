@@ -12,6 +12,7 @@ class BattleStage;
 #define SIZING_MAX		192	
 #define SIZING_MIN		64
 #define SIZING_STEP		32
+#define REVERSE_TIME	4 * FRAMES_PER_SECOND
 
 namespace BattleInventory
 {
@@ -25,8 +26,8 @@ namespace BattleInventory
 		INVENTORY_REVERSE_BALL_VERT,
 		INVENTORY_REVERSE_BALL_HORZ,
 		INVENTORY_PADDLE_INCREASE,
-		INVENTORY_PADDLE_DECREASE,
-		INVENTORY_PADDLE_REVERSE_CONTROLS
+		INVENTORY_PADDLE_REVERSE_CONTROLS,
+		INVENTORY_PADDLE_DECREASE
 	};
 }
 
@@ -34,6 +35,7 @@ class BattlePlayer : private Player
 {
 	private:
 		BattleStage* currentArena;
+		void setFreezeColour();
 
 	public:
 		int MaxHealth;
@@ -54,12 +56,16 @@ class BattlePlayer : private Player
 		int FreezeLevel;
 		int FreezeTime;
 
+		int ReverseControlTime;
+
 		BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int MinimumY, int MaximumY );
 		~BattlePlayer();
 
 		virtual void Update();
 		// virtual void Render(); // Not needed
 
+		void Freeze();
+		void Burn();
 		void TakeDamage( int Amount );
 		void UseInventory( int Slot );
 		void SendInventory( int Slot );

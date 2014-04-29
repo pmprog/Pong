@@ -17,14 +17,16 @@ BattlePlayer::BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int Minimu
 	TargetSize = Size;
 	SizeDelay = 0;
 
+	ReverseControlTime = 0;
+
 	SendPressed = false;
 	Inv1Pressed = false;
 	Inv2Pressed = false;
 	Inv3Pressed = false;
 
-	Inventory[0] = BattleInventory::INVENTORY_PADDLE_INCREASE; //0;
-	Inventory[1] = BattleInventory::INVENTORY_PADDLE_INCREASE; //0;
-	Inventory[2] = BattleInventory::INVENTORY_PADDLE_INCREASE; //0;
+	Inventory[0] = BattleInventory::INVENTORY_TRIFIRE; //0;
+	Inventory[1] = BattleInventory::INVENTORY_FREEZE; //0;
+	Inventory[2] = BattleInventory::INVENTORY_FREEZE; //0;
 
 	FreezeLevel = 0;
 	FreezeTime = 0;
@@ -49,7 +51,16 @@ void BattlePlayer::Update()
 			Speed = 0.0f;
 			break;
 	}
+	if( ReverseControlTime > 0 )
+	{
+		Speed *= -1;
+	}
 	Player::Update();
+	if( ReverseControlTime > 0 )
+	{
+		Speed *= -1;
+		ReverseControlTime--;
+	}
 	if( TargetHealth < Health )
 	{
 		Health -= 0.1f;
@@ -84,6 +95,7 @@ void BattlePlayer::Update()
 			FreezeLevel--;
 			FreezeTime = 0;
 		}
+		setFreezeColour();
 	}
 
 	if( SendPressed )
@@ -113,6 +125,45 @@ void BattlePlayer::Update()
 		{
 			UseInventory( 2 );
 		}
+	}
+}
+
+void BattlePlayer::setFreezeColour()
+{
+	switch( FreezeLevel )
+	{
+		case 0:
+			targetColour = al_map_rgb( 255, 255, 255 );
+			break;
+		case 1:
+			targetColour = al_map_rgb( 220, 230, 255 );
+			break;
+		case 2:
+			targetColour = al_map_rgb( 128, 192, 255 );
+			break;
+	}
+}
+
+void BattlePlayer::Freeze()
+{
+	if( FreezeLevel < 2 )
+	{
+		FreezeLevel++;
+		FreezeTime = 0;
+	}
+	setFreezeColour();
+}
+
+void BattlePlayer::Burn()
+{
+	drawColour = al_map_rgb( 255, 220, 128 );
+	if( FreezeLevel > 0 )
+	{
+		FreezeLevel--;
+		FreezeTime = 0;
+		setFreezeColour();
+	} else {
+		TakeDamage( 2 );
 	}
 }
 
@@ -175,13 +226,15 @@ void BattlePlayer::UseInventory( int Slot )
 			break;
 		case BattleInventory::INVENTORY_PADDLE_DECREASE:
 			TargetSize -= SIZING_STEP;
-			if( TargetSize > SIZING_MIN )
+			if( TargetSize < SIZING_MIN )
 			{
 				TargetSize = SIZING_MIN;
 			}
 			break;
 		case BattleInventory::INVENTORY_PADDLE_REVERSE_CONTROLS:
-			// TODO: Reverse controls
+			ReverseControlTime = REVERSE_TIME;
+			UpPressed = false;
+			DownPressed = false;
 			break;
 	}
 	Inventory[Slot] = BattleInventory::INVENTORY_NONE;
