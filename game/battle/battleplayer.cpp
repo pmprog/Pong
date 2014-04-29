@@ -136,10 +136,10 @@ void BattlePlayer::setFreezeColour()
 			targetColour = al_map_rgb( 255, 255, 255 );
 			break;
 		case 1:
-			targetColour = al_map_rgb( 220, 230, 255 );
+			targetColour = al_map_rgb( 128, 192, 255 );
 			break;
 		case 2:
-			targetColour = al_map_rgb( 128, 192, 255 );
+			targetColour = al_map_rgb( 64, 128, 220 );
 			break;
 	}
 }
