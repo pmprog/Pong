@@ -39,4 +39,6 @@ class BattleStage : public Stage, Arena
 
 		Angle* GetAttackAngle( Player* Controller );
 		Player* GetOpponent( Player* Controller );
+		BattleBall* GetBall();
+		SpriteSheet* GetInventoryIcons();
 };

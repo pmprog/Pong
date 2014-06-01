@@ -310,3 +310,13 @@ Player* BattleStage::GetOpponent( Player* Controller )
 {
 	return (Controller == LeftPlayer ? RightPlayer : LeftPlayer);
 }
+
+BattleBall* BattleStage::GetBall()
+{
+	return (BattleBall*)GameObjects.front();
+}
+
+SpriteSheet* BattleStage::GetInventoryIcons()
+{
+	return inventoryIcons;
+}

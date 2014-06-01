@@ -289,6 +289,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\sendball.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\settings.cpp"
 				>
 			</File>
@@ -440,6 +444,10 @@
 			</File>
 			<File
 				RelativePath=".\shaders\scanlines.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\sendball.h"
 				>
 			</File>
 			<File
