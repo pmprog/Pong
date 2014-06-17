@@ -74,4 +74,3 @@ float Animation::GetScale()
 {
 	return animScale;
 }
-

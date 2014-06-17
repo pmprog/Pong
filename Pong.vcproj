@@ -277,6 +277,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\battle\pickup.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\game\core\player.cpp"
 				>
 			</File>
@@ -432,6 +436,10 @@
 			</File>
 			<File
 				RelativePath=".\game\battle\particle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\pickup.h"
 				>
 			</File>
 			<File
