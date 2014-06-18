@@ -125,4 +125,11 @@ void Network::Update()
 	}
 }
 
+void Network::Send( Memory* PacketData )
+{
+	ENetPacket* packet = enet_packet_create( PacketData->GetData(), PacketData->GetSize(), ENET_PACKET_FLAG_RELIABLE);
+	enet_peer_send( networkPeer, 0, packet );
+	enet_host_flush( localHost );
+}
+
 #endif

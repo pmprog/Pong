@@ -71,7 +71,6 @@ void Pickup::Render()
 void Pickup::Update()
 {
 	BattleBall* ball;
-	BattlePlayer* plyr;
 	switch( animationMode )
 	{
 		case PICKUP_ANIM_WARPIN:

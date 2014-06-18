@@ -4,6 +4,7 @@
 #ifdef NETWORK_SUPPORT
 
 #include "includes.h"
+#include "../library/memory.h"
 
 /*
 	Class: Network
@@ -70,6 +71,12 @@ class Network
 			Let's enet process all packets and pushes them into the framework event list
     */
 		void Update();
+
+		/*
+			Function: Send
+			Send packet to other player
+    */
+		void Send( Memory* PacketData );
 
 };
 

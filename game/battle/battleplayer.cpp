@@ -30,6 +30,8 @@ BattlePlayer::BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int Minimu
 
 	FreezeLevel = 0;
 	FreezeTime = 0;
+
+	IsNetworkPlayer = false;
 }
 
 BattlePlayer::~BattlePlayer()

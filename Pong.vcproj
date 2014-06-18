@@ -269,6 +269,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\menunetwork.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\network.cpp"
 				>
 			</File>
@@ -428,6 +432,10 @@
 			</File>
 			<File
 				RelativePath=".\game\menu.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\menunetwork.h"
 				>
 			</File>
 			<File

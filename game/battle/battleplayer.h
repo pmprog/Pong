@@ -38,6 +38,8 @@ class BattlePlayer : private Player
 		void setFreezeColour();
 
 	public:
+		bool IsNetworkPlayer;
+
 		int MaxHealth;
 
 		int TargetSize;
