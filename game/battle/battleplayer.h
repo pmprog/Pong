@@ -69,4 +69,5 @@ class BattlePlayer : private Player
 		void TakeDamage( int Amount );
 		void UseInventory( int Slot );
 		void SendInventory( int Slot );
+
 };

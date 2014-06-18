@@ -15,7 +15,11 @@ BattleStage::BattleStage()
 	LeftPlayer = (Player*)(new BattlePlayer( this, new Vector2( 130, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
 	RightPlayer = (Player*)(new BattlePlayer( this, new Vector2( 670, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
 
-	GamePickups.push_back( new Pickup( this, FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ) );
+	// Game area = 460
+	for( int i = 1; i < 5; i++ )
+	{
+		GamePickups.push_back( new Pickup( this, FRAMEWORK->Display_GetWidth() / 2, 10 + (92 * i) ) );
+	}
 }
 
 BattleStage::~BattleStage()

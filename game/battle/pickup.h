@@ -10,6 +10,7 @@
 class BattleStage;
 #endif
 
+#define PICKUP_GRAPHIC_SIZE			32
 #define PICKUP_ANIM_COOLDOWN		0
 #define PICKUP_ANIM_WARPIN			1
 #define PICKUP_ANIM_AVAILABLE		2
@@ -38,4 +39,5 @@ class Pickup
 		Pickup( BattleStage* PlayArena, Vector2* StartPosition );
 		void Render();
 		void Update();
+		void GiveItem( BattlePlayer* ToPlayer );
 };

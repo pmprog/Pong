@@ -20,7 +20,7 @@ void Pickup::InitPickup()
 {
 	pickupItem = (BattleInventory::Inventory)((rand() % (int)BattleInventory::INVENTORY_PADDLE_DECREASE) + 1);
 
-	pickupSprites = new SpriteSheet( "resources/pickups.png", 32, 32 );
+	pickupSprites = new SpriteSheet( "resources/pickups.png", PICKUP_GRAPHIC_SIZE, PICKUP_GRAPHIC_SIZE );
 	pickupAnimIn = new Animation( pickupSprites, false, 10 );
 	pickupAnimAvailable = new Animation( pickupSprites, true, 10 );
 	pickupAnimCollected = new Animation( pickupSprites, false, 10 );
@@ -49,36 +49,57 @@ void Pickup::InitPickup()
 
 void Pickup::Render()
 {
+	Animation* cur = 0;
 	switch( animationMode )
 	{
 		case PICKUP_ANIM_WARPIN:
-			pickupAnimIn->DrawFrame( spawnPosition->X - 16, spawnPosition->Y - 16 );
+			cur = pickupAnimIn;
 			break;
 		case PICKUP_ANIM_AVAILABLE:
-			pickupAnimAvailable->DrawFrame( spawnPosition->X - 16, spawnPosition->Y - 16 );
+			cur = pickupAnimAvailable;
 			break;
 		case PICKUP_ANIM_COLLECTED:
-			pickupAnimCollected->DrawFrame( spawnPosition->X - 16, spawnPosition->Y - 16 );
+			cur = pickupAnimCollected;
 			break;
+	}
+	if( cur != 0 )
+	{
+		cur->DrawFrame( spawnPosition->X - (PICKUP_GRAPHIC_SIZE/2), spawnPosition->Y - (PICKUP_GRAPHIC_SIZE/2) );
 	}
 }
 
 void Pickup::Update()
 {
+	BattleBall* ball;
+	BattlePlayer* plyr;
 	switch( animationMode )
 	{
 		case PICKUP_ANIM_WARPIN:
-			// TODO: Check if collision with ball, and set to collected and pass to player
-			pickupAnimIn->Update();
-			if( pickupAnimIn->HasEnded() )
+			ball = gameArena->GetBall();
+			if( ball->LastHitBy != 0 && spawnPosition->DistanceTo( ball->Position ) < (float)PICKUP_GRAPHIC_SIZE )
 			{
-				animationMode = PICKUP_ANIM_AVAILABLE;
-				pickupAnimAvailable->Start();
+				GiveItem( (BattlePlayer*)ball->LastHitBy );
+				animationMode = PICKUP_ANIM_COLLECTED;
+				pickupAnimCollected->Start();
+			} else {
+				pickupAnimIn->Update();
+				if( pickupAnimIn->HasEnded() )
+				{
+					animationMode = PICKUP_ANIM_AVAILABLE;
+					pickupAnimAvailable->Start();
+				}
 			}
 			break;
 		case PICKUP_ANIM_AVAILABLE:
-			// TODO: Check if collision with ball, and set to collected and pass to player
-			pickupAnimAvailable->Update();
+			ball = gameArena->GetBall();
+			if( ball->LastHitBy != 0 && spawnPosition->DistanceTo( ball->Position ) < (float)PICKUP_GRAPHIC_SIZE )
+			{
+				GiveItem( (BattlePlayer*)ball->LastHitBy );
+				animationMode = PICKUP_ANIM_COLLECTED;
+				pickupAnimCollected->Start();
+			} else {
+				pickupAnimAvailable->Update();
+			}
 			break;
 		case PICKUP_ANIM_COLLECTED:
 			pickupAnimCollected->Update();
@@ -98,5 +119,17 @@ void Pickup::Update()
 				pickupItem = (BattleInventory::Inventory)((rand() % (int)BattleInventory::INVENTORY_PADDLE_DECREASE) + 1);
 			}
 			break;
+	}
+}
+
+void Pickup::GiveItem( BattlePlayer* ToPlayer )
+{
+	for( int i = 0; i < 3; i++ )
+	{
+		if( ToPlayer->Inventory[i] ==	BattleInventory::INVENTORY_NONE )
+		{
+			ToPlayer->Inventory[i] = pickupItem;
+			return;
+		}
 	}
 }

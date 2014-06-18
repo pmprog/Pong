@@ -250,4 +250,3 @@ void BattlePlayer::SendInventory( int Slot )
 	}
 	Inventory[Slot] = BattleInventory::INVENTORY_NONE;
 }
-
