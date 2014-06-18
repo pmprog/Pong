@@ -7,6 +7,7 @@
 #include "../../library/spritesheet.h"
 #include "battleball.h"
 #include "battleplayer.h"
+#include "pickup.h"
 
 class BattleStage : public Stage, Arena
 {
@@ -16,6 +17,7 @@ class BattleStage : public Stage, Arena
 		std::list<Projectile*> GameObjects;
 		std::list<Projectile*> GameObjectsToAdd;
 		std::list<Projectile*> GameObjectsToRemove;
+		std::list<Pickup*> GamePickups;
 
   public:
 		BattleStage();

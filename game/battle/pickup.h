@@ -4,7 +4,11 @@
 #include "../../framework/framework.h"
 #include "../../library/vector2.h"
 #include "../../library/animation.h"
-#include "battle.h"
+#include "battleplayer.h"
+
+#ifndef BattleStage
+class BattleStage;
+#endif
 
 #define PICKUP_ANIM_COOLDOWN		0
 #define PICKUP_ANIM_WARPIN			1
@@ -27,7 +31,10 @@ class Pickup
 		int animationMode;
 		int pickupCooldown;
 
+		void InitPickup();
+
 	public:
+		Pickup( BattleStage* PlayArena, int StartX, int StartY );
 		Pickup( BattleStage* PlayArena, Vector2* StartPosition );
 		void Render();
 		void Update();
