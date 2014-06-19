@@ -6,7 +6,12 @@
 class MenuNetwork : public Stage
 {
 	private:
+		ALLEGRO_FONT* titleFont;
+		ALLEGRO_FONT* itemFont;
+		int itemFontHeight;
 		int selectedItem;
+		int fadeDown;
+		int slideIn;
 
   public:
 		MenuNetwork();

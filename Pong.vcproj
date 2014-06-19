@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\transitions\fadeacross.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\transitions\fadein.cpp"
 				>
 			</File>
@@ -384,6 +388,10 @@
 			</File>
 			<File
 				RelativePath=".\framework\event.h"
+				>
+			</File>
+			<File
+				RelativePath=".\transitions\fadeacross.h"
 				>
 			</File>
 			<File
