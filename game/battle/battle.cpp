@@ -14,6 +14,12 @@ BattleStage::BattleStage()
 	GameObjects.push_back( new BattleBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f ) );
 	LeftPlayer = (Player*)(new BattlePlayer( this, new Vector2( 130, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
 	RightPlayer = (Player*)(new BattlePlayer( this, new Vector2( 670, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
+
+	// Game area = 460
+	for( int i = 1; i < 5; i++ )
+	{
+		GamePickups.push_back( new Pickup( this, FRAMEWORK->Display_GetWidth() / 2, 10 + (92 * i) ) );
+	}
 }
 
 BattleStage::~BattleStage()
@@ -27,6 +33,12 @@ BattleStage::~BattleStage()
 	{
 		delete GameObjects.front();
 		GameObjects.pop_front();
+	}
+
+	while( GamePickups.size() > 0 )
+	{
+		delete GamePickups.front();
+		GamePickups.pop_front();
 	}
 }
 
@@ -145,6 +157,12 @@ void BattleStage::Update()
 	{
 		FRAMEWORK->ProgramStages->Push( new TransitionStrips( new BattleOver( this ), FRAMES_PER_SECOND, 80 ) );
 	}
+
+	for( std::list<Pickup*>::const_iterator i = GamePickups.begin(); i != GamePickups.end(); i++ )
+	{
+		Pickup* p = (*i);
+		p->Update();
+	}
 }
 
 void BattleStage::Render()
@@ -152,6 +170,13 @@ void BattleStage::Render()
 	BattlePlayer* ply;
 
 	al_draw_bitmap( backgroundImage, 0, 0, 0 );
+
+
+	for( std::list<Pickup*>::const_iterator i = GamePickups.begin(); i != GamePickups.end(); i++ )
+	{
+		Pickup* p = (*i);
+		p->Render();
+	}
 
 	for( std::list<Projectile*>::const_reverse_iterator i = GameObjects.rbegin(); i != GameObjects.rend(); i++ )
 	{

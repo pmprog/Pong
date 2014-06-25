@@ -24,12 +24,14 @@ BattlePlayer::BattlePlayer( Arena* PlayArena, Vector2* StartPosition, int Minimu
 	Inv2Pressed = false;
 	Inv3Pressed = false;
 
-	Inventory[0] = BattleInventory::INVENTORY_TRIFIRE; //0;
-	Inventory[1] = BattleInventory::INVENTORY_FREEZE; //0;
-	Inventory[2] = BattleInventory::INVENTORY_FREEZE; //0;
+	Inventory[0] = BattleInventory::INVENTORY_NONE;
+	Inventory[1] = BattleInventory::INVENTORY_NONE;
+	Inventory[2] = BattleInventory::INVENTORY_NONE;
 
 	FreezeLevel = 0;
 	FreezeTime = 0;
+
+	IsNetworkPlayer = false;
 }
 
 BattlePlayer::~BattlePlayer()
@@ -250,4 +252,3 @@ void BattlePlayer::SendInventory( int Slot )
 	}
 	Inventory[Slot] = BattleInventory::INVENTORY_NONE;
 }
-

@@ -49,12 +49,12 @@ void SettingsStage::EventOccurred(Event *e)
 				FRAMEWORK->ProgramStages->Push( new TransitionTiled( TiledTransitions::SPIRAL_INWARDS, 9, 9 ) );
 				break;
 			case ALLEGRO_KEY_UP:
-				selectedItem = (selectedItem + 16) % 17;
-				scrollPosition = selectedItem * (itemFontHeight * 0.7f);
+				selectedItem = (selectedItem + 22) % 23;
+				scrollPosition = selectedItem * (itemFontHeight * 0.8f);
 				break;
 			case ALLEGRO_KEY_DOWN:
-				selectedItem = (selectedItem + 1) % 17;
-				scrollPosition = selectedItem * (itemFontHeight * 0.7f);
+				selectedItem = (selectedItem + 1) % 23;
+				scrollPosition = selectedItem * (itemFontHeight * 0.8f);
 				break;
 			case ALLEGRO_KEY_ENTER:
 			case ALLEGRO_KEY_SPACE:
@@ -84,9 +84,15 @@ void SettingsStage::EventOccurred(Event *e)
 					case 13:
 					case 14:
 					case 15:
+					case 16:
+					case 17:
+					case 18:
+					case 19:
+					case 20:
+					case 21:
 						FRAMEWORK->ProgramStages->Push( new GetKeyPress() );
 						break;
-					case 16:
+					case 22:
 						FRAMEWORK->ProgramStages->Push( new TransitionTiled( TiledTransitions::SPIRAL_INWARDS, 9, 9 ) );
 						break;
 				}
@@ -134,6 +140,24 @@ void SettingsStage::EventOccurred(Event *e)
 				break;
 			case 15:
 				FRAMEWORK->Settings->SetIntegerValue( "Right.Inv3", e->Data.Keyboard.KeyCode );
+				break;
+			case 16:
+				FRAMEWORK->Settings->SetIntegerValue( "Network.Up", e->Data.Keyboard.KeyCode );
+				break;
+			case 17:
+				FRAMEWORK->Settings->SetIntegerValue( "Network.Down", e->Data.Keyboard.KeyCode );
+				break;
+			case 18:
+				FRAMEWORK->Settings->SetIntegerValue( "Network.Send", e->Data.Keyboard.KeyCode );
+				break;
+			case 19:
+				FRAMEWORK->Settings->SetIntegerValue( "Network.Inv1", e->Data.Keyboard.KeyCode );
+				break;
+			case 20:
+				FRAMEWORK->Settings->SetIntegerValue( "Network.Inv2", e->Data.Keyboard.KeyCode );
+				break;
+			case 21:
+				FRAMEWORK->Settings->SetIntegerValue( "Network.Inv3", e->Data.Keyboard.KeyCode );
 				break;
 		}
 	}
@@ -199,6 +223,22 @@ void SettingsStage::Render()
 	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Inventory 2 Key : %s", al_keycode_to_name( FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Inv2", ALLEGRO_KEY_K ) ) );
 	yPos += itemFontHeight; curItem++;
 	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Inventory 3 Key : %s", al_keycode_to_name( FRAMEWORK->Settings->GetQuickIntegerValue( "Right.Inv3", ALLEGRO_KEY_M ) ) );
+	yPos += itemFontHeight; curItem++;
+
+	yPos += 20;
+	al_draw_text( titleFont, al_map_rgb( 255, 192, 96 ), FRAMEWORK->Display_GetWidth() / 2, yPos, ALLEGRO_ALIGN_CENTRE, "Network Game Controls" );
+	yPos += titleFontHeight;
+	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Up Key : %s", al_keycode_to_name( FRAMEWORK->Settings->GetQuickIntegerValue( "Network.Up", ALLEGRO_KEY_PGUP ) ) );
+	yPos += itemFontHeight; curItem++;
+	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Down Key : %s", al_keycode_to_name( FRAMEWORK->Settings->GetQuickIntegerValue( "Network.Down", ALLEGRO_KEY_PGDN ) ) );
+	yPos += itemFontHeight; curItem++;
+	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Send Key : %s", al_keycode_to_name( FRAMEWORK->Settings->GetQuickIntegerValue( "Network.Send", ALLEGRO_KEY_HOME ) ) );
+	yPos += itemFontHeight; curItem++;
+	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Inventory 1 Key : %s", al_keycode_to_name( FRAMEWORK->Settings->GetQuickIntegerValue( "Network.Inv1", ALLEGRO_KEY_O ) ) );
+	yPos += itemFontHeight; curItem++;
+	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Inventory 2 Key : %s", al_keycode_to_name( FRAMEWORK->Settings->GetQuickIntegerValue( "Network.Inv2", ALLEGRO_KEY_K ) ) );
+	yPos += itemFontHeight; curItem++;
+	al_draw_textf( itemFont, (selectedItem == curItem ? selectedColour : itemColour), 40, yPos, ALLEGRO_ALIGN_LEFT, "Inventory 3 Key : %s", al_keycode_to_name( FRAMEWORK->Settings->GetQuickIntegerValue( "Network.Inv3", ALLEGRO_KEY_M ) ) );
 	yPos += itemFontHeight; curItem++;
 
 	yPos += 20;

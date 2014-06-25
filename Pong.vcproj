@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\transitions\fadeacross.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\transitions\fadein.cpp"
 				>
 			</File>
@@ -269,11 +273,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\menunetwork.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\network.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\game\battle\particle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\pickup.cpp"
 				>
 			</File>
 			<File
@@ -379,6 +391,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\transitions\fadeacross.h"
+				>
+			</File>
+			<File
 				RelativePath=".\transitions\fadein.h"
 				>
 			</File>
@@ -427,11 +443,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\game\menunetwork.h"
+				>
+			</File>
+			<File
 				RelativePath=".\framework\network.h"
 				>
 			</File>
 			<File
 				RelativePath=".\game\battle\particle.h"
+				>
+			</File>
+			<File
+				RelativePath=".\game\battle\pickup.h"
 				>
 			</File>
 			<File
