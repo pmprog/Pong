@@ -59,6 +59,14 @@
 				<Linker>
 					<Add option="-lmingw32" />
 					<Add option="-lSDLmain" />
+					<Add library="..\allegro\lib\liballegro_color-5.0.10-mt.a" />
+					<Add library="..\allegro\lib\liballegro_audio-5.0.10-mt.a" />
+					<Add library="..\allegro\lib\liballegro-5.0.10-mt.a" />
+					<Add library="..\allegro\lib\liballegro_font-5.0.10-mt.a" />
+					<Add library="..\allegro\lib\liballegro_image-5.0.10-mt.a" />
+					<Add library="..\allegro\lib\liballegro_acodec-5.0.10-mt.a" />
+					<Add library="..\allegro\lib\liballegro_primitives-5.0.10-mt.a" />
+					<Add library="..\allegro\lib\liballegro_ttf-5.0.10-mt.a" />
 					<Add directory="$(#mingw.lib)" />
 					<Add directory="../enet-1.3.11/bin/W32/Debug" />
 				</Linker>
@@ -436,6 +444,10 @@
 		<Unit filename="game/battle/homingfireball.h" />
 		<Unit filename="game/battle/particle.cpp" />
 		<Unit filename="game/battle/particle.h" />
+		<Unit filename="game/battle/pickup.cpp" />
+		<Unit filename="game/battle/pickup.h" />
+		<Unit filename="game/battle/sendball.cpp" />
+		<Unit filename="game/battle/sendball.h" />
 		<Unit filename="game/boot.cpp" />
 		<Unit filename="game/boot.h" />
 		<Unit filename="game/classic/classic.cpp" />
@@ -451,6 +463,12 @@
 		<Unit filename="game/getkeypress.h" />
 		<Unit filename="game/menu.cpp" />
 		<Unit filename="game/menu.h" />
+		<Unit filename="game/menunetwork.cpp" />
+		<Unit filename="game/menunetwork.h" />
+		<Unit filename="game/menunetworkclient.cpp" />
+		<Unit filename="game/menunetworkclient.h" />
+		<Unit filename="game/menunetworkhost.cpp" />
+		<Unit filename="game/menunetworkhost.h" />
 		<Unit filename="game/settings.cpp" />
 		<Unit filename="game/settings.h" />
 		<Unit filename="library/angle.cpp" />
@@ -476,6 +494,8 @@
 		<Unit filename="shaders/scanlines.h" />
 		<Unit filename="shaders/shader.h" />
 		<Unit filename="shaders/shaders.h" />
+		<Unit filename="transitions/fadeacross.cpp" />
+		<Unit filename="transitions/fadeacross.h" />
 		<Unit filename="transitions/fadein.cpp" />
 		<Unit filename="transitions/fadein.h" />
 		<Unit filename="transitions/strips.cpp" />
