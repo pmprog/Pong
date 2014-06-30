@@ -216,3 +216,6 @@ pip-log.txt
 
 # Framework settings file
 settings.cfg
+*.dll
+BattlePong.depend
+BattlePong.layout
