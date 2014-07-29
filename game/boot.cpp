@@ -8,8 +8,8 @@ void BootUp::Begin()
 {
 	bootBarSize = 0;
 	bootBarAdjust = (FRAMEWORK->Display_GetWidth() / (FRAMES_PER_SECOND * 1.5f));
-	logoSpriteP = new SpriteSheet( "resources/pmprog.png", 204, 200 );
-	logoSpriteF = new SpriteSheet( "resources/foxblock.png", 204, 200 );
+	logoSpriteP = new SpriteSheet( "resources/pmprog.png" );
+	logoSpriteF = new SpriteSheet( "resources/foxblock.png" );
 	logoFadeIn = 0;
 }
 
@@ -62,7 +62,7 @@ void BootUp::Render()
 	float scale = logoFadeIn / 128.0f;
 
 	logoSpriteP->DrawSprite( 0, qrtWidth - ((logoSpriteP->GetFrame( 0 )->Width * scale) / 2), hlfHeight - ((logoSpriteP->GetFrame( 0 )->Height * scale) / 2), scale, scale, 0 );
-	logoSpriteF->DrawSprite( 0, (qrtWidth * 3) - ((logoSpriteP->GetFrame( 0 )->Width * scale) / 2), hlfHeight - ((logoSpriteP->GetFrame( 0 )->Height * scale) / 2), scale, scale, 0 );
+	logoSpriteF->DrawSprite( 0, (qrtWidth * 3) - ((logoSpriteF->GetFrame( 0 )->Width * scale) / 2), hlfHeight - ((logoSpriteF->GetFrame( 0 )->Height * scale) / 2), scale, scale, 0 );
 
 	int xPos = (FRAMEWORK->Display_GetWidth() / 2) - (bootBarSize / 2);
 	int yPos = FRAMEWORK->Display_GetHeight() - 12;
@@ -73,7 +73,7 @@ void BootUp::StartGame()
 {
 	delete Framework::System->ProgramStages->Pop();
 	Framework::System->ProgramStages->Push( new TransitionFadeIn( new Menu(), al_map_rgb( 0, 0, 0 ), 50 ) );
-	
+
 }
 
 bool BootUp::IsTransition()

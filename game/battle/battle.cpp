@@ -237,11 +237,6 @@ void BattleStage::Render()
 	// Right player health
 	al_draw_filled_rectangle( 731, 198, 779, 462, al_map_rgb( 255, 255, 255 ) );
 	al_draw_filled_rectangle( 733, 460 - ((ply->Health / (float)ply->MaxHealth) * 260.0f), 777, 460, al_map_rgb( 0, 255, 0 ) );
-
-
-	Shader* s = new ShaderScanlines();
-	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
-	delete s;
 }
 
 bool BattleStage::IsTransition()
