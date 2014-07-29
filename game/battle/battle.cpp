@@ -186,6 +186,7 @@ void BattleStage::Render()
 	LeftPlayer->Render();
 	RightPlayer->Render();
 
+	// Boundaries of playing area
 	al_draw_line(  90,  10, 710,  10, al_map_rgb( 255, 255, 255 ), 3 );
 	al_draw_line(  90, 470, 710, 470, al_map_rgb( 255, 255, 255 ), 3 );
 	al_draw_line(  90,  10,  90, 470, al_map_rgb( 255, 255, 255 ), 3 );

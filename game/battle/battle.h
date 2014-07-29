@@ -9,6 +9,10 @@
 #include "battleplayer.h"
 #include "pickup.h"
 
+// *******************
+// Currently default stage for battle mode
+// *******************
+
 class BattleStage : public Stage, Arena
 {
 	private:

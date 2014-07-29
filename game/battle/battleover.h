@@ -9,6 +9,10 @@
 class BattleStage;
 #endif
 
+// *******************
+// Game over screen for battle mode (showing player scores and whatnot)
+// *******************
+
 class BattleOver : public Stage
 {
 	private:

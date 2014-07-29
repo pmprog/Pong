@@ -14,6 +14,11 @@ class BattleStage;
 #define SIZING_STEP		32
 #define REVERSE_TIME	4 * FRAMES_PER_SECOND
 
+// *******************
+// Player (paddle) for battle mode
+// Also defines inventory item types (pickups)
+// *******************
+
 namespace BattleInventory
 {
 	enum Inventory
@@ -26,8 +31,8 @@ namespace BattleInventory
 		INVENTORY_REVERSE_BALL_VERT,
 		INVENTORY_REVERSE_BALL_HORZ,
 		INVENTORY_PADDLE_INCREASE,
-		INVENTORY_PADDLE_REVERSE_CONTROLS,
 		INVENTORY_PADDLE_DECREASE,
+		INVENTORY_PADDLE_REVERSE_CONTROLS,
 		INVENTORY_PADDLE_EOL
 	};
 }
