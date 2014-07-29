@@ -6,14 +6,46 @@
 #include "battleover.h"
 
 #include "particle.h"
+#include "../assetDefines.h"
+
+#define INVENTORY_LEFT_X_POS      12
+#define INVENTORY_LEFT_Y_POS      36
+#define INVENTORY_LEFT_Y_SPACING   6
+#define INVENTORY_RIGHT_X_POS    724
+#define INVENTORY_RIGHT_Y_POS     36
+#define INVENTORY_RIGHT_Y_SPACING  6
+#define INVENTORY_ITEM_SIZE       64
+
+#define HEALTH_LEFT_X_POS    38
+#define HEALTH_LEFT_Y_POS   280
+#define HEALTH_LEFT_WIDTH    12
+#define HEALTH_LEFT_HEIGHT  186
+#define HEALTH_LEFT_BORDER    2
+#define HEALTH_RIGHT_X_POS  750
+#define HEALTH_RIGHT_Y_POS  280
+#define HEALTH_RIGHT_WIDTH   12
+#define HEALTH_RIGHT_HEIGHT 186
+#define HEALTH_RIGHT_BORDER   2
+
+#define LABEL_FONT_SIZE 24
+
+#define MAIN_POS_X   90
+#define MAIN_POS_Y   10
+#define MAIN_WIDTH  620
+#define MAIN_HEIGHT 460
+#define MAIN_BORDER   2
+
+#define PLAYER_LEFT_X  110
+#define PLAYER_RIGHT_X 690
 
 BattleStage::BattleStage()
 {
+	labelFont = al_load_font( GAME_FONT, LABEL_FONT_SIZE, 0 );
 	backgroundImage = al_load_bitmap( "resources/background.png" );
-	inventoryIcons = new SpriteSheet( "resources/inventory.png", 48, 48 );
+	inventoryIcons = new SpriteSheet( "resources/inventory.png", INVENTORY_ITEM_SIZE, INVENTORY_ITEM_SIZE );
 	GameObjects.push_back( new BattleBall( this, new Vector2( FRAMEWORK->Display_GetWidth() / 2, FRAMEWORK->Display_GetHeight() / 2 ), new Angle( rand() % 360 ), 3.0f ) );
-	LeftPlayer = (Player*)(new BattlePlayer( this, new Vector2( 130, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
-	RightPlayer = (Player*)(new BattlePlayer( this, new Vector2( 670, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 ));
+	LeftPlayer = (Player*)(new BattlePlayer( this, new Vector2( PLAYER_LEFT_X, FRAMEWORK->Display_GetHeight() / 2 ), MAIN_POS_Y, MAIN_POS_Y + MAIN_HEIGHT ));
+	RightPlayer = (Player*)(new BattlePlayer( this, new Vector2( PLAYER_RIGHT_X, FRAMEWORK->Display_GetHeight() / 2 ), MAIN_POS_Y, MAIN_POS_Y + MAIN_HEIGHT ));
 
 	// Game area = 460
 	for( int i = 1; i < 5; i++ )
@@ -24,6 +56,7 @@ BattleStage::BattleStage()
 
 BattleStage::~BattleStage()
 {
+	al_destroy_font( labelFont );
 	al_destroy_bitmap( backgroundImage );
 	delete inventoryIcons;
 	delete LeftPlayer;
@@ -187,57 +220,77 @@ void BattleStage::Render()
 	RightPlayer->Render();
 
 	// Boundaries of playing area
-	al_draw_line(  90,  10, 710,  10, al_map_rgb( 255, 255, 255 ), 3 );
-	al_draw_line(  90, 470, 710, 470, al_map_rgb( 255, 255, 255 ), 3 );
-	al_draw_line(  90,  10,  90, 470, al_map_rgb( 255, 255, 255 ), 3 );
-	al_draw_line( 710,  10, 710, 470, al_map_rgb( 255, 255, 255 ), 3 );
+	al_draw_line( MAIN_POS_X - MAIN_BORDER, MAIN_POS_Y - MAIN_BORDER/ 2.0f,
+			MAIN_POS_X + MAIN_WIDTH + MAIN_BORDER, MAIN_POS_Y - MAIN_BORDER/ 2.0f, al_map_rgb( 255, 255, 255 ), MAIN_BORDER );
+	al_draw_line( MAIN_POS_X + MAIN_WIDTH + MAIN_BORDER / 2.0f,  MAIN_POS_Y,
+			MAIN_POS_X + MAIN_WIDTH + MAIN_BORDER / 2.0f, MAIN_POS_Y + MAIN_HEIGHT, al_map_rgb( 255, 255, 255 ), MAIN_BORDER );
+	al_draw_line( MAIN_POS_X - MAIN_BORDER,  MAIN_POS_Y + MAIN_HEIGHT + MAIN_BORDER/ 2.0f,
+			MAIN_POS_X + MAIN_WIDTH + MAIN_BORDER, MAIN_POS_Y + MAIN_HEIGHT + MAIN_BORDER/ 2.0f, al_map_rgb( 255, 255, 255 ), MAIN_BORDER );
+	al_draw_line( MAIN_POS_X - MAIN_BORDER/ 2.0f, MAIN_POS_Y,
+			MAIN_POS_X - MAIN_BORDER/ 2.0f, MAIN_POS_Y + MAIN_HEIGHT, al_map_rgb( 255, 255, 255 ), MAIN_BORDER );
 
 	ply = (BattlePlayer*)LeftPlayer;
 
 	// Left player inventory
-	if( ply->Inventory[0] != 0 )
-	{
-		inventoryIcons->DrawSprite( ply->Inventory[0] - 1, 21, 10, 1.0f, 1.0f, 0 );
-	}
-	al_draw_rectangle( 21,  10, 69,  58, al_map_rgb( 255, 255, 255 ), 3 );
-	if( ply->Inventory[1] != 0 )
-	{
-		inventoryIcons->DrawSprite( ply->Inventory[1] - 1, 21, 69, 1.0f, 1.0f, 0 );
-	}
-	al_draw_rectangle( 21,  64, 69, 112, al_map_rgb( 255, 255, 255 ), 3 );
-	if( ply->Inventory[2] != 0 )
-	{
-		inventoryIcons->DrawSprite( ply->Inventory[2] - 1, 21, 118, 1.0f, 1.0f, 0 );
-	}
-	al_draw_rectangle( 21, 118, 69, 166, al_map_rgb( 255, 255, 255 ), 3 );
+	al_draw_text( labelFont, al_map_rgb( 255, 255, 255 ),
+			INVENTORY_LEFT_X_POS + INVENTORY_ITEM_SIZE / 2.0f, INVENTORY_LEFT_Y_POS - LABEL_FONT_SIZE * 1.2f,
+			ALLEGRO_ALIGN_CENTRE, "items" );
+	inventoryIcons->DrawSprite( ply->Inventory[0], INVENTORY_LEFT_X_POS,
+			INVENTORY_LEFT_Y_POS,
+			1.0f, 1.0f, 0 );
+	inventoryIcons->DrawSprite( ply->Inventory[1], INVENTORY_LEFT_X_POS,
+			INVENTORY_LEFT_Y_POS + INVENTORY_ITEM_SIZE + INVENTORY_LEFT_Y_SPACING,
+			1.0f, 1.0f, 0 );
+	inventoryIcons->DrawSprite( ply->Inventory[2], INVENTORY_LEFT_X_POS,
+			INVENTORY_LEFT_Y_POS + (INVENTORY_ITEM_SIZE + INVENTORY_LEFT_Y_SPACING) * 2,
+			1.0f, 1.0f, 0 );
 
 	// Left player health
-	al_draw_filled_rectangle( 21, 198, 69, 462, al_map_rgb( 255, 255, 255 ) );
-	al_draw_filled_rectangle( 23, 460 - ((ply->Health / (float)ply->MaxHealth) * 260.0f), 67, 460, al_map_rgb( 0, 255, 0 ) );
+	al_draw_text( labelFont, al_map_rgb( 255, 255, 255 ),
+			HEALTH_LEFT_X_POS + HEALTH_LEFT_WIDTH / 2.0f, HEALTH_LEFT_Y_POS - HEALTH_LEFT_BORDER - LABEL_FONT_SIZE * 1.2f,
+			ALLEGRO_ALIGN_CENTRE, "health" );
+	al_draw_filled_rectangle( HEALTH_LEFT_X_POS - HEALTH_LEFT_BORDER,
+			HEALTH_LEFT_Y_POS - HEALTH_LEFT_BORDER,
+			HEALTH_LEFT_X_POS + HEALTH_LEFT_WIDTH + HEALTH_LEFT_BORDER,
+			HEALTH_LEFT_Y_POS + HEALTH_LEFT_HEIGHT + HEALTH_LEFT_BORDER,
+			al_map_rgb( 255, 255, 255 ) );
+	al_draw_filled_rectangle( HEALTH_LEFT_X_POS,
+			HEALTH_LEFT_Y_POS + (1.0f - (ply->Health / (float)ply->MaxHealth)) * HEALTH_LEFT_HEIGHT,
+			HEALTH_LEFT_X_POS + HEALTH_LEFT_WIDTH,
+			HEALTH_LEFT_Y_POS + HEALTH_LEFT_HEIGHT,
+			al_map_rgb( 168, 0, 0 ) );
 
 
 	ply = (BattlePlayer*)RightPlayer;
 
 	// Right player inventory
-	if( ply->Inventory[0] != 0 )
-	{
-		inventoryIcons->DrawSprite( ply->Inventory[0] - 1, 731, 10, 1.0f, 1.0f, 0 );
-	}
-	al_draw_rectangle( 731,  10, 779,  58, al_map_rgb( 255, 255, 255 ), 3 );
-	if( ply->Inventory[1] != 0 )
-	{
-		inventoryIcons->DrawSprite( ply->Inventory[1] - 1, 731, 64, 1.0f, 1.0f, 0 );
-	}
-	al_draw_rectangle( 731,  64, 779, 112, al_map_rgb( 255, 255, 255 ), 3 );
-	if( ply->Inventory[2] != 0 )
-	{
-		inventoryIcons->DrawSprite( ply->Inventory[2] - 1, 731, 118, 1.0f, 1.0f, 0 );
-	}
-	al_draw_rectangle( 731, 118, 779, 166, al_map_rgb( 255, 255, 255 ), 3 );
+	al_draw_text( labelFont, al_map_rgb( 255, 255, 255 ),
+			INVENTORY_RIGHT_X_POS + INVENTORY_ITEM_SIZE / 2.0f, INVENTORY_RIGHT_Y_POS - LABEL_FONT_SIZE * 1.2f,
+			ALLEGRO_ALIGN_CENTRE, "items" );
+	inventoryIcons->DrawSprite( ply->Inventory[0], INVENTORY_RIGHT_X_POS,
+			INVENTORY_RIGHT_Y_POS,
+			1.0f, 1.0f, 0 );
+	inventoryIcons->DrawSprite( ply->Inventory[1], INVENTORY_RIGHT_X_POS,
+			INVENTORY_RIGHT_Y_POS + INVENTORY_ITEM_SIZE + INVENTORY_RIGHT_Y_SPACING,
+			1.0f, 1.0f, 0 );
+	inventoryIcons->DrawSprite( ply->Inventory[2], INVENTORY_RIGHT_X_POS,
+			INVENTORY_RIGHT_Y_POS + (INVENTORY_ITEM_SIZE + INVENTORY_RIGHT_Y_SPACING) * 2,
+			1.0f, 1.0f, 0 );
 
 	// Right player health
-	al_draw_filled_rectangle( 731, 198, 779, 462, al_map_rgb( 255, 255, 255 ) );
-	al_draw_filled_rectangle( 733, 460 - ((ply->Health / (float)ply->MaxHealth) * 260.0f), 777, 460, al_map_rgb( 0, 255, 0 ) );
+	al_draw_text( labelFont, al_map_rgb( 255, 255, 255 ),
+			HEALTH_RIGHT_X_POS + HEALTH_RIGHT_WIDTH / 2.0f, HEALTH_RIGHT_Y_POS - HEALTH_RIGHT_BORDER- LABEL_FONT_SIZE * 1.2f,
+			ALLEGRO_ALIGN_CENTRE, "health" );
+	al_draw_filled_rectangle( HEALTH_RIGHT_X_POS - HEALTH_RIGHT_BORDER,
+			HEALTH_RIGHT_Y_POS - HEALTH_RIGHT_BORDER,
+			HEALTH_RIGHT_X_POS + HEALTH_RIGHT_WIDTH + HEALTH_RIGHT_BORDER,
+			HEALTH_RIGHT_Y_POS + HEALTH_RIGHT_HEIGHT + HEALTH_RIGHT_BORDER,
+			al_map_rgb( 255, 255, 255 ) );
+	al_draw_filled_rectangle( HEALTH_RIGHT_X_POS,
+			HEALTH_RIGHT_Y_POS + (1.0f - (ply->Health / (float)ply->MaxHealth)) * HEALTH_RIGHT_HEIGHT,
+			HEALTH_RIGHT_X_POS + HEALTH_RIGHT_WIDTH,
+			HEALTH_RIGHT_Y_POS + HEALTH_RIGHT_HEIGHT,
+			al_map_rgb( 168, 0, 0 ) );
 }
 
 bool BattleStage::IsTransition()
@@ -250,30 +303,30 @@ void BattleStage::ProcessProjectileCollisions( Projectile* Source, Vector2* Targ
 	Vector2* angV = Source->Direction->ToVector();
 	bool collisionFound = false;
 
-	if( TargetPosition->X - 90 < Source->Radius )
+	if( TargetPosition->X - MAIN_POS_X < Source->Radius )
 	{
-		TargetPosition->X = Maths::Abs(TargetPosition->X - 90 - Source->Radius) + Source->Radius + 90;
+		TargetPosition->X = Maths::Abs(TargetPosition->X - MAIN_POS_X - Source->Radius) + Source->Radius + MAIN_POS_X;
 		angV->X *= -1;
 		collisionFound = true;
 		Source->OnCollisionPlayersWall( LeftPlayer );
 	}
-	if( TargetPosition->X > 710 - Source->Radius )
+	if( TargetPosition->X > MAIN_POS_X + MAIN_WIDTH - Source->Radius )
 	{
-		TargetPosition->X = (710 - Source->Radius) - (TargetPosition->X - (710 - Source->Radius));
+		TargetPosition->X = (MAIN_POS_X + MAIN_WIDTH - Source->Radius) - (TargetPosition->X - (MAIN_POS_X + MAIN_WIDTH - Source->Radius));
 		angV->X *= -1;
 		collisionFound = true;
 		Source->OnCollisionPlayersWall( RightPlayer );
 	}
 
-	if( TargetPosition->Y - 10 < Source->Radius )
+	if( TargetPosition->Y - MAIN_POS_Y < Source->Radius )
 	{
-		TargetPosition->Y = Maths::Abs(TargetPosition->Y - 10 - Source->Radius) + Source->Radius + 10;
+		TargetPosition->Y = Maths::Abs(TargetPosition->Y - MAIN_POS_Y - Source->Radius) + Source->Radius + MAIN_POS_Y;
 		angV->Y *= -1;
 		collisionFound = true;
 	}
-	if( TargetPosition->Y > 470 - Source->Radius )
+	if( TargetPosition->Y > MAIN_POS_Y + MAIN_HEIGHT - Source->Radius )
 	{
-		TargetPosition->Y = (470 - Source->Radius) - (TargetPosition->Y - (470 - Source->Radius));
+		TargetPosition->Y = (MAIN_POS_Y + MAIN_HEIGHT - Source->Radius) - (TargetPosition->Y - (MAIN_POS_Y + MAIN_HEIGHT - Source->Radius));
 		angV->Y *= -1;
 		collisionFound = true;
 	}

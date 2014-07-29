@@ -17,6 +17,7 @@ class BattleStage : public Stage, Arena
 {
 	private:
 		ALLEGRO_BITMAP* backgroundImage;
+		ALLEGRO_FONT* labelFont;
 		SpriteSheet* inventoryIcons;
 		std::list<Projectile*> GameObjects;
 		std::list<Projectile*> GameObjectsToAdd;
