@@ -4,12 +4,13 @@
 #include "../shaders/shaders.h"
 #include "../transitions/transitions.h"
 #include "getkeypress.h"
+#include "assetDefines.h"
 
 SettingsStage::SettingsStage()
 {
-	titleFont = al_load_font( "resources/title.ttf", 32, 0 );
+	titleFont = al_load_font( GAME_FONT, 32, 0 );
 	titleFontHeight = al_get_font_line_height( titleFont );
-	itemFont = al_load_font( "resources/title.ttf", 24, 0 );
+	itemFont = al_load_font( GAME_FONT, 24, 0 );
 	itemFontHeight = al_get_font_line_height( itemFont );
 
 	selectedItem = 0;

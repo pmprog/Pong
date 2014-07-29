@@ -219,3 +219,4 @@ settings.cfg
 *.dll
 BattlePong.depend
 BattlePong.layout
+design/*

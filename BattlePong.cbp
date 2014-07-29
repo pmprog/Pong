@@ -426,6 +426,7 @@
 		<Unit filename="framework/stage.h" />
 		<Unit filename="framework/stagestack.cpp" />
 		<Unit filename="framework/stagestack.h" />
+		<Unit filename="game/assetDefines.h" />
 		<Unit filename="game/battle/battle.cpp" />
 		<Unit filename="game/battle/battle.h" />
 		<Unit filename="game/battle/battleball.cpp" />

@@ -4,11 +4,12 @@
 #include "../../shaders/shaders.h"
 #include "../../transitions/transitions.h"
 #include "battle.h"
+#include "../assetDefines.h"
 
 BattleOver::BattleOver(BattleStage* Battle)
 {
 	battleStage = Battle;
-	itemFont = al_load_font( "resources/title.ttf", 64, 0 );
+	itemFont = al_load_font( GAME_FONT, 64, 0 );
 	itemFontHeight = al_get_font_line_height( itemFont );
 	slideAngleX = new Angle( 0 );
 	slideAngleY = new Angle( 0 );
