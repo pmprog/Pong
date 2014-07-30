@@ -4,6 +4,7 @@
 SpriteSheet::SpriteSheet( std::string Filename )
 {
 	sheet = al_load_bitmap( Filename.c_str() );
+	AddSprite( 0, 0, al_get_bitmap_width( sheet ), al_get_bitmap_height( sheet ) );
 }
 
 SpriteSheet::SpriteSheet( std::string Filename, int FrameWidth, int FrameHeight )

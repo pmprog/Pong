@@ -5,6 +5,10 @@
 
 #define FREEZEBALL_PARTICLE_DELAY		8
 
+// *******************
+// Item: Freezeball (weapon)
+// *******************
+
 class FreezeBall : public ClassicBall
 {
 	private:

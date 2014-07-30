@@ -7,6 +7,9 @@
 #include "classicball.h"
 #include "../core/player.h"
 
+// *******************
+// Classic pong stage (no items)
+// *******************
 
 class ClassicStage : public Stage, Arena
 {

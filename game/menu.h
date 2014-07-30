@@ -6,6 +6,10 @@
 #include "../library/spritesheet.h"
 #include "../library/vector2.h"
 
+// *******************
+// Main menu
+// *******************
+
 class Menu : public Stage
 {
 	private:

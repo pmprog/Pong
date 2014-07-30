@@ -5,6 +5,10 @@
 
 #define FIREBALL_PARTICLE_DELAY		3
 
+// *******************
+// Item: Single fireball (weapon)
+// *******************
+
 class FireBall : public ClassicBall
 {
 	private:

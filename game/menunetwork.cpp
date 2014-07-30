@@ -1,10 +1,11 @@
 
 #include "menunetwork.h"
 #include "../framework/framework.h"
+#include "assetDefines.h"
 
 MenuNetwork::MenuNetwork()
 {
-	itemFont = al_load_font( "resources/title.ttf", 24, 0 );
+	itemFont = al_load_font( GAME_FONT, 24, 0 );
 	itemFontHeight = al_get_font_line_height( itemFont );
 	fadeDown = 0;
 	slideIn = 0;
@@ -79,7 +80,7 @@ void MenuNetwork::Render()
 	al_draw_filled_rectangle( 0, 0, FRAMEWORK->Display_GetWidth(), FRAMEWORK->Display_GetHeight(), al_map_rgba( 0, 0, 0, fadeDown ) );
 	al_draw_filled_rectangle( 20, FRAMEWORK->Display_GetHeight() - 20 - slideY, 20 + slideIn, FRAMEWORK->Display_GetHeight() - 20, al_map_rgb( 64, 80, 128 ) );
 	al_draw_rectangle( 20, FRAMEWORK->Display_GetHeight() - 20 - slideY, 20 + slideIn, FRAMEWORK->Display_GetHeight() - 20, al_map_rgb( 128, 160, 255 ), 3 );
-	
+
 	if( slideIn == FRAMEWORK->Display_GetWidth() / 2 )
 	{
 		int yPos = ((FRAMEWORK->Display_GetHeight() / 3) * 2) + 30;

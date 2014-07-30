@@ -7,14 +7,15 @@
 #include "battle/battle.h"
 #include "settings.h"
 #include "menunetwork.h"
+#include "assetDefines.h"
 
-#define BALL_RADIUS				10
+#define BALL_RADIUS	10
 int Menu::itemSwayOffsets[16] = { 0, 0, 0, 1, 1, 2, 1, 1, 0, 0, 0, -1, -1, -2, -1, -1 };
 
 Menu::Menu()
 {
-	titleFont = al_load_font( "resources/title.ttf", 64, 0 );
-	itemFont = al_load_font( "resources/title.ttf", 24, 0 );
+	titleFont = al_load_font( GAME_FONT, 64, 0 );
+	itemFont = al_load_font( GAME_FONT, 24, 0 );
 	itemFontHeight = al_get_font_line_height( itemFont );
 
 	itemSwayIndex = 0;
@@ -149,28 +150,35 @@ void Menu::Render()
 	for( int i = 0; i < 10; i++ )
 	{
 		int a = ((i+1) / 14.0f) * 255;
-		al_draw_filled_rectangle( ballHistory[i]->X - BALL_RADIUS, ballHistory[i]->Y - BALL_RADIUS, ballHistory[i]->X + BALL_RADIUS, ballHistory[i]->Y + BALL_RADIUS, al_map_rgba( 255, 255, 255, a ) );
+		al_draw_filled_rectangle( ballHistory[i]->X - BALL_RADIUS, ballHistory[i]->Y - BALL_RADIUS,
+				ballHistory[i]->X + BALL_RADIUS, ballHistory[i]->Y + BALL_RADIUS, al_map_rgba( 255, 255, 255, a ) );
 	}
-	al_draw_filled_rectangle( ballPos->X - BALL_RADIUS, ballPos->Y - BALL_RADIUS, ballPos->X + BALL_RADIUS, ballPos->Y + BALL_RADIUS, al_map_rgb( 255, 255, 255 ) );
+	al_draw_filled_rectangle( ballPos->X - BALL_RADIUS, ballPos->Y - BALL_RADIUS,
+			ballPos->X + BALL_RADIUS, ballPos->Y + BALL_RADIUS, al_map_rgb( 255, 255, 255 ) );
 
 	al_draw_text( titleFont, al_map_rgb( 255, 255, 255 ), FRAMEWORK->Display_GetWidth() / 2, 40, ALLEGRO_ALIGN_CENTRE, "Battle Pong" );
 
 	int yPos = FRAMEWORK->Display_GetHeight() - (itemFontHeight * 6);
 
-	al_draw_text( itemFont, (selectedItem == 0 ? selCol : itemCol), 40 + (selectedItem == 0 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Battle (Local PvP)" );
+	al_draw_text( itemFont, (selectedItem == 0 ? selCol : itemCol),
+			40 + (selectedItem == 0 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Battle (Local PvP)" );
 	yPos += itemFontHeight;
-	al_draw_text( itemFont, (selectedItem == 1 ? selCol : itemCol), 40 + (selectedItem == 1 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Battle (Network)" );
+	al_draw_text( itemFont, (selectedItem == 1 ? selCol : itemCol),
+			40 + (selectedItem == 1 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Battle (Network)" );
 	yPos += itemFontHeight;
-	al_draw_text( itemFont, (selectedItem == 2 ? selCol : itemCol), 40 + (selectedItem == 2 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Classic (Local PvP)" );
+	al_draw_text( itemFont, (selectedItem == 2 ? selCol : itemCol),
+			40 + (selectedItem == 2 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Classic (Local PvP)" );
 	yPos += itemFontHeight;
-	al_draw_text( itemFont, (selectedItem == 3 ? selCol : itemCol), 40 + (selectedItem == 3 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Settings" );
+	al_draw_text( itemFont, (selectedItem == 3 ? selCol : itemCol),
+			40 + (selectedItem == 3 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Settings" );
 	yPos += itemFontHeight;
-	al_draw_text( itemFont, (selectedItem == 4 ? selCol : itemCol), 40 + (selectedItem == 4 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Quit" );
+	al_draw_text( itemFont, (selectedItem == 4 ? selCol : itemCol),
+			40 + (selectedItem == 4 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Quit" );
 	yPos += itemFontHeight;
 
-	Shader* s = new ShaderScanlines();
-	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
-	delete s;
+//	Shader* s = new ShaderScanlines();
+//	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
+//	delete s;
 }
 
 bool Menu::IsTransition()

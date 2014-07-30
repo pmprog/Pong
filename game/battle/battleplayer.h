@@ -9,10 +9,15 @@ class BattleStage;
 
 #define FREEZE_TIME		4 * FRAMES_PER_SECOND
 #define SIZING_DELAY	10
-#define SIZING_MAX		192	
+#define SIZING_MAX		192
 #define SIZING_MIN		64
 #define SIZING_STEP		32
 #define REVERSE_TIME	4 * FRAMES_PER_SECOND
+
+// *******************
+// Player (paddle) for battle mode
+// Also defines inventory item types (pickups)
+// *******************
 
 namespace BattleInventory
 {
@@ -26,8 +31,9 @@ namespace BattleInventory
 		INVENTORY_REVERSE_BALL_VERT,
 		INVENTORY_REVERSE_BALL_HORZ,
 		INVENTORY_PADDLE_INCREASE,
+		INVENTORY_PADDLE_DECREASE,
 		INVENTORY_PADDLE_REVERSE_CONTROLS,
-		INVENTORY_PADDLE_DECREASE
+		INVENTORY_PADDLE_EOL
 	};
 }
 

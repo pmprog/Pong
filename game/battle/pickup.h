@@ -17,6 +17,10 @@ class BattleStage;
 #define PICKUP_ANIM_COLLECTED		3
 #define PICKUP_COOLDOWN_TIME		FRAMES_PER_SECOND * 8
 
+// *******************
+// An item/weapon before it is collected by a player
+// *******************
+
 class Pickup
 {
 

@@ -18,7 +18,7 @@ Pickup::Pickup( BattleStage* PlayArena, Vector2* StartPosition )
 
 void Pickup::InitPickup()
 {
-	pickupItem = (BattleInventory::Inventory)((rand() % (int)BattleInventory::INVENTORY_PADDLE_DECREASE) + 1);
+	pickupItem = (BattleInventory::Inventory)((rand() % ((int)BattleInventory::INVENTORY_PADDLE_EOL-1)) + 1);
 
 	pickupSprites = new SpriteSheet( "resources/pickups.png", PICKUP_GRAPHIC_SIZE, PICKUP_GRAPHIC_SIZE );
 	pickupAnimIn = new Animation( pickupSprites, false, 10 );
@@ -115,7 +115,7 @@ void Pickup::Update()
 				pickupCooldown = 0;
 				animationMode = PICKUP_ANIM_WARPIN;
 				pickupAnimIn->Start();
-				pickupItem = (BattleInventory::Inventory)((rand() % (int)BattleInventory::INVENTORY_PADDLE_DECREASE) + 1);
+				pickupItem = (BattleInventory::Inventory)((rand() % ((int)BattleInventory::INVENTORY_PADDLE_EOL-1)) + 1);
 			}
 			break;
 	}

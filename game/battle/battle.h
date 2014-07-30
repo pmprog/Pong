@@ -9,10 +9,15 @@
 #include "battleplayer.h"
 #include "pickup.h"
 
+// *******************
+// Currently default stage for battle mode
+// *******************
+
 class BattleStage : public Stage, Arena
 {
 	private:
 		ALLEGRO_BITMAP* backgroundImage;
+		ALLEGRO_FONT* labelFont;
 		SpriteSheet* inventoryIcons;
 		std::list<Projectile*> GameObjects;
 		std::list<Projectile*> GameObjectsToAdd;

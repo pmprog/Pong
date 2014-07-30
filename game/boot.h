@@ -5,6 +5,10 @@
 #include "../framework/includes.h"
 #include "../library/spritesheet.h"
 
+// *******************
+// Boot / Intro screen (showing creator logos)
+// *******************
+
 class BootUp : public Stage
 {
 	private:

@@ -3,6 +3,7 @@
 #include "../../framework/framework.h"
 #include "../../shaders/shaders.h"
 #include "../../transitions/transitions.h"
+#include "../assetDefines.h"
 
 ClassicStage::ClassicStage()
 {
@@ -11,7 +12,7 @@ ClassicStage::ClassicStage()
 	RightPlayer = new Player( this, new Vector2( FRAMEWORK->Display_GetWidth() - 40, FRAMEWORK->Display_GetHeight() / 2 ), 10, 470 );
 	LeftScore = 0;
 	RightScore = 0;
-	scoreFont = al_load_font( "resources/title.ttf", 64, 0 );
+	scoreFont = al_load_font( GAME_FONT, 64, 0 );
 }
 
 ClassicStage::~ClassicStage()
