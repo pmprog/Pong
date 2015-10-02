@@ -28,6 +28,10 @@ Menu::Menu()
 	{
 		ballHistory[i] = new Vector2( ballPos );
 	}
+
+	scanlinesOn = true;
+	greyscaleOn = false;
+
 }
 
 Menu::~Menu()
@@ -95,6 +99,13 @@ void Menu::EventOccurred(Event *e)
 						break;
 				}
 				break;
+      case ALLEGRO_KEY_S:
+        scanlinesOn = !scanlinesOn;
+        break;
+      case ALLEGRO_KEY_G:
+        greyscaleOn = !greyscaleOn;
+        break;
+
 		}
 	}
 }
@@ -176,9 +187,20 @@ void Menu::Render()
 			40 + (selectedItem == 4 ? itemSwayOffsets[itemSwayIndex] : 0), yPos, ALLEGRO_ALIGN_LEFT, "Quit" );
 	yPos += itemFontHeight;
 
-//	Shader* s = new ShaderScanlines();
-//	s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
-//	delete s;
+  if( scanlinesOn )
+  {
+    Shader* s = new ShaderScanlines();
+    s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
+    delete s;
+  }
+
+
+	if( greyscaleOn )
+  {
+    Shader* s = new ShaderGreyscale();
+    s->Apply( FRAMEWORK->Display_GetCurrentTarget() );
+    delete s;
+  }
 }
 
 bool Menu::IsTransition()

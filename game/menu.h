@@ -27,6 +27,9 @@ class Menu : public Stage
 		Vector2* ballVel;
 		Vector2* ballHistory[10];
 
+		bool scanlinesOn;
+		bool greyscaleOn;
+
   public:
 		Menu();
 		~Menu();
